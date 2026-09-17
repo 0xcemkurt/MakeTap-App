@@ -13,8 +13,10 @@ import {
   ChatMessage,
   BehaviorSkill,
   GeneratedExam,
+  AuthUser,
 } from './types';
 import { MakeTabLogo } from './components/MakeTabLogo';
+import { LoginView, DEMO_TEACHER } from './components/LoginView';
 import { ClassroomView } from './components/ClassroomView';
 import { AwardSkillModal } from './components/AwardSkillModal';
 import { ClassToolsModal } from './components/ClassToolsModal';
@@ -33,12 +35,24 @@ import {
   Sparkles,
   GraduationCap,
   Heart,
+  LogOut,
+  UserCheck,
 } from 'lucide-react';
 
 export default function App() {
+  // Authentication State (defaults to null to prompt Member Login Screen, remembers session via localStorage)
+  const [authUser, setAuthUser] = useState<AuthUser | null>(() => {
+    try {
+      const saved = localStorage.getItem('maketab_auth_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
   // Application State
   const [classroom, setClassroom] = useState<Classroom>(INITIAL_CLASSROOM);
-  const [currentRole, setCurrentRole] = useState<Role>('teacher');
+  const [currentRole, setCurrentRole] = useState<Role>(() => authUser?.role || 'teacher');
   const [activeTab, setActiveTab] = useState<
     'classroom' | 'story' | 'messages' | 'reports' | 'ai-exam' | 'ai-character'
   >('classroom');
@@ -55,6 +69,27 @@ export default function App() {
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3500);
+  };
+
+  const handleLogin = (user: AuthUser) => {
+    setAuthUser(user);
+    setCurrentRole(user.role);
+    try {
+      localStorage.setItem('maketab_auth_user', JSON.stringify(user));
+    } catch (e) {
+      console.error(e);
+    }
+    showToast(`Hoş geldiniz, Sayın ${user.name}!`);
+  };
+
+  const handleLogout = () => {
+    setAuthUser(null);
+    try {
+      localStorage.removeItem('maketab_auth_user');
+    } catch (e) {
+      console.error(e);
+    }
+    showToast('Oturum başarıyla sonlandırıldı.');
   };
 
   // Awarding points to single student or entire class
@@ -80,7 +115,7 @@ export default function App() {
               type: skill.type,
               note: note || undefined,
               timestamp,
-              awardedBy: 'Ahmet Yılmaz (Öğretmen)',
+              awardedBy: authUser ? `${authUser.name} (${authUser.title})` : 'Hakan KAVUZKOZ (Öğretmen)',
             },
             ...s.behaviorLogs,
           ],
@@ -108,7 +143,7 @@ export default function App() {
                 type: skill.type,
                 note: note || undefined,
                 timestamp,
-                awardedBy: 'Ahmet Yılmaz (Öğretmen)',
+                awardedBy: authUser ? `${authUser.name} (${authUser.title})` : 'Hakan KAVUZKOZ (Öğretmen)',
               },
               ...s.behaviorLogs,
             ],
@@ -172,7 +207,7 @@ export default function App() {
   };
 
   const handleAddComment = (postId: string, text: string) => {
-    const author = currentRole === 'teacher' ? 'Ahmet Yılmaz' : 'Fatma Kaya';
+    const author = currentRole === 'teacher' ? (authUser?.name || 'Hakan KAVUZKOZ') : 'Fatma Kaya';
     const roleText = currentRole === 'teacher' ? 'Sınıf Öğretmeni' : 'Veli';
     setPosts((prev) =>
       prev.map((p) => {
@@ -199,7 +234,7 @@ export default function App() {
   const handleSendMessage = (receiverId: string, text: string) => {
     const newMsg: ChatMessage = {
       id: `msg-${Date.now()}`,
-      senderId: currentRole === 'teacher' ? 'teacher-ahmet' : 'parent-std-1',
+      senderId: currentRole === 'teacher' ? (authUser?.id || 'teacher-hakan') : 'parent-std-1',
       senderRole: currentRole,
       receiverId,
       text,
@@ -214,7 +249,7 @@ export default function App() {
   const handleAssignExamToClass = (exam: GeneratedExam) => {
     handleAddStoryPost({
       classId: 'class-4a',
-      authorName: 'Ahmet Yılmaz',
+      authorName: authUser?.name || 'Hakan KAVUZKOZ',
       authorRole: 'Sınıf Öğretmeni',
       title: `📝 Yeni Ödev: ${exam.title}`,
       content: `Sevgili öğrencilerimiz ve değerli velilerimiz, ${exam.subject} dersinden '${exam.topic}' konulu ${exam.questions.length} soruluk MakeTab alıştırması ödev olarak tanımlanmıştır. Başarılar dileriz!`,
@@ -223,6 +258,11 @@ export default function App() {
     });
     showToast(`"${exam.title}" sınavı 4-A sınıfına atandı ve velilere bildirim gönderildi!`);
   };
+
+  // If user is not authenticated, render the dedicated Login View
+  if (!authUser) {
+    return <LoginView onLogin={handleLogin} />;
+  }
 
   // Parent profile target for Parent Mode
   const parentStudent = classroom.students.find((s) => s.id === 'std-1') || classroom.students[0];
@@ -333,8 +373,9 @@ export default function App() {
             </button>
           </nav>
 
-          {/* Role Switcher Pill (Öğretmen vs Veli Modu) */}
-          <div className="flex items-center gap-2">
+          {/* Right Header Actions: Role Switcher & User Profile */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Role Switcher Pill (Öğretmen vs Veli Modu) */}
             <div className="bg-slate-100 p-1 rounded-2xl flex items-center border border-slate-200/80 text-[11px] font-bold">
               <button
                 onClick={() => setCurrentRole('teacher')}
@@ -360,6 +401,39 @@ export default function App() {
               >
                 <Heart className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Veli Modu</span>
+              </button>
+            </div>
+
+            {/* Authenticated User Badge & Logout Button */}
+            <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
+              <div className="flex items-center gap-2">
+                <div
+                  className="w-8 h-8 rounded-xl bg-linear-to-tr from-blue-700 to-indigo-600 text-white font-black text-xs flex items-center justify-center shadow-xs select-none"
+                  title={`${authUser.name} (${authUser.title})`}
+                >
+                  {authUser.name
+                    .split(' ')
+                    .map((w) => w[0])
+                    .join('')
+                    .slice(0, 2)}
+                </div>
+                <div className="text-left leading-tight hidden xl:block">
+                  <div className="text-xs font-black text-slate-800 tracking-tight">
+                    {authUser.name}
+                  </div>
+                  <div className="text-[10px] text-slate-500 font-bold">
+                    {currentRole === 'teacher' ? authUser.title : 'Veli Görünümü'}
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={handleLogout}
+                className="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-600 text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-200/80 cursor-pointer active:scale-95"
+                title="Oturumu Kapat (Çıkış Yap)"
+              >
+                <LogOut className="w-3.5 h-3.5 shrink-0" />
+                <span className="hidden md:inline">Çıkış</span>
               </button>
             </div>
           </div>

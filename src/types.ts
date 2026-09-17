@@ -116,6 +116,17 @@ export interface CharacterStrength {
   level: number;
 }
 
+export interface AuthUser {
+  id: string;
+  name: string;
+  username: string;
+  role: Role;
+  title: string;
+  schoolName: string;
+  className: string;
+  email: string;
+}
+
 export interface CharacterAnalysisResult {
   studentId: string;
   studentName: string;
