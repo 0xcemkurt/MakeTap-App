@@ -32,6 +32,26 @@ import { AiCharacterAnalyst } from './components/AiCharacterAnalyst';
 import { ParentPortalView } from './components/ParentPortalView';
 import { ClassFinanceModal } from './components/ClassFinanceModal';
 import { StemXStoreModal } from './components/StemXStoreModal';
+import { PrincipalDashboard } from './components/PrincipalDashboard';
+import { SuitTieIcon } from './components/LoginView';
+import {
+  SchoolClassSummary,
+  TeacherEvaluation,
+  StaffMember,
+  VisitorLog,
+  PrincipalCalendarEvent,
+  SchoolFinanceSummary,
+  PrincipalAiInsight,
+} from './types';
+import {
+  INITIAL_CLASSES_SUMMARY,
+  INITIAL_TEACHER_EVALUATIONS,
+  INITIAL_STAFF_MEMBERS,
+  INITIAL_VISITOR_LOGS,
+  INITIAL_PRINCIPAL_EVENTS,
+  INITIAL_SCHOOL_FINANCE,
+  INITIAL_PRINCIPAL_AI_INSIGHTS,
+} from './data/principalData';
 import {
   Users,
   Megaphone,
@@ -54,7 +74,7 @@ export default function App() {
       const saved = localStorage.getItem('maketab_auth_user');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed?.name?.includes('Hakan') || parsed?.username?.includes('Hakan')) {
+        if (parsed?.id && parsed?.role) {
           return parsed;
         }
       }
@@ -66,10 +86,32 @@ export default function App() {
 
   // Application State
   const [classroom, setClassroom] = useState<Classroom>(INITIAL_CLASSROOM);
-  const [currentRole, setCurrentRole] = useState<Role>('teacher');
+  const [currentRole, setCurrentRole] = useState<Role>(() => {
+    try {
+      const saved = localStorage.getItem('maketab_auth_user');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed?.role === 'principal' || parsed?.role === 'parent' || parsed?.role === 'teacher') {
+          return parsed.role;
+        }
+      }
+    } catch {
+      // fallback
+    }
+    return 'teacher';
+  });
   const [activeTab, setActiveTab] = useState<
     'classroom' | 'story' | 'messages' | 'reports' | 'ai-exam' | 'ai-character'
   >('classroom');
+
+  // Principal State (Okul Müdürü Yönetim Masası)
+  const [classesSummary, setClassesSummary] = useState<SchoolClassSummary[]>(INITIAL_CLASSES_SUMMARY);
+  const [teacherEvaluations, setTeacherEvaluations] = useState<TeacherEvaluation[]>(INITIAL_TEACHER_EVALUATIONS);
+  const [staffMembers, setStaffMembers] = useState<StaffMember[]>(INITIAL_STAFF_MEMBERS);
+  const [visitorLogs, setVisitorLogs] = useState<VisitorLog[]>(INITIAL_VISITOR_LOGS);
+  const [calendarEvents, setCalendarEvents] = useState<PrincipalCalendarEvent[]>(INITIAL_PRINCIPAL_EVENTS);
+  const [financialData, setFinancialData] = useState<SchoolFinanceSummary>(INITIAL_SCHOOL_FINANCE);
+  const [aiInsights, setAiInsights] = useState<PrincipalAiInsight[]>(INITIAL_PRINCIPAL_AI_INSIGHTS);
 
   // Modals state
   const [awardTarget, setAwardTarget] = useState<Student | 'all' | null>(null);
@@ -91,13 +133,66 @@ export default function App() {
 
   const handleLogin = (user: AuthUser) => {
     setAuthUser(user);
-    setCurrentRole('teacher');
+    setCurrentRole(user.role);
     try {
       localStorage.setItem('maketab_auth_user', JSON.stringify(user));
     } catch (e) {
       console.error(e);
     }
-    showToast(`Hoş geldiniz, ${user.name}! (4-A Sınıfı)`);
+    if (user.role === 'principal') {
+      showToast(`Hoş geldiniz Sayın ${user.name}! (Okul Müdürü Yönetim Masası Aktif)`);
+    } else {
+      showToast(`Hoş geldiniz, ${user.name}! (4-A Sınıfı)`);
+    }
+  };
+
+  // Principal Handlers
+  const handleUpdateTeacherNote = (teacherId: string, note: string) => {
+    const currentDate = new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+    setTeacherEvaluations((prev) =>
+      prev.map((t) => {
+        if (t.id !== teacherId) return t;
+        return {
+          ...t,
+          principalNote: note,
+          principalNoteDate: currentDate,
+        };
+      })
+    );
+    showToast('Öğretmen resmi sicil ve takdir notu başarıyla mühürlendi.');
+  };
+
+  const handleAddVisitor = (newVisitor: Omit<VisitorLog, 'id'>) => {
+    const visitor: VisitorLog = {
+      ...newVisitor,
+      id: `vis-${Date.now()}`,
+    };
+    setVisitorLogs((prev) => [visitor, ...prev]);
+    showToast(`${visitor.visitorName} için turnike güvenlik kaydı oluşturuldu.`);
+  };
+
+  const handleCheckOutVisitor = (visitorId: string) => {
+    const exitTime = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+    setVisitorLogs((prev) =>
+      prev.map((v) => {
+        if (v.id !== visitorId) return v;
+        return {
+          ...v,
+          status: 'checked_out',
+          exitTime,
+        };
+      })
+    );
+    showToast('Ziyaretçi çıkış işlemi mühürlendi.');
+  };
+
+  const handleAddCalendarEvent = (newEvent: Omit<PrincipalCalendarEvent, 'id'>) => {
+    const event: PrincipalCalendarEvent = {
+      ...newEvent,
+      id: `evt-${Date.now()}`,
+    };
+    setCalendarEvents((prev) => [...prev, event]);
+    showToast('Müdürlük resmi ajandasına yeni kayıt eklendi.');
   };
 
   const handleLogout = () => {
@@ -468,7 +563,7 @@ export default function App() {
 
           {/* Right Header Actions: Role Switcher & User Profile */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Role Switcher Pill (Öğretmen vs Veli Modu) */}
+            {/* Role Switcher Pill (Öğretmen vs Veli vs Okul Müdürü) */}
             <div className="bg-slate-100 p-1 rounded-2xl flex items-center border border-slate-200/80 text-[11px] font-bold">
               <button
                 onClick={() => setCurrentRole('teacher')}
@@ -495,13 +590,30 @@ export default function App() {
                 <Heart className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Veli Modu</span>
               </button>
+
+              <button
+                onClick={() => setCurrentRole('principal')}
+                className={`px-2.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
+                  currentRole === 'principal'
+                    ? 'bg-slate-950 text-amber-300 border border-amber-400/50 shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+                title="Okul Müdürü Yönetim Masası (Üst Mod)"
+              >
+                <SuitTieIcon className="w-3.5 h-3.5 text-amber-400" />
+                <span className="hidden sm:inline">Okul Müdürü</span>
+              </button>
             </div>
 
             {/* Authenticated User Badge & Logout Button */}
             <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
               <div className="flex items-center gap-2">
                 <div
-                  className="w-8 h-8 rounded-xl bg-linear-to-tr from-blue-700 to-indigo-600 text-white font-black text-xs flex items-center justify-center shadow-xs select-none"
+                  className={`w-8 h-8 rounded-xl font-black text-xs flex items-center justify-center shadow-xs select-none ${
+                    currentRole === 'principal'
+                      ? 'bg-gradient-to-tr from-amber-500 to-amber-700 text-slate-950 border border-amber-300'
+                      : 'bg-linear-to-tr from-blue-700 to-indigo-600 text-white'
+                  }`}
                   title={`${authUser.name} (${authUser.title})`}
                 >
                   {authUser.name
@@ -515,7 +627,11 @@ export default function App() {
                     {authUser.name}
                   </div>
                   <div className="text-[10px] text-slate-500 font-bold">
-                    {currentRole === 'teacher' ? authUser.title : 'Veli Görünümü'}
+                    {currentRole === 'principal'
+                      ? 'Okul Müdürü Makamı'
+                      : currentRole === 'teacher'
+                      ? authUser.title
+                      : 'Veli Görünümü'}
                   </div>
                 </div>
               </div>
@@ -535,8 +651,28 @@ export default function App() {
 
       {/* Main Body Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 pt-5 pb-20 sm:pb-8">
-        {/* If Parent Role is selected, show the Parent View or selected tab */}
-        {currentRole === 'parent' && activeTab === 'classroom' ? (
+        {/* If Principal Mode is active, render the School Principal Dashboard */}
+        {currentRole === 'principal' ? (
+          <PrincipalDashboard
+            authUser={authUser}
+            classesSummary={classesSummary}
+            teacherEvaluations={teacherEvaluations}
+            staffMembers={staffMembers}
+            visitorLogs={visitorLogs}
+            calendarEvents={calendarEvents}
+            financialData={financialData}
+            aiInsights={aiInsights}
+            onUpdateTeacherNote={handleUpdateTeacherNote}
+            onAddVisitor={handleAddVisitor}
+            onCheckOutVisitor={handleCheckOutVisitor}
+            onAddCalendarEvent={handleAddCalendarEvent}
+            onSwitchToTeacherMode={() => {
+              setCurrentRole('teacher');
+              setActiveTab('classroom');
+              showToast('4-A Sınıfı Öğretmen Masasına Geçildi.');
+            }}
+          />
+        ) : currentRole === 'parent' && activeTab === 'classroom' ? (
           <ParentPortalView
             student={parentStudent}
             classroom={classroom}
@@ -601,9 +737,26 @@ export default function App() {
       {/* Mobile Bottom Floating Navigation Bar */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-slate-200/80 px-2 py-2 shadow-2xl flex items-center justify-around safe-bottom">
         <button
-          onClick={() => setActiveTab('classroom')}
+          onClick={() => {
+            setCurrentRole(currentRole === 'principal' ? 'teacher' : 'principal');
+          }}
           className={`flex flex-col items-center py-1 px-2 rounded-xl transition-all ${
-            activeTab === 'classroom' ? 'text-blue-600 font-extrabold' : 'text-slate-500 font-medium'
+            currentRole === 'principal' ? 'text-amber-600 font-extrabold' : 'text-slate-500 font-medium'
+          }`}
+        >
+          <SuitTieIcon className="w-5 h-5 text-amber-500" />
+          <span className="text-[10px] mt-0.5">{currentRole === 'principal' ? 'Müdürlük' : 'Müdür'}</span>
+        </button>
+
+        <button
+          onClick={() => {
+            if (currentRole === 'principal') setCurrentRole('teacher');
+            setActiveTab('classroom');
+          }}
+          className={`flex flex-col items-center py-1 px-2 rounded-xl transition-all ${
+            activeTab === 'classroom' && currentRole !== 'principal'
+              ? 'text-blue-600 font-extrabold'
+              : 'text-slate-500 font-medium'
           }`}
         >
           <Users className="w-5 h-5" />

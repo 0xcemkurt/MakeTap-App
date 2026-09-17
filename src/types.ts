@@ -1,4 +1,4 @@
-export type Role = 'teacher' | 'parent';
+export type Role = 'teacher' | 'parent' | 'principal';
 
 export type BehaviorType = 'positive' | 'needsWork';
 
@@ -190,3 +190,112 @@ export interface StemProduct {
   imageUrl?: string;
   events: StemWorkshopEvent[];
 }
+
+// ==========================================
+// OKUL MÜDÜRÜ (PRINCIPAL) VERİ TİPLERİ
+// ==========================================
+
+export interface ParentReview {
+  id: string;
+  parentName: string;
+  studentName: string;
+  rating: number; // 1-5
+  date: string;
+  comment: string;
+  tag: string;
+  aspect: 'iletisim' | 'pedagoji' | 'etkinlik' | 'disiplin' | 'stem';
+}
+
+export interface TeacherEvaluation {
+  id: string;
+  name: string;
+  title: string;
+  className: string;
+  branch: string;
+  experienceYears: number;
+  avatarUrl?: string;
+  overallRating: number; // e.g. 4.9
+  pedagogyRating: number;
+  communicationRating: number;
+  activityRating: number;
+  totalParentReviews: number;
+  badges: string[];
+  parentComments: ParentReview[];
+  principalNote?: string;
+  principalNoteDate?: string;
+}
+
+export interface SchoolClassSummary {
+  id: string;
+  name: string;
+  grade: number;
+  teacherName: string;
+  studentCount: number;
+  presentCount: number;
+  attendanceRate: number; // e.g. 96
+  totalPoints: number;
+  averageEfficiency: number; // e.g. 92
+  parentAppAdoptionRate: number; // e.g. 95
+  academicBadge: string;
+  status: 'excellent' | 'normal' | 'attention';
+}
+
+export interface StaffMember {
+  id: string;
+  name: string;
+  role: 'janitor' | 'security' | 'officer' | 'technician' | 'nurse';
+  roleLabel: string;
+  dutyArea: string;
+  phone: string;
+  shift: string;
+  status: 'on_duty' | 'break' | 'off_duty';
+  hygieneOrSecurityScore: number; // %98
+  lastInspectionNote: string;
+  assignedFloor?: string;
+}
+
+export interface VisitorLog {
+  id: string;
+  visitorName: string;
+  tcMasked: string;
+  purpose: string;
+  visitingWhom: string;
+  entryTime: string;
+  exitTime?: string;
+  badgeNo: string;
+  status: 'inside' | 'checked_out';
+  securityOfficer: string;
+}
+
+export interface PrincipalCalendarEvent {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  location: string;
+  type: 'mem' | 'meeting' | 'inspection' | 'drill' | 'parent';
+  status: 'upcoming' | 'completed';
+  urgency: 'high' | 'normal';
+}
+
+export interface SchoolFinanceSummary {
+  totalBudget: number;
+  totalIncome: number;
+  totalExpense: number;
+  netReserve: number;
+  incomeBreakdown: { title: string; amount: number; source: string; percentage: number }[];
+  expenseBreakdown: { title: string; amount: number; category: string; percentage: number }[];
+  recentTransactions: { id: string; title: string; type: 'income' | 'expense'; amount: number; date: string; category: string }[];
+}
+
+export interface PrincipalAiInsight {
+  id: string;
+  type: 'academic' | 'climate' | 'finance' | 'safety' | 'attendance';
+  title: string;
+  description: string;
+  metric?: string;
+  recommendation: string;
+  status: 'urgent' | 'positive' | 'strategic';
+  date: string;
+}
+
