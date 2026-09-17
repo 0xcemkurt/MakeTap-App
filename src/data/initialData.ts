@@ -1,4 +1,4 @@
-import { Classroom, BehaviorSkill, ClassStoryPost, ChatMessage } from '../types';
+import { Classroom, BehaviorSkill, ClassStoryPost, ChatMessage, ClassFinanceItem, StemProduct } from '../types';
 
 export const INITIAL_SKILLS: BehaviorSkill[] = [
   // Pozitif Davranışlar (Yeşil & Canlı)
@@ -141,6 +141,11 @@ export const INITIAL_CLASSROOM: Classroom = {
       parentEmail: 'fatma.kaya@gmail.com',
       parentConnected: true,
       notes: 'Matematik ve fen konularına çok ilgili, arkadaşlarına yardım etmeyi seviyor.',
+      archetype: 'curious',
+      archetypeLabel: '🔬 STEM & Fen Yıldızı',
+      bestFriendName: 'Elif Öztürk',
+      efficiencyRate: 95,
+      motivationalBadge: '🧬 Deney Kaptanı',
       behaviorLogs: [
         {
           id: 'log-1',
@@ -193,6 +198,12 @@ export const INITIAL_CLASSROOM: Classroom = {
       parentEmail: 'mehmet.demir@gmail.com',
       parentConnected: true,
       notes: 'Görsel sanatlarda çok yetenekli, bazen parmak kaldırmadan konuşabiliyor.',
+      archetype: 'energetic',
+      archetypeLabel: '⚡ Enerjik Kaşif',
+      bestFriendName: 'Kerem Şahin',
+      efficiencyRate: 86,
+      motivationalBadge: '🎨 Çizim Dehası',
+      attentionTopic: 'Söz almadan konuşma eğiliminde; parmak kaldırma hatırlatılmalı.',
       behaviorLogs: [
         {
           id: 'log-4',
@@ -233,6 +244,11 @@ export const INITIAL_CLASSROOM: Classroom = {
       parentEmail: 'emine.yildiz@hotmail.com',
       parentConnected: true,
       notes: 'Sınıf kitaplığının düzeninden sorumlu, çok dakik ve hevesli.',
+      archetype: 'leader',
+      archetypeLabel: '🏆 Sınıf Lideri',
+      bestFriendName: 'Ayşe Çelik',
+      efficiencyRate: 98,
+      motivationalBadge: '🌟 Örnek Sorumluluk & Azim',
       behaviorLogs: [
         {
           id: 'log-6',
@@ -273,6 +289,11 @@ export const INITIAL_CLASSROOM: Classroom = {
       parentEmail: 'selin.ozturk@yahoo.com',
       parentConnected: true,
       notes: 'Kelimeleri çok özenli kullanıyor, arkadaşlarına karşı son derece nazik.',
+      archetype: 'social',
+      archetypeLabel: '🤝 Nezaket Elçisi',
+      bestFriendName: 'Zeynep Kaya',
+      efficiencyRate: 94,
+      motivationalBadge: '🌸 Barış & Nezaket Meleği',
       behaviorLogs: [
         {
           id: 'log-8',
@@ -303,6 +324,12 @@ export const INITIAL_CLASSROOM: Classroom = {
       parentEmail: 'murat.sahin@gmail.com',
       parentConnected: true,
       notes: 'Çok zeki ve hızlı kavrıyor; dikkat süresini artırmak için destekliyoruz.',
+      archetype: 'energetic',
+      archetypeLabel: '⚡ Yüksek Enerji & Hareketli',
+      bestFriendName: 'Ali Demir',
+      efficiencyRate: 82,
+      motivationalBadge: '🚀 Hızlı Problem Çözücü',
+      attentionTopic: 'Çabuk sıkılabiliyor; derste tahta görevi ve aktif deney sorumluluğu verilmeli.',
       behaviorLogs: [
         {
           id: 'log-9',
@@ -333,6 +360,11 @@ export const INITIAL_CLASSROOM: Classroom = {
       parentEmail: 'derya.celik@gmail.com',
       parentConnected: true,
       notes: 'Okuma yarışmasında bu ay birinci oldu, analitik düşünme becerisi harika.',
+      archetype: 'leader',
+      archetypeLabel: '📚 Akademik Yıldız',
+      bestFriendName: 'Can Yıldız',
+      efficiencyRate: 96,
+      motivationalBadge: '🏆 Ayın Kitap Kurdu',
       behaviorLogs: [],
     },
     {
@@ -352,6 +384,12 @@ export const INITIAL_CLASSROOM: Classroom = {
       parentEmail: 'gokhan.aydin@gmail.com',
       parentConnected: false,
       notes: 'Robotik kodlama ve bilim projelerine hevesli.',
+      archetype: 'curious',
+      archetypeLabel: '🤖 Robotik Mimarı',
+      bestFriendName: 'Can Yıldız',
+      efficiencyRate: 88,
+      motivationalBadge: '⚡ STEM-X Şampiyonu',
+      attentionTopic: 'Veli MakeTab bağlantısı henüz onaylanmadı; ödevleri defterden teyit edilmeli.',
       behaviorLogs: [],
     },
     {
@@ -371,6 +409,11 @@ export const INITIAL_CLASSROOM: Classroom = {
       parentEmail: 'yasemin.arslan@gmail.com',
       parentConnected: true,
       notes: 'Müzik ve ritim duygusu çok kuvvetli, sınıfa pozitif neşe katıyor.',
+      archetype: 'creative',
+      archetypeLabel: '🎨 Yaratıcı Zihin',
+      bestFriendName: 'Elif Öztürk',
+      efficiencyRate: 91,
+      motivationalBadge: '🎵 Ritim & Pozitif Neşe',
       behaviorLogs: [],
     },
   ],
@@ -449,3 +492,121 @@ export const INITIAL_MESSAGES: ChatMessage[] = [
     isRead: true,
   },
 ];
+
+export const INITIAL_FINANCE_ITEMS: ClassFinanceItem[] = [
+  {
+    id: 'fin-1',
+    title: 'Bilim Merkezi & Planetaryum Gezisi',
+    description: 'Uzay simülasyonu, planetaryum gösterisi ve robotik atölyesi giriş ücreti.',
+    category: 'gezi',
+    amountPerStudent: 250,
+    targetTotal: 5000,
+    dueDate: '25 Mart 2026',
+    status: 'active',
+    payments: {
+      'std-1': { paid: true, paidAt: '15 Mart 2026', receiptNo: 'MK-2026-081' },
+      'std-2': { paid: true, paidAt: '16 Mart 2026', receiptNo: 'MK-2026-082' },
+      'std-3': { paid: false },
+      'std-4': { paid: true, paidAt: '16 Mart 2026', receiptNo: 'MK-2026-083' },
+      'std-5': { paid: true, paidAt: '17 Mart 2026', receiptNo: 'MK-2026-084' },
+      'std-6': { paid: true, paidAt: '17 Mart 2026', receiptNo: 'MK-2026-085' },
+      'std-7': { paid: false },
+      'std-8': { paid: true, paidAt: '18 Mart 2026', receiptNo: 'MK-2026-086' },
+      'std-9': { paid: true, paidAt: '18 Mart 2026', receiptNo: 'MK-2026-087' },
+      'std-10': { paid: true, paidAt: '18 Mart 2026', receiptNo: 'MK-2026-088' },
+    },
+  },
+  {
+    id: 'fin-2',
+    title: 'STEM-X Kodlama & Robotik Kiti Sınıf Alımı',
+    description: 'MEB Fen ve Bilişim müfredatına uygun 12 projeli STEM-X robotik eğitim seti.',
+    category: 'stem',
+    amountPerStudent: 450,
+    targetTotal: 9000,
+    dueDate: '30 Mart 2026',
+    status: 'active',
+    payments: {
+      'std-1': { paid: true, paidAt: '14 Mart 2026', receiptNo: 'MK-STEM-001' },
+      'std-2': { paid: true, paidAt: '15 Mart 2026', receiptNo: 'MK-STEM-002' },
+      'std-3': { paid: true, paidAt: '16 Mart 2026', receiptNo: 'MK-STEM-003' },
+      'std-4': { paid: false },
+      'std-5': { paid: true, paidAt: '17 Mart 2026', receiptNo: 'MK-STEM-004' },
+      'std-6': { paid: false },
+      'std-7': { paid: true, paidAt: '17 Mart 2026', receiptNo: 'MK-STEM-005' },
+      'std-8': { paid: true, paidAt: '18 Mart 2026', receiptNo: 'MK-STEM-006' },
+      'std-9': { paid: false },
+      'std-10': { paid: true, paidAt: '18 Mart 2026', receiptNo: 'MK-STEM-007' },
+    },
+  },
+  {
+    id: 'fin-3',
+    title: 'Sınıf Kitaplığı & Deney Malzemeleri Fonu',
+    description: 'Haftalık deney malzemeleri, fotokopi ve 4-A sınıf kütüphanesine yeni hikaye setleri.',
+    category: 'materyal',
+    amountPerStudent: 100,
+    targetTotal: 2000,
+    dueDate: '10 Mart 2026',
+    status: 'completed',
+    payments: {
+      'std-1': { paid: true, paidAt: '05 Mart 2026', receiptNo: 'MK-MAT-01' },
+      'std-2': { paid: true, paidAt: '05 Mart 2026', receiptNo: 'MK-MAT-02' },
+      'std-3': { paid: true, paidAt: '06 Mart 2026', receiptNo: 'MK-MAT-03' },
+      'std-4': { paid: true, paidAt: '06 Mart 2026', receiptNo: 'MK-MAT-04' },
+      'std-5': { paid: true, paidAt: '07 Mart 2026', receiptNo: 'MK-MAT-05' },
+      'std-6': { paid: true, paidAt: '07 Mart 2026', receiptNo: 'MK-MAT-06' },
+      'std-7': { paid: true, paidAt: '08 Mart 2026', receiptNo: 'MK-MAT-07' },
+      'std-8': { paid: true, paidAt: '08 Mart 2026', receiptNo: 'MK-MAT-08' },
+      'std-9': { paid: true, paidAt: '08 Mart 2026', receiptNo: 'MK-MAT-09' },
+      'std-10': { paid: true, paidAt: '09 Mart 2026', receiptNo: 'MK-MAT-10' },
+    },
+  },
+];
+
+export const STEM_X_PRODUCT_DATA: StemProduct = {
+  id: 'stem-x-robotics-kit',
+  name: 'STEM-X Yeni Nesil Robotik Kodlama ve Deney Kiti',
+  tagline: 'MEB 2025-2026 Müfredatıyla %100 Uyumlu Akıllı Bilim ve İnovasyon Seti',
+  originalPrice: 850,
+  discountedPrice: 450,
+  badge: 'Sınıfa Özel %47 İndirim',
+  description: 'İlkokul ve ortaokul düzeyindeki öğrenciler için geliştirilmiş; ahşap mekanik robot kol, ultrasonik mesafe sensörü, Bluetooth kontrol kartı, LED matris ekran ve güneş enerjisi deney modülünü bir araya getiren kapsamlı eğitim kiti.',
+  features: [
+    '🤖 12 Farklı Proje: Robot kol, engelden kaçan araç, akıllı sera ve deprem uyarı istasyonu',
+    '💻 MakeTab Entegrasyonu: Blok tabanlı kodlama ve dijital görev takibi',
+    '🛠️ Kolay ve Güvenli Montaj: Lehim gerektirmeyen tak-çalıştır modüler kablolar',
+    '🎓 Canlı Öğretmen ve Mühendis Desteği: Her cumartesi interaktif çevrim içi atölyeler',
+  ],
+  events: [
+    {
+      id: 'event-1',
+      title: 'STEM-X Robot Kol Montajı & İlk Kodlama Canlı Atölyesi',
+      date: '21 Mart 2026, Cumartesi',
+      time: '10:00 - 11:30',
+      instructor: 'Müh. Deniz YILMAZ (Robotik Eğitmeni)',
+      description: 'Öğrencilerimiz kit içerisindeki mekanik parçaları birleştirip servo motorları MakeTab kod bloklarıyla hareket ettirecek.',
+      spotsLeft: 8,
+      enrolledStudentsCount: 12,
+    },
+    {
+      id: 'event-2',
+      title: 'Sensörler ile Akıllı Şehir & Engel Algılama Projesi',
+      date: '28 Mart 2026, Cumartesi',
+      time: '11:30 - 13:00',
+      instructor: 'Selin ARSLAN (Yazılım & Bilişim Öğretmeni)',
+      description: 'Mesafe ve ışık sensörlerini kullanarak otonom araç algoritmaları kuracağız.',
+      spotsLeft: 14,
+      enrolledStudentsCount: 6,
+    },
+    {
+      id: 'event-3',
+      title: 'Büyük Final: MakeTab Okullar Arası STEM-X İnovasyon Ligi',
+      date: '04 Nisan 2026, Cumartesi',
+      time: '14:00 - 16:30',
+      instructor: 'MakeTab Bilim Jürisi & MEB Danışmanları',
+      description: 'Öğrencilerin tasarladığı projeler canlı yayında sergilenecek, madalya ve hediye setleri dağıtılacak.',
+      spotsLeft: 20,
+      enrolledStudentsCount: 20,
+    },
+  ],
+};
+

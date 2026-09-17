@@ -24,6 +24,14 @@ export interface BehaviorLog {
   awardedBy: string;
 }
 
+export type StudentArchetype =
+  | 'leader'        // En Başarılı / Sınıf Lideri
+  | 'energetic'     // En Hareketli & Yüksek Enerji
+  | 'curious'       // STEM & Araştırmacı
+  | 'creative'      // Sanatçı & Yaratıcı
+  | 'social'        // Paylaşımcı & Yardımsever
+  | 'focus';        // Birebir İlgi & Gelişim
+
 export interface Student {
   id: string;
   name: string;
@@ -42,6 +50,13 @@ export interface Student {
   parentConnected: boolean;
   notes: string;
   behaviorLogs: BehaviorLog[];
+  // Extended Student Profile & Pedagogical Insights
+  archetype?: StudentArchetype;
+  archetypeLabel?: string;
+  bestFriendName?: string;
+  efficiencyRate?: number;
+  attentionTopic?: string;
+  motivationalBadge?: string;
 }
 
 export interface Classroom {
@@ -138,4 +153,40 @@ export interface CharacterAnalysisResult {
   teacherRecommendations: string[];
   parentFeedbackLetter: string;
   analyzedAt: string;
+}
+
+export interface ClassFinanceItem {
+  id: string;
+  title: string;
+  description: string;
+  category: 'gezi' | 'etkinlik' | 'materyal' | 'aidat' | 'stem';
+  amountPerStudent: number;
+  targetTotal: number;
+  dueDate: string;
+  status: 'active' | 'completed';
+  payments: Record<string, { paid: boolean; paidAt?: string; receiptNo?: string }>;
+}
+
+export interface StemWorkshopEvent {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  instructor: string;
+  description: string;
+  spotsLeft: number;
+  enrolledStudentsCount: number;
+}
+
+export interface StemProduct {
+  id: string;
+  name: string;
+  tagline: string;
+  originalPrice: number;
+  discountedPrice: number;
+  description: string;
+  features: string[];
+  badge: string;
+  imageUrl?: string;
+  events: StemWorkshopEvent[];
 }

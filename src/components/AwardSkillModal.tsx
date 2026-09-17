@@ -19,6 +19,7 @@ import {
   Plus,
   MessageSquare,
   Award,
+  AlertTriangle,
 } from 'lucide-react';
 
 interface AwardSkillModalProps {
@@ -131,6 +132,42 @@ export const AwardSkillModal: React.FC<AwardSkillModalProps> = ({
             <X className="w-4 h-4" />
           </button>
         </div>
+
+        {/* Student Pedagogical Quick Summary Bar if single student */}
+        {targetStudent && (
+          <div className="px-5 py-2.5 bg-slate-50/90 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div className="flex items-center gap-2 flex-wrap">
+              {targetStudent.archetypeLabel && (
+                <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-black">
+                  {targetStudent.archetypeLabel}
+                </span>
+              )}
+              {targetStudent.bestFriendName && (
+                <span className="text-[11px] font-semibold text-slate-600">
+                  👥 Kanka: <strong className="text-slate-800">{targetStudent.bestFriendName}</strong>
+                </span>
+              )}
+              {targetStudent.efficiencyRate !== undefined && (
+                <span className="text-[11px] font-semibold text-slate-600">
+                  📈 Verim: <strong className={targetStudent.efficiencyRate >= 90 ? 'text-emerald-600 font-black' : 'text-amber-600 font-black'}>%{targetStudent.efficiencyRate}</strong>
+                </span>
+              )}
+            </div>
+
+            {targetStudent.motivationalBadge && (
+              <span className="text-[11px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-lg border border-indigo-100">
+                {targetStudent.motivationalBadge}
+              </span>
+            )}
+
+            {targetStudent.attentionTopic && (
+              <div className="w-full mt-1 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-2.5 py-1.5 text-[11px] flex items-center gap-1.5">
+                <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                <span><strong className="text-amber-800">Öğretmen Notu / Dikkat:</strong> {targetStudent.attentionTopic}</span>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Tab switch */}
         <div className="p-3 bg-slate-50/80 border-b border-slate-100 flex gap-2">

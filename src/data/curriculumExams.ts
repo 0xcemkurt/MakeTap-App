@@ -57,6 +57,42 @@ export const PREBUILT_EXAMS: Record<string, PrebuiltExamData> = {
         explanation: 'Kuvvet etkisi kalktığında eski şeklini geri kazanan maddeler esnek madde olarak tanımlanır.',
         pedagogicalTip: 'Açık uçlu yanıtlarda "esnek" kavramı ve geçerli bir günlük yaşam örneği aranır.',
       },
+      {
+        id: 'fen-q5',
+        type: 'multiple-choice',
+        question: 'Aşağıdakilerden hangisi temas gerektirmeyen bir kuvvettir?',
+        options: ['A) Kapıyı iterek kapatmak', 'B) Mıknatısın toplu iğneleri çekmesi', 'C) Sandalyeyi sürüklemek', 'D) Hamuru yoğurmak'],
+        correctAnswer: 'B) Mıknatısın toplu iğneleri çekmesi',
+        explanation: 'Manyetik kuvvet ve yerçekimi kuvveti, cisimlere temas etmeksizin uzaktan etki gösterebilen kuvvetlerdir.',
+        pedagogicalTip: 'Temas gerektiren ve gerektirmeyen kuvvetler karşılaştırmalı tablo olarak sunulmalıdır.',
+      },
+      {
+        id: 'fen-q6',
+        type: 'true-false',
+        question: 'Bir pusulanın renkli ucu daima Dünya\'nın coğrafi Kuzey yönünü gösterir.',
+        options: ['Doğru', 'Yanlış'],
+        correctAnswer: 'Doğru',
+        explanation: 'Dünya devasa bir doğal mıknatıs gibi davranır ve pusula iğnesi daima manyetik alana göre kuzeyi gösterir.',
+        pedagogicalTip: 'Doğa yürüyüşü ve yön bulma becerileriyle ilişkilendirilmelidir.',
+      },
+      {
+        id: 'fen-q7',
+        type: 'multiple-choice',
+        question: 'Duran bir futbol topuna ayakla vurulduğunda top harekete geçer. Bu durum kuvvetin hangi etkisine örnektir?',
+        options: ['A) Şekil değiştirici etki', 'B) Hızlandırıcı ve hareket ettirici etki', 'C) Yavaşlatıcı etki', 'D) Isıtıcı etki'],
+        correctAnswer: 'B) Hızlandırıcı ve hareket ettirici etki',
+        explanation: 'Duran bir cisme kuvvet uygulandığında cisim durma halinden hareket haline geçer.',
+        pedagogicalTip: 'Beden eğitimi dersindeki oyunlarla entegre edilebilir.',
+      },
+      {
+        id: 'fen-q8',
+        type: 'open-ended',
+        question: 'Mıknatısların günlük hayatımızda teknolojide ve evlerimizde kullanıldığı iki farklı alanı yazınız.',
+        options: [],
+        correctAnswer: 'Buzdolabı kapaklarının kapanması, hoparlörler, elektrik motorları veya hızlı trenler (Maglev).',
+        explanation: 'Mıknatıslar ses cihazlarından kapak tutucularına kadar geniş bir kullanım alanına sahiptir.',
+        pedagogicalTip: 'Öğrencinin teknolojideki mıknatıs kullanımını fark etmesi hedeflenir.',
+      },
     ],
   },
   'Matematik': {
@@ -103,6 +139,42 @@ export const PREBUILT_EXAMS: Record<string, PrebuiltExamData> = {
         correctAnswer: 'Ahmet\'e 6 ceviz kalmıştır. (Can\'a 6, Elif\'e 12 ceviz; 24 - 18 = 6)',
         explanation: 'Can: 24 / 4 = 6 ceviz. Elif: 6 x 2 = 12 ceviz. Toplam verilen: 6 + 12 = 18. Kalan: 24 - 18 = 6 ceviz.',
         pedagogicalTip: 'Öğrencinin çözüm basamaklarını sırayla yazma disiplini ölçülür.',
+      },
+      {
+        id: 'mat-q5',
+        type: 'multiple-choice',
+        question: 'Bir manavdaki 80 kg elmanın 2/5\'si satılmıştır. Satılan elma kaç kilogramdır?',
+        options: ['A) 16 kg', 'B) 32 kg', 'C) 48 kg', 'D) 24 kg'],
+        correctAnswer: 'B) 32 kg',
+        explanation: '80 / 5 = 16. 16 x 2 = 32 kg satılmıştır.',
+        pedagogicalTip: 'Birim kesir değerini bulup pay ile çarpma kuralı pekiştirilir.',
+      },
+      {
+        id: 'mat-q6',
+        type: 'true-false',
+        question: 'Bir kesrin payı ve paydası aynı sıfırdan farklı sayı ile çarpılırsa kesrin değeri değişmez (Genişletme).',
+        options: ['Doğru', 'Yanlış'],
+        correctAnswer: 'Doğru',
+        explanation: 'Kesirlerde genişletme kesrin değerini korur, sadece parçaları böler.',
+        pedagogicalTip: 'Pasta dilimleri örneğiyle gösterilebilir.',
+      },
+      {
+        id: 'mat-q7',
+        type: 'multiple-choice',
+        question: 'Aşağıdaki kesirlerden hangisi bir tamdan büyüktür?',
+        options: ['A) 3/4', 'B) 7/8', 'C) 9/7', 'D) 5/6'],
+        correctAnswer: 'C) 9/7',
+        explanation: 'Payı (9) paydasından (7) büyük olan 9/7 kesri 1 tamdan büyüktür.',
+        pedagogicalTip: 'Sayı doğrusunda 0 ile 1 arasına ve 1 sonrasına yerleştirme çalışması yapılmalıdır.',
+      },
+      {
+        id: 'mat-q8',
+        type: 'open-ended',
+        question: 'Bir koşucu 1200 metrelik parkurun 3/4\'ünü koşmuştur. Koşucunun bitiş çizgisine ulaşması için geriye kaç metre koşması gerekir?',
+        options: [],
+        correctAnswer: '300 metre kalmıştır. (1200 / 4 = 300, 1200 - 900 = 300 metre)',
+        explanation: 'Koşulan: 1200 x 3/4 = 900 metre. Kalan: 1200 - 900 = 300 metre.',
+        pedagogicalTip: 'Kalan kesri (1/4) doğrudan bularak pratik çözüme de teşvik edilir.',
       },
     ],
   },
@@ -151,6 +223,42 @@ export const PREBUILT_EXAMS: Record<string, PrebuiltExamData> = {
         explanation: 'Öğrencinin empati ve özgün ifade becerisi değerlendirilir.',
         pedagogicalTip: 'Cümle kuruluşlarının düzgünlüğü ve kelime dağarcığı göz önünde bulundurulur.',
       },
+      {
+        id: 'turk-q5',
+        type: 'multiple-choice',
+        question: 'Aşağıdaki cümlelerin hangisinde zıt (karşıt) anlamlı sözcükler bir arada kullanılmıştır?',
+        options: ['A) Gece gündüz demeden sınavına hazırlandı.', 'B) Yağmur dindi ve güneş açtı.', 'C) Küçük kız parkta neşeyle oynuyordu.', 'D) Okul zili çalınca sınıfa girdik.'],
+        correctAnswer: 'A) Gece gündüz demeden sınavına hazırlandı.',
+        explanation: '"Gece" ile "gündüz" birbirinin zıt anlamlısıdır.',
+        pedagogicalTip: 'Zıt ve eş anlamlı sözcükler oyun kartlarıyla eşleştirilebilir.',
+      },
+      {
+        id: 'turk-q6',
+        type: 'true-false',
+        question: 'Özel isimlere getirilen çekim ekleri kesme işareti (\') ile ayrılır. (Örn: Ankara\'ya, Mehmet\'in)',
+        options: ['Doğru', 'Yanlış'],
+        correctAnswer: 'Doğru',
+        explanation: 'Türk Dil Kurumu kurallarına göre özel adlara gelen durum ve iyelik ekleri kesmeyle ayrılır.',
+        pedagogicalTip: 'Noktalama işaretlerinin yazılı anlatımı berraklaştırdığı öğretilir.',
+      },
+      {
+        id: 'turk-q7',
+        type: 'multiple-choice',
+        question: '"Gözden düşmek" deyiminin anlamı aşağıdakilerden hangisidir?',
+        options: ['A) Gözleri iyi görmemek', 'B) Eskisi kadar değer ve sevgi görmemek', 'C) Yüksek bir yerden düşmek', 'D) Çok ağlamak'],
+        correctAnswer: 'B) Eskisi kadar değer ve sevgi görmemek',
+        explanation: 'Birinin güvenini veya sevgisini kaybetmek durumuna gözden düşmek denir.',
+        pedagogicalTip: 'Deyimlerle hikaye oluşturma alıştırması yapılabilir.',
+      },
+      {
+        id: 'turk-q8',
+        type: 'open-ended',
+        question: 'Nezaket ve teşekkür etmenin insan ilişkilerindeki önemini anlatan kısa bir nasihat cümlesi yazınız.',
+        options: [],
+        correctAnswer: 'Tatlı dil ve bir tebessüm en kapalı kapıları bile açar, kalpler arasında sevgi bağı kurar.',
+        explanation: 'Karakter eğitimi ve ifade gücü değerlendirilir.',
+        pedagogicalTip: 'Değerler eğitimi ile Türkçe kazanımı bütünleştirilir.',
+      },
     ],
   },
   'Sosyal Bilgiler': {
@@ -197,6 +305,42 @@ export const PREBUILT_EXAMS: Record<string, PrebuiltExamData> = {
         correctAnswer: 'Şerife Bacı, bebeğinin üzerindeki battaniyeyi ıslanmasın diye cephanenin üzerine örterek vatan sevgisinin en büyük örneğini göstermiştir.',
         explanation: 'Şerife Bacı vatan müdafaasında kadınlarımızın ve annelerimizin fedakarlığının en yüce timsalidir.',
         pedagogicalTip: 'Değerler eğitimi çerçevesinde vatanseverlik ve fedakarlık vurgulanır.',
+      },
+      {
+        id: 'sos-q5',
+        type: 'multiple-choice',
+        question: 'Maraş savunmasında düşmana ilk kurşunu atarak halk direnişini başlatan kahramanımız kimdir?',
+        options: ['A) Sütçü İmam', 'B) Kazım Karabekir', 'C) Fevzi Çakmak', 'D) Ali Saip Bey'],
+        correctAnswer: 'A) Sütçü İmam',
+        explanation: 'Kahramanmaraş\'ta işgalci askerlere karşı ilk kurşunu atan Sütçü İmam bağımsızlık meşalesini yakmıştır.',
+        pedagogicalTip: 'Şehirlerin ünvanları (Gazi, Kahraman, Şanlı) ile kahramanlar eşleştirilmelidir.',
+      },
+      {
+        id: 'sos-q6',
+        type: 'true-false',
+        question: 'Milli kültür ögelerimiz yalnızca tarihi binalardan ibarettir, geleneksel bayramlar ve el sanatları kültür sayılmaz.',
+        options: ['Doğru', 'Yanlış'],
+        correctAnswer: 'Yanlış',
+        explanation: 'Folklor, bayramlaşma, yemekler, kilimler ve masallar da milli kültürün temel unsurlarıdır.',
+        pedagogicalTip: 'Somut olmayan kültürel miras kavramı açıklanmalıdır.',
+      },
+      {
+        id: 'sos-q7',
+        type: 'multiple-choice',
+        question: 'Türkiye Cumhuriyeti Devleti\'nin kurucusu ve ilk Cumhurbaşkanı kimdir?',
+        options: ['A) Mustafa Kemal Atatürk', 'B) İsmet İnönü', 'C) Mehmet Akif Ersoy', 'D) Kazım Karabekir'],
+        correctAnswer: 'A) Mustafa Kemal Atatürk',
+        explanation: 'Gazi Mustafa Kemal Atatürk cumhuriyetimizin kurucusu ve ilk Cumhurbaşkanıdır.',
+        pedagogicalTip: 'Atatürk ilke ve inkılapları dönemiyle özetlenmelidir.',
+      },
+      {
+        id: 'sos-q8',
+        type: 'open-ended',
+        question: 'Farklı kültürlere ve insanlara karşı saygılı olmanın toplum barışına katkısını kısaca belirtiniz.',
+        options: [],
+        correctAnswer: 'Farklılıklara saygı duymak dayanışmayı güçlendirir, ayrımcılığı önler ve herkesin huzur içinde yaşamasını sağlar.',
+        explanation: 'Hoşgörü ve birlikte yaşama kültürü değerlendirilir.',
+        pedagogicalTip: 'Demokrasi ve insan hakları bilinciyle harmanlanır.',
       },
     ],
   },
@@ -245,6 +389,42 @@ export const PREBUILT_EXAMS: Record<string, PrebuiltExamData> = {
         explanation: 'Basit geniş zaman (Simple Present) kurgusu ve eylem fiili kullanımı ölçülür.',
         pedagogicalTip: 'Küçük yazım hatalarına değil, mesajın anlaşılabilirliğine odaklanılmalıdır.',
       },
+      {
+        id: 'eng-q5',
+        type: 'multiple-choice',
+        question: '"What time is it?" - "It is half past two." Saati doğru gösteren seçenek hangisidir?',
+        options: ['A) 02:00', 'B) 02:30', 'C) 03:00', 'D) 02:15'],
+        correctAnswer: 'B) 02:30',
+        explanation: '"Half past" buçuk anlamına gelir. "Half past two" ise saat 02:30 demektir.',
+        pedagogicalTip: 'Saat modelleri üzerinde akrep ve yelkovan gösterilmelidir.',
+      },
+      {
+        id: 'eng-q6',
+        type: 'true-false',
+        question: '"Go to bed" means "Yatağa gitmek / Uyumak".',
+        options: ['Doğru', 'Yanlış'],
+        correctAnswer: 'Doğru',
+        explanation: '"Go to bed" gece uyumaya gitmek ifadesidir.',
+        pedagogicalTip: 'Günlük eylem sırası grafiği oluşturulabilir.',
+      },
+      {
+        id: 'eng-q7',
+        type: 'multiple-choice',
+        question: 'Complete the sentence: "I ride my ______ in the park on Sundays."',
+        options: ['A) bicycle', 'B) pencil', 'C) window', 'D) homework'],
+        correctAnswer: 'A) bicycle',
+        explanation: '"Ride a bicycle" bisiklete binmek anlamındadır.',
+        pedagogicalTip: 'Kelime ve nesne eşleştirme oyunları tavsiye edilir.',
+      },
+      {
+        id: 'eng-q8',
+        type: 'open-ended',
+        question: 'What is your favorite school subject? Write a short sentence in English. (Örn: My favorite subject is Science / Art.)',
+        options: [],
+        correctAnswer: 'My favorite subject is English / Math / Science / Art.',
+        explanation: 'Öğrencinin kendi ilgisini İngilizce ifade edebilme becerisi kontrol edilir.',
+        pedagogicalTip: 'Öğrenci özerkliği ve iletişimsel yaklaşım ön planda tutulur.',
+      },
     ],
   },
   'Hayat Bilgisi': {
@@ -283,6 +463,91 @@ export const PREBUILT_EXAMS: Record<string, PrebuiltExamData> = {
         explanation: 'Temiz hava teneffüste zihni açar ve bulaşıcı hastalıkları engeller.',
         pedagogicalTip: 'Sınıf temizliği ve hijyen kuralları öğrencilere sorumluluk vererek içselleştirilir.',
       },
+      {
+        id: 'hb-q4',
+        type: 'multiple-choice',
+        question: 'Deprem anında kapalı alandaysak yapmamız gereken doğru hareket hangisidir?',
+        options: ['A) Çöp-Kapan-Tutun pozisyonu almak', 'B) Balkona veya pencereye koşmak', 'C) Asansöre binmeye çalışmak', 'D) Merdivenlere doğru koşmak'],
+        correctAnswer: 'A) Çöp-Kapan-Tutun pozisyonu almak',
+        explanation: 'Deprem sarsıntısı sırasında sağlam bir nesnenin yanında Çöp-Kapan-Tutun yaparak baş korunmalıdır.',
+        pedagogicalTip: 'Sınıfta düzenli tatbikatlarla refleks haline getirilmelidir.',
+      },
+      {
+        id: 'hb-q5',
+        type: 'true-false',
+        question: 'Dengeli beslenmek için her öğünde sadece tek bir besin türü (örneğin sadece çikolata veya makarna) tüketilmelidir.',
+        options: ['Doğru', 'Yanlış'],
+        correctAnswer: 'Yanlış',
+        explanation: 'Dengeli beslenme; süt, et, sebze, meyve ve tahıllardan yeterli ve dengeli oranda almayı gerektirir.',
+        pedagogicalTip: 'Besin piramidi tablosu incelenmelidir.',
+      },
+      {
+        id: 'hb-q6',
+        type: 'multiple-choice',
+        question: 'Karşıdan karşıya geçerken aşağıdakilerden hangisini kullanmak en güvenlidir?',
+        options: ['A) Trafiğin yoğun olduğu virajlar', 'B) Yaya geçidi ve üst geçitler', 'C) Park etmiş araçların arası', 'D) Otoyol bariyerlerinin üzerinden atlamak'],
+        correctAnswer: 'B) Yaya geçidi ve üst geçitler',
+        explanation: 'Trafikte yaya güvenliği için belirlenmiş yaya geçitleri, alt ve üst geçitler kullanılmalıdır.',
+        pedagogicalTip: 'Trafik dedektifi rol oyunu oynatılabilir.',
+      },
+      {
+        id: 'hb-q7',
+        type: 'true-false',
+        question: 'Sınıfımızdaki panoları ve eşyaları özenle korumak tüm öğrencilerin ortak sorumluluğudur.',
+        options: ['Doğru', 'Yanlış'],
+        correctAnswer: 'Doğru',
+        explanation: 'Okul ve sınıf eşyaları kamu malıdır ve özenle korunmalıdır.',
+        pedagogicalTip: 'Sorumluluk ve vatandaşlık bilinci aşılanır.',
+      },
+      {
+        id: 'hb-q8',
+        type: 'open-ended',
+        question: 'Günde en az kaç saat uyumamız büyüme ve ders başarımız için gereklidir? Kısaca yazınız.',
+        options: [],
+        correctAnswer: 'İlkokul çağındaki bir çocuğun günde ortalama 9-10 saat düzenli uyuması gerekir.',
+        explanation: 'Büyüme hormonu uykuda salgılanır ve beyin gün içindeki bilgileri dinlenirken depolar.',
+        pedagogicalTip: 'Sağlıklı uyku rutini alışkanlık takip tablosuna eklenebilir.',
+      },
     ],
   },
 };
+
+/**
+ * Generates an exam with EXACTLY the requested question count (e.g. 3, 4, 5, 8).
+ * Slices from the rich pool and guarantees matching count.
+ */
+export function getCurriculumExam(
+  subject: string,
+  topic?: string,
+  count: number = 4,
+  difficulty?: string,
+  gradeLevel: string = '4. Sınıf'
+): PrebuiltExamData {
+  const base = PREBUILT_EXAMS[subject] || PREBUILT_EXAMS['Fen Bilimleri'];
+  
+  // Slice to exact count requested
+  let questionsToUse = [...base.questions];
+  if (questionsToUse.length > count) {
+    questionsToUse = questionsToUse.slice(0, count);
+  } else if (questionsToUse.length < count) {
+    // If more are requested than available, duplicate with variant ids
+    const diff = count - questionsToUse.length;
+    for (let i = 0; i < diff; i++) {
+      const src = base.questions[i % base.questions.length];
+      questionsToUse.push({
+        ...src,
+        id: `${src.id}-var-${i + 1}`,
+      });
+    }
+  }
+
+  return {
+    ...base,
+    title: topic ? `${gradeLevel} ${subject} • ${topic} Alıştırması` : base.title,
+    topic: topic || base.topic,
+    difficulty: difficulty || base.difficulty,
+    gradeLevel: gradeLevel || base.gradeLevel,
+    durationMinutes: Math.max(10, count * 4),
+    questions: questionsToUse,
+  };
+}

@@ -4,6 +4,8 @@ import {
   INITIAL_STORY_POSTS,
   INITIAL_MESSAGES,
   INITIAL_SKILLS,
+  INITIAL_FINANCE_ITEMS,
+  STEM_X_PRODUCT_DATA,
 } from './data/initialData';
 import {
   Classroom,
@@ -14,6 +16,8 @@ import {
   BehaviorSkill,
   GeneratedExam,
   AuthUser,
+  ClassFinanceItem,
+  StemProduct,
 } from './types';
 import { MakeTabLogo } from './components/MakeTabLogo';
 import { LoginView, DEMO_TEACHER } from './components/LoginView';
@@ -26,6 +30,8 @@ import { AnalyticsReports } from './components/AnalyticsReports';
 import { AiExamGenerator } from './components/AiExamGenerator';
 import { AiCharacterAnalyst } from './components/AiCharacterAnalyst';
 import { ParentPortalView } from './components/ParentPortalView';
+import { ClassFinanceModal } from './components/ClassFinanceModal';
+import { StemXStoreModal } from './components/StemXStoreModal';
 import {
   Users,
   Megaphone,
@@ -37,6 +43,8 @@ import {
   Heart,
   LogOut,
   UserCheck,
+  Wallet,
+  Bot,
 } from 'lucide-react';
 
 export default function App() {
@@ -66,6 +74,10 @@ export default function App() {
   // Modals state
   const [awardTarget, setAwardTarget] = useState<Student | 'all' | null>(null);
   const [isToolsOpen, setIsToolsOpen] = useState(false);
+  const [financeItems, setFinanceItems] = useState<ClassFinanceItem[]>(INITIAL_FINANCE_ITEMS);
+  const [stemProduct, setStemProduct] = useState<StemProduct>(STEM_X_PRODUCT_DATA);
+  const [isFinanceOpen, setIsFinanceOpen] = useState(false);
+  const [isStemStoreOpen, setIsStemStoreOpen] = useState(false);
 
   // Story & Messages state
   const [posts, setPosts] = useState<ClassStoryPost[]>(INITIAL_STORY_POSTS);
@@ -263,6 +275,81 @@ export default function App() {
       timestamp: 'Az önce',
     });
     showToast(`"${exam.title}" sınavı 4-A sınıfına atandı ve velilere bildirim gönderildi!`);
+  };
+
+  // Financial Handlers
+  const handleTogglePayment = (itemId: string, studentId: string) => {
+    setFinanceItems((prev) =>
+      prev.map((item) => {
+        if (item.id !== itemId) return item;
+        const current = item.payments?.[studentId];
+        const isPaid = !!current?.paid;
+        return {
+          ...item,
+          payments: {
+            ...item.payments,
+            [studentId]: {
+              paid: !isPaid,
+              paidAt: !isPaid
+                ? new Date().toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric' })
+                : undefined,
+              receiptNo: !isPaid ? `MK-${Math.floor(1000 + Math.random() * 9000)}` : undefined,
+            },
+          },
+        };
+      })
+    );
+    showToast('Ödeme durumu başarıyla güncellendi.');
+  };
+
+  const handleAddFinanceItem = (newItem: Omit<ClassFinanceItem, 'id' | 'payments'>) => {
+    const item: ClassFinanceItem = {
+      ...newItem,
+      id: `fin-${Date.now()}`,
+      payments: {},
+    };
+    setFinanceItems((prev) => [item, ...prev]);
+    showToast(`"${item.title}" fon kalemi sınıf bütçesine eklendi.`);
+  };
+
+  const handleOrderStemForClass = (product: StemProduct) => {
+    const stemFinanceItem: ClassFinanceItem = {
+      id: `fin-stem-${Date.now()}`,
+      title: 'STEM-X Robotik Kodlama Kiti',
+      description: 'Tüm sınıf için 12 projeli MEB uyumlu robotik kiti (Atölye katılımlı).',
+      category: 'stem',
+      amountPerStudent: product.discountedPrice,
+      targetTotal: product.discountedPrice * classroom.students.length,
+      dueDate: '30 Mart 2026',
+      status: 'active',
+      payments: {},
+    };
+
+    classroom.students.slice(0, 16).forEach((s) => {
+      stemFinanceItem.payments[s.id] = {
+        paid: true,
+        paidAt: '16 Mart 2026',
+        receiptNo: `MK-STEM-${s.studentNumber}`,
+      };
+    });
+
+    setFinanceItems((prev) => {
+      const existing = prev.find((p) => p.title.includes('STEM-X'));
+      if (existing) return prev;
+      return [stemFinanceItem, ...prev];
+    });
+
+    handleAddStoryPost({
+      classId: 'class-4a',
+      authorName: authUser?.name || 'Hakan KAVUZKOZ',
+      authorRole: 'Sınıf Öğretmeni',
+      title: '🚀 STEM-X Robotik Kiti Sınıf Siparişi Açıldı!',
+      content: `Değerli velilerimiz, öğrencilerimizin bilişim ve mühendislik becerilerini geliştirecek 'STEM-X Yeni Nesil Robotik Kodlama ve Deney Kiti' sınıfımıza özel ₺450 indirimli fiyatıyla kasaya eklenmiştir. İlk canlı atölyemiz 21 Mart Cumartesi günü saat 10:00'da!`,
+      tag: 'Duyuru',
+      timestamp: 'Az önce',
+    });
+
+    showToast('STEM-X sınıf bütçesine eklendi ve velilere duyuruldu!');
   };
 
   // If user is not authenticated, render the dedicated Login View
@@ -466,6 +553,10 @@ export default function App() {
                 onAwardWholeClass={() => setAwardTarget('all')}
                 onOpenTools={() => setIsToolsOpen(true)}
                 onAddStudent={handleAddStudent}
+                financeItems={financeItems}
+                stemProduct={stemProduct}
+                onOpenFinance={() => setIsFinanceOpen(true)}
+                onOpenStemStore={() => setIsStemStoreOpen(true)}
               />
             )}
 
@@ -593,6 +684,35 @@ export default function App() {
           setAwardTarget(student);
         }}
         onUpdateAttendance={handleUpdateAttendance}
+      />
+
+      {/* Class Finance Modal (Kasa & Aidat) */}
+      <ClassFinanceModal
+        isOpen={isFinanceOpen}
+        onClose={() => setIsFinanceOpen(false)}
+        students={classroom.students}
+        financeItems={financeItems}
+        onTogglePayment={handleTogglePayment}
+        onAddFinanceItem={handleAddFinanceItem}
+      />
+
+      {/* STEM-X Store & Workshop Schedule Modal */}
+      <StemXStoreModal
+        isOpen={isStemStoreOpen}
+        onClose={() => setIsStemStoreOpen(false)}
+        stemProduct={stemProduct}
+        onOrderForClass={handleOrderStemForClass}
+        onAnnounceInStory={(title, content) => {
+          handleAddStoryPost({
+            classId: 'class-4a',
+            authorName: authUser?.name || 'Hakan KAVUZKOZ',
+            authorRole: 'Sınıf Öğretmeni',
+            title,
+            content,
+            tag: 'Duyuru',
+            timestamp: 'Az önce',
+          });
+        }}
       />
     </div>
   );
