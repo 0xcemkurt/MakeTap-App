@@ -154,7 +154,7 @@ export const AiCharacterAnalyst: React.FC<AiCharacterAnalystProps> = ({
                   setSelectedStudentId(std.id);
                   setAnalysis(null);
                 }}
-                className={`p-2.5 rounded-2xl border flex flex-col items-center min-w-[84px] transition-all ${
+                className={`p-2.5 pb-3 rounded-2xl border flex flex-col items-center min-w-[88px] transition-all ${
                   isSelected
                     ? 'border-blue-600 bg-blue-50/80 shadow-md scale-105 ring-2 ring-blue-500/20'
                     : 'border-slate-200 bg-white hover:border-slate-300'

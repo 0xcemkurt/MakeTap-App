@@ -43,7 +43,7 @@ export const ClassStory: React.FC<ClassStoryProps> = ({
 
     onAddPost({
       classId: 'class-4a',
-      authorName: currentRole === 'teacher' ? 'Ahmet Yılmaz' : 'Fatma Kaya',
+      authorName: currentRole === 'teacher' ? 'Hakan KAVUZKOZ' : 'Veli Temsilcisi',
       authorRole: currentRole === 'teacher' ? 'Sınıf Öğretmeni' : 'Veli',
       title: newTitle.trim() || 'Sınıf Güncellemesi',
       content: newContent.trim(),

@@ -95,7 +95,7 @@ export const AwardSkillModal: React.FC<AwardSkillModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity animate-in fade-in">
       <div
-        className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] sm:max-h-[85vh] animate-in slide-in-from-bottom duration-200"
+        className="w-full max-w-lg sm:max-w-xl bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] sm:max-h-[88vh] animate-in slide-in-from-bottom duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header bar */}
@@ -195,20 +195,20 @@ export const AwardSkillModal: React.FC<AwardSkillModalProps> = ({
           )}
         </div>
 
-        {/* Skill grid */}
-        <div className="p-4 overflow-y-auto flex-1 grid grid-cols-2 sm:grid-cols-3 gap-3">
+        {/* Skill grid with ample vertical room and no cut-off text */}
+        <div className="p-3.5 sm:p-5 overflow-y-auto flex-1 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-3.5">
           {filteredSkills.map((skill) => {
             const isPos = skill.type === 'positive';
             return (
               <button
                 key={skill.id}
                 onClick={() => handleSelectSkill(skill)}
-                className="group p-3 rounded-2xl border border-slate-100 bg-white hover:border-blue-200 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all flex flex-col items-center text-center relative overflow-hidden"
+                className="group p-3.5 pb-4 sm:p-4 sm:pb-5 rounded-2xl border border-slate-200/90 bg-white hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all flex flex-col items-center justify-between text-center relative min-h-[160px] sm:min-h-[170px]"
               >
                 {/* Point badge pill */}
                 <div
-                  className={`absolute top-2 right-2 px-1.5 py-0.5 rounded-full text-[10px] font-black ${
-                    isPos ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                  className={`absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[10px] font-black shadow-2xs ${
+                    isPos ? 'bg-emerald-100 text-emerald-800 border border-emerald-200/60' : 'bg-amber-100 text-amber-800 border border-amber-200/60'
                   }`}
                 >
                   {isPos ? `+${skill.pointValue}` : `${skill.pointValue}`}
@@ -216,7 +216,7 @@ export const AwardSkillModal: React.FC<AwardSkillModalProps> = ({
 
                 {/* Skill Icon Circle */}
                 <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center mb-2 transition-transform group-hover:scale-110"
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center mb-2 shrink-0 transition-transform group-hover:scale-105"
                   style={{
                     backgroundColor: `${skill.color}15`,
                     color: skill.color,
@@ -225,13 +225,16 @@ export const AwardSkillModal: React.FC<AwardSkillModalProps> = ({
                   {getIcon(skill.iconName)}
                 </div>
 
-                <span className="text-xs font-bold text-slate-800 line-clamp-1 mb-0.5">
-                  {skill.title}
-                </span>
+                {/* Text Content Block */}
+                <div className="w-full flex-1 flex flex-col justify-center items-center">
+                  <span className="text-xs sm:text-sm font-extrabold text-slate-800 mb-1 leading-snug text-center px-1">
+                    {skill.title}
+                  </span>
 
-                <span className="text-[10px] text-slate-400 line-clamp-2 leading-snug">
-                  {skill.description}
-                </span>
+                  <span className="text-[11px] text-slate-500 font-medium leading-normal text-center px-1 block break-words">
+                    {skill.description}
+                  </span>
+                </div>
               </button>
             );
           })}

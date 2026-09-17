@@ -44,7 +44,13 @@ export default function App() {
   const [authUser, setAuthUser] = useState<AuthUser | null>(() => {
     try {
       const saved = localStorage.getItem('maketab_auth_user');
-      return saved ? JSON.parse(saved) : null;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed?.name?.includes('Hakan') || parsed?.username?.includes('Hakan')) {
+          return parsed;
+        }
+      }
+      return null;
     } catch {
       return null;
     }
@@ -52,7 +58,7 @@ export default function App() {
 
   // Application State
   const [classroom, setClassroom] = useState<Classroom>(INITIAL_CLASSROOM);
-  const [currentRole, setCurrentRole] = useState<Role>(() => authUser?.role || 'teacher');
+  const [currentRole, setCurrentRole] = useState<Role>('teacher');
   const [activeTab, setActiveTab] = useState<
     'classroom' | 'story' | 'messages' | 'reports' | 'ai-exam' | 'ai-character'
   >('classroom');
@@ -73,13 +79,13 @@ export default function App() {
 
   const handleLogin = (user: AuthUser) => {
     setAuthUser(user);
-    setCurrentRole(user.role);
+    setCurrentRole('teacher');
     try {
       localStorage.setItem('maketab_auth_user', JSON.stringify(user));
     } catch (e) {
       console.error(e);
     }
-    showToast(`Hoş geldiniz, Sayın ${user.name}!`);
+    showToast(`Hoş geldiniz, ${user.name}! (4-A Sınıfı)`);
   };
 
   const handleLogout = () => {

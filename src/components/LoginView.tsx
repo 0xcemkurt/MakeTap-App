@@ -32,17 +32,6 @@ export const DEMO_TEACHER: AuthUser = {
   email: 'hakan.kavuzkoz@maketab.edu.tr',
 };
 
-export const DEMO_PARENT: AuthUser = {
-  id: 'parent-fatma',
-  name: 'Fatma Kaya',
-  username: 'Fatma Kaya',
-  role: 'parent',
-  title: 'Öğrenci Velisi (Zeynep Kaya)',
-  schoolName: 'Atatürk İlkokulu',
-  className: '4-A Bilim ve Keşif Sınıfı',
-  email: 'fatma.kaya@gmail.com',
-};
-
 export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
   const [username, setUsername] = useState('Hakan KAVUZKOZ');
   const [password, setPassword] = useState('123456789');
@@ -50,19 +39,12 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
   const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeAccountType, setActiveAccountType] = useState<Role>('teacher');
   const [showForgotModal, setShowForgotModal] = useState(false);
 
-  const handleQuickFill = (type: Role) => {
+  const handleQuickFill = () => {
+    setUsername('Hakan KAVUZKOZ');
+    setPassword('123456789');
     setError(null);
-    setActiveAccountType(type);
-    if (type === 'teacher') {
-      setUsername('Hakan KAVUZKOZ');
-      setPassword('123456789');
-    } else {
-      setUsername('Fatma Kaya');
-      setPassword('123456789');
-    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -76,33 +58,22 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
 
       // Teacher Demo Account validation: Hakan KAVUZKOZ / 123456789
       const isTeacherMatch =
-        (trimmedUser === 'hakan kavuzkoz' ||
+        (trimmedUser.includes('hakan') ||
+          trimmedUser === 'hakan kavuzkoz' ||
           trimmedUser === 'hakankavuzkoz' ||
-          trimmedUser === 'hakan' ||
-          trimmedUser === 'hakan.kavuzkoz@maketab.edu.tr' ||
-          trimmedUser === 'hakan@maketab.edu.tr') &&
-        trimmedPass === '123456789';
-
-      // Parent Demo Account validation: Fatma Kaya / 123456789
-      const isParentMatch =
-        (trimmedUser === 'fatma kaya' ||
-          trimmedUser === 'fatma' ||
-          trimmedUser === 'fatma.kaya@gmail.com') &&
+          trimmedUser === 'hakan.kavuzkoz@maketab.edu.tr') &&
         trimmedPass === '123456789';
 
       if (isTeacherMatch) {
         setIsLoading(false);
         onLogin(DEMO_TEACHER);
-      } else if (isParentMatch) {
-        setIsLoading(false);
-        onLogin(DEMO_PARENT);
       } else {
         setIsLoading(false);
         setError(
           'Kullanıcı adı veya şifre hatalı! Lütfen demo hesabını kullanınız (Kullanıcı Adı: Hakan KAVUZKOZ, Şifre: 123456789).'
         );
       }
-    }, 450);
+    }, 350);
   };
 
   return (
@@ -148,7 +119,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
 
             <button
               onClick={() => {
-                handleQuickFill('teacher');
+                handleQuickFill();
                 setShowForgotModal(false);
               }}
               className="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white text-xs sm:text-sm font-black transition-all shadow-md flex items-center justify-center gap-2"
@@ -241,7 +212,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
             <button
               type="button"
               onClick={() => {
-                handleQuickFill('teacher');
+                handleQuickFill();
                 // Instant auto-submit
                 onLogin(DEMO_TEACHER);
               }}
@@ -250,35 +221,6 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
               <LogIn className="w-3.5 h-3.5" />
               <span>Hakan KAVUZKOZ Hesabıyla Tek Tıkla Giriş Yap</span>
               <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          {/* Account Type Selector Tabs */}
-          <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 rounded-2xl mb-4 border border-slate-200/70">
-            <button
-              type="button"
-              onClick={() => handleQuickFill('teacher')}
-              className={`py-2 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 ${
-                activeAccountType === 'teacher'
-                  ? 'bg-white text-blue-700 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <GraduationCap className="w-3.5 h-3.5" />
-              <span>Öğretmen Girişi</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleQuickFill('parent')}
-              className={`py-2 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 ${
-                activeAccountType === 'parent'
-                  ? 'bg-white text-emerald-700 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <Heart className="w-3.5 h-3.5" />
-              <span>Veli Girişi</span>
             </button>
           </div>
 

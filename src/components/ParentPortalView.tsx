@@ -38,13 +38,13 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
         <div className="relative z-10 flex items-center justify-between gap-4">
           <div className="space-y-1">
             <span className="px-2.5 py-1 rounded-full bg-white/20 text-white text-[11px] font-bold backdrop-blur-md">
-              👨‍👩‍👧 MakeTab Veli Portalı
+              👨‍👩‍👧 MakeTab Veli Bilgilendirme Portalı
             </span>
             <h2 className="text-xl sm:text-2xl font-black tracking-tight mt-1">
-              Hoş Geldiniz, {student.parentName.split(' ')[0]} Hanım
+              4-A Sınıfı • {student.name} {student.surname}
             </h2>
             <p className="text-blue-100 text-xs sm:text-sm font-medium">
-              {student.name}'in 4-A sınıfındaki günlük başarıları ve gelişim karnesi
+              Günlük başarılar, ödevler ve karakter gelişim karnesi (Öğretmen: Hakan KAVUZKOZ)
             </p>
           </div>
 

@@ -165,7 +165,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
           <div
             key={student.id}
             onClick={() => handleStudentClick(student)}
-            className="group cursor-pointer bg-white rounded-3xl p-3.5 sm:p-4 border border-slate-200/80 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 active:translate-y-0 transition-all duration-200 flex flex-col items-center text-center relative overflow-hidden select-none"
+            className="group cursor-pointer bg-white rounded-3xl p-3.5 sm:p-4 pb-3.5 sm:pb-4 border border-slate-200/80 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 active:translate-y-0 transition-all duration-200 flex flex-col items-center text-center relative select-none min-h-[160px] justify-between"
           >
             {/* Corner badge for attendance if not present */}
             {student.attendance !== 'present' && (
