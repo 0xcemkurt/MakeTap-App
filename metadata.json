@@ -1,0 +1,6 @@
+{
+  "name": "MakeTab",
+  "description": "ClassDojo'nun Türkçesi: AI destekli eğitim ve sınav oluşturucu, karakter analisti, öğrenci gelişim raporlama paneli ve güvenli veli-öğretmen iletişim platformu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
