@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   SchoolClassSummary,
   TeacherEvaluation,
@@ -40,6 +40,8 @@ import {
   Eye,
   LogOut,
   SlidersHorizontal,
+  MousePointerClick,
+  ChevronDown,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -118,6 +120,19 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
   const [isRefreshingAi, setIsRefreshingAi] = useState(false);
   const activeAiReport: AiReportSet = PRINCIPAL_AI_REPORT_SETS[currentReportIndex] || PRINCIPAL_AI_REPORT_SETS[0];
   const [aiReportGeneratedDate, setAiReportGeneratedDate] = useState(activeAiReport.generatedDate);
+
+  // Sekme içeriğine kaydırma: kutucuğa dokununca detay bölümüne otomatik in
+  // (mobilde kullanıcı değişimi fark etmiyordu)
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const scrollToContent = () => {
+    requestAnimationFrame(() => {
+      contentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
+  const handleTabSelect = (tab: PrincipalTab) => {
+    setActiveTab(tab);
+    scrollToContent();
+  };
 
   // Calculate executive summary statistics
   const totalStudents = classesSummary.reduce((acc, c) => acc + c.studentCount, 0);
@@ -226,6 +241,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
   // Handle AI insights re-analysis & cycle through the 3 distinct demo reports
   const handleReanalyzeAi = (targetIndex?: number) => {
     setActiveTab('ai-insights');
+    scrollToContent();
     setIsRefreshingAi(true);
     const nextIdx =
       targetIndex !== undefined
@@ -387,7 +403,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
         {/* 1: Sınıflar & Okul Ortalamaları */}
         <button
           type="button"
-          onClick={() => setActiveTab('classes')}
+          onClick={() => handleTabSelect('classes')}
           className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'classes'
               ? 'bg-slate-900 border-amber-500/80 text-white ring-2 ring-amber-400/40'
@@ -423,7 +439,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
         {/* 2: Öğretmenler & Veli Notları */}
         <button
           type="button"
-          onClick={() => setActiveTab('teachers')}
+          onClick={() => handleTabSelect('teachers')}
           className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'teachers'
               ? 'bg-slate-900 border-brand-500/80 text-white ring-2 ring-brand-400/40'
@@ -459,7 +475,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
         {/* 3: MakeTab AI Yönetici Raporu */}
         <button
           type="button"
-          onClick={() => setActiveTab('ai-insights')}
+          onClick={() => handleTabSelect('ai-insights')}
           className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'ai-insights'
               ? 'bg-gradient-to-br from-amber-500 to-amber-600 border-amber-300 text-slate-950 ring-2 ring-amber-300/60 font-black'
@@ -493,7 +509,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
         {/* 4: Bütçe & Okul Aile Birliği */}
         <button
           type="button"
-          onClick={() => setActiveTab('finance')}
+          onClick={() => handleTabSelect('finance')}
           className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'finance'
               ? 'bg-slate-900 border-emerald-500/80 text-white ring-2 ring-emerald-400/40'
@@ -529,7 +545,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
         {/* 5: Personel (Hademeler & Güvenlik) */}
         <button
           type="button"
-          onClick={() => setActiveTab('staff')}
+          onClick={() => handleTabSelect('staff')}
           className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'staff'
               ? 'bg-slate-900 border-purple-500/80 text-white ring-2 ring-purple-400/40'
@@ -565,7 +581,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
         {/* 6: Ziyaretçi Defteri */}
         <button
           type="button"
-          onClick={() => setActiveTab('visitors')}
+          onClick={() => handleTabSelect('visitors')}
           className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'visitors'
               ? 'bg-slate-900 border-rose-500/80 text-white ring-2 ring-rose-400/40'
@@ -601,7 +617,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
         {/* 7: Müdürlük Ajandası */}
         <button
           type="button"
-          onClick={() => setActiveTab('calendar')}
+          onClick={() => handleTabSelect('calendar')}
           className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'calendar'
               ? 'bg-slate-900 border-indigo-500/80 text-white ring-2 ring-indigo-400/40'
@@ -635,6 +651,15 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
         </button>
       </div>
 
+      {/* Dokunma ipucu: kutucuğa dokun, detay aşağıda açılır */}
+      <div className="flex items-center justify-center gap-1.5 -mt-2 text-[11px] font-bold text-slate-400">
+        <MousePointerClick className="w-4 h-4 text-brand-500 shrink-0" />
+        <span>Bir kutucuğa dokunun — detay içerik aşağıda açılır</span>
+        <ChevronDown className="w-4 h-4 text-brand-500 animate-bounce shrink-0" />
+      </div>
+
+      {/* Sekme detay bölümü (ref ile kaydırma hedefi) */}
+      <div ref={contentRef} className="scroll-mt-24 space-y-6">
       {/* 4. TAB CONTENT: CLASSES SUMMARY & COMPARISONS */}
       {activeTab === 'classes' && (
         <div className="space-y-4">
@@ -1515,6 +1540,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
           </div>
         </div>
       )}
+      </div>
 
       {/* 11. MODAL: TEACHER PRINCIPAL NOTE */}
       {selectedTeacherForNote && (

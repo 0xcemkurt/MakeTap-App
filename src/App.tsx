@@ -140,6 +140,12 @@ export default function App() {
     setTimeout(() => setToastMessage(null), 3500);
   };
 
+  // Mobil alt navigasyon: sekme değişince içeriğin başını göster
+  // (kullanıcı değişimi fark etmiyordu)
+  const scrollContentTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleLogin = (user: AuthUser) => {
     setAuthUser(user);
     setCurrentRole(user.role);
@@ -794,6 +800,7 @@ export default function App() {
         <button
           onClick={() => {
             setCurrentRole(currentRole === 'principal' ? 'teacher' : 'principal');
+            scrollContentTop();
           }}
           className={`flex flex-col items-center py-1 px-2 rounded-xl transition-all ${
             currentRole === 'principal' ? 'text-amber-600 font-extrabold' : 'text-slate-500 font-medium'
@@ -807,6 +814,7 @@ export default function App() {
           onClick={() => {
             if (currentRole === 'principal') setCurrentRole('teacher');
             setActiveTab('classroom');
+            scrollContentTop();
           }}
           className={`flex flex-col items-center py-1 px-2 rounded-xl transition-all ${
             activeTab === 'classroom' && currentRole !== 'principal'
@@ -819,7 +827,10 @@ export default function App() {
         </button>
 
         <button
-          onClick={() => setActiveTab('story')}
+          onClick={() => {
+            setActiveTab('story');
+            scrollContentTop();
+          }}
           className={`flex flex-col items-center py-1 px-2 rounded-xl transition-all ${
             activeTab === 'story' ? 'text-blue-600 font-extrabold' : 'text-slate-500 font-medium'
           }`}
@@ -829,7 +840,10 @@ export default function App() {
         </button>
 
         <button
-          onClick={() => setActiveTab('ai-exam')}
+          onClick={() => {
+            setActiveTab('ai-exam');
+            scrollContentTop();
+          }}
           className={`flex flex-col items-center py-1 px-2 rounded-xl transition-all ${
             activeTab === 'ai-exam' ? 'text-blue-600 font-extrabold' : 'text-slate-500 font-medium'
           }`}
@@ -839,7 +853,10 @@ export default function App() {
         </button>
 
         <button
-          onClick={() => setActiveTab('ai-character')}
+          onClick={() => {
+            setActiveTab('ai-character');
+            scrollContentTop();
+          }}
           className={`flex flex-col items-center py-1 px-2 rounded-xl transition-all ${
             activeTab === 'ai-character' ? 'text-indigo-600 font-extrabold' : 'text-slate-500 font-medium'
           }`}
@@ -849,7 +866,10 @@ export default function App() {
         </button>
 
         <button
-          onClick={() => setActiveTab('reports')}
+          onClick={() => {
+            setActiveTab('reports');
+            scrollContentTop();
+          }}
           className={`flex flex-col items-center py-1 px-2 rounded-xl transition-all ${
             activeTab === 'reports' ? 'text-blue-600 font-extrabold' : 'text-slate-500 font-medium'
           }`}
@@ -859,7 +879,10 @@ export default function App() {
         </button>
 
         <button
-          onClick={() => setActiveTab('messages')}
+          onClick={() => {
+            setActiveTab('messages');
+            scrollContentTop();
+          }}
           className={`flex flex-col items-center py-1 px-2 rounded-xl transition-all relative ${
             activeTab === 'messages' ? 'text-blue-600 font-extrabold' : 'text-slate-500 font-medium'
           }`}
