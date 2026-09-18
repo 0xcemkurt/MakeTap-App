@@ -114,7 +114,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
         ];
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 shadow-2xs overflow-hidden flex flex-col md:flex-row h-[calc(100vh-190px)] min-h-[520px] max-h-[760px] max-w-full min-w-0">
+    <div className="bg-white rounded-2xl border border-slate-200/80 shadow-2xs overflow-hidden overflow-x-clip flex flex-col md:flex-row h-[calc(100vh-190px)] min-h-[520px] max-h-[760px] max-w-full min-w-0">
       {/* Left Sidebar: Parent/Student Chat List */}
       <div
         className={`w-full md:w-80 md:border-r border-slate-200 flex-col bg-slate-50/60 shrink-0 ${

@@ -297,20 +297,20 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         <div className="bg-gradient-to-b from-amber-50/90 via-white to-amber-50/60 rounded-2xl p-4 sm:p-6 border-2 border-dashed border-amber-400/90 shadow-sm space-y-4">
           {/* Top Frame Bar for the Showcase Box */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-amber-200 pb-3.5">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
               <div className="w-10 h-10 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-black shadow-sm shrink-0">
                 <Sparkles className="w-5 h-5" />
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h4 className="text-xs sm:text-sm font-black text-amber-950 uppercase tracking-wide">
+                  <h4 className="text-xs sm:text-sm font-black text-amber-950 uppercase tracking-wide break-words">
                     Ayın Etkinliği & Sponsorlu Eğitim Vitrini
                   </h4>
                   <Badge tone="amber" className="border border-amber-300">
                     3. Taraf Bağımsız Firma İlanı
                   </Badge>
                 </div>
-                <p className="text-[11px] text-amber-900/90 font-medium mt-0.5 leading-snug">
+                <p className="text-[11px] text-amber-900/90 font-medium mt-0.5 leading-snug break-words">
                   MakeTab sisteminin bir ürünü değildir. MEB standartlarına uygun bağımsız eğitim şirketleri, bilim atölyeleri ve yayınevlerinin okullara özel teklif alanıdır.
                 </p>
               </div>
@@ -319,28 +319,28 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             <button
               type="button"
               onClick={() => setShowPartnerModal(true)}
-              className="shrink-0 px-3.5 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 text-amber-300 font-extrabold text-xs flex items-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer border border-amber-400/40"
+              className="shrink-0 w-full sm:w-auto justify-center px-3.5 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 text-amber-300 font-extrabold text-xs flex items-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer border border-amber-400/40"
             >
-              <Megaphone className="w-3.5 h-3.5 text-amber-400" />
+              <Megaphone className="w-3.5 h-3.5 text-amber-400 shrink-0" />
               <span>Siz de Satış Yapın / Reklam Verin</span>
             </button>
           </div>
 
           {/* Partner Product Showcase Banner inside the Box */}
-          <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-4 sm:p-5 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-amber-400/30">
-            <div className="flex items-center gap-3.5">
+          <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-4 sm:p-5 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-amber-400/30 min-w-0">
+            <div className="flex items-center gap-3.5 min-w-0 flex-1">
               <div className="w-12 h-12 rounded-2xl bg-white/10 text-amber-300 flex items-center justify-center shrink-0 shadow-inner border border-white/10">
                 <Bot className="w-6 h-6" />
               </div>
-              <div className="space-y-1">
-                <Badge tone="amber">
-                  <Zap className="w-3.5 h-3.5 fill-current" />
+              <div className="space-y-1 min-w-0 flex-1">
+                <Badge tone="amber" wrap>
+                  <Zap className="w-3.5 h-3.5 fill-current shrink-0" />
                   BU AYIN PARTNERİ: STEM-X ROBOTICS & BİLİM A.Ş.
                 </Badge>
-                <h3 className="text-sm sm:text-base font-black tracking-tight text-white">
+                <h3 className="text-sm sm:text-base font-black tracking-tight text-white break-words">
                   {stemProduct.name} & Canlı Kodlama Atölyesi
                 </h3>
-                <p className="text-xs text-slate-300 font-medium">
+                <p className="text-xs text-slate-300 font-medium break-words">
                   Canlı Montaj: <span className="font-bold text-amber-300">21 Mart Cumartesi 10:00</span> — Robot Kol ve Algoritmalar. Sınıf özel indirimli fiyatı ₺450.
                 </p>
               </div>

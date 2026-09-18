@@ -24,10 +24,15 @@
 }
 
 @layer base {
+  html {
+    /* Yatay taşmada sayfa kaymasın (sticky header korunur) */
+    overflow-x: clip;
+  }
   body {
     font-family: var(--font-sans);
     background-color: #f8fafc;
     color: #334155;
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-tap-highlight-color: transparent;

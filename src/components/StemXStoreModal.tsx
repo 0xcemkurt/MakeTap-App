@@ -77,17 +77,17 @@ export const StemXStoreModal: React.FC<StemXStoreModalProps> = ({
         <div className="bg-white rounded-2xl max-w-4xl w-full border border-slate-200 shadow-pop overflow-hidden flex flex-col max-h-[92vh]">
           {/* Header */}
           <div className="p-4 sm:p-5 bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-950 text-white flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-white/10 text-cyan-300 border border-white/20 flex items-center justify-center">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
+              <div className="w-10 h-10 rounded-2xl bg-white/10 text-cyan-300 border border-white/20 flex items-center justify-center shrink-0">
                 <Bot className="w-6 h-6" />
               </div>
-              <div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-black uppercase tracking-wider">
-                  <Sparkles className="w-3 h-3 text-amber-300" />
-                  Ayın Etkinliği & Sponsorlu Eğitim Vitrini
+              <div className="min-w-0 flex-1">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-black uppercase tracking-wider max-w-full">
+                  <Sparkles className="w-3 h-3 text-amber-300 shrink-0" />
+                  <span className="truncate">Ayın Etkinliği & Sponsorlu Eğitim Vitrini</span>
                 </div>
-                <h2 className="text-base sm:text-lg font-black tracking-tight flex items-center gap-2 flex-wrap">
-                  <span>{stemProduct.name}</span>
+                <h2 className="text-base sm:text-lg font-black tracking-tight flex items-center gap-2 flex-wrap break-words">
+                  <span className="break-words">{stemProduct.name}</span>
                   <span className="text-[10px] font-bold text-amber-300 bg-amber-400/20 px-2 py-0.5 rounded-md border border-amber-400/30">
                     Sponsor Partner: STEM-X Robotics & Bilim A.Ş.
                   </span>
@@ -243,11 +243,11 @@ export const StemXStoreModal: React.FC<StemXStoreModalProps> = ({
                       }`}
                     >
                       <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <Badge tone="indigo">
+                        <div className="flex items-center justify-between gap-2 min-w-0">
+                          <Badge tone="indigo" className="shrink-0">
                             {ev.gradeLevel}
                           </Badge>
-                          <span className="text-[11px] font-bold text-slate-500">
+                          <span className="text-[11px] font-bold text-slate-500 truncate min-w-0 text-right">
                             {ev.instructor}
                           </span>
                         </div>

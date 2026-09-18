@@ -480,12 +480,12 @@ export default function App() {
   const parentStudent = classroom.students.find((s) => s.id === 'std-1') || classroom.students[0];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-sans selection:bg-blue-500 selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-sans selection:bg-blue-500 selection:text-white overflow-x-clip">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 backdrop-blur-md text-white px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold shadow-pop flex items-center gap-2 border border-slate-700 animate-in fade-in slide-in-from-top duration-200">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-[calc(100vw-2rem)] bg-slate-900/95 backdrop-blur-md text-white px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold shadow-pop flex items-center gap-2 border border-slate-700 animate-in fade-in slide-in-from-top duration-200">
           <Sparkles className="w-4 h-4 text-amber-300 shrink-0" />
-          <span>{toastMessage}</span>
+          <span className="break-words">{toastMessage}</span>
         </div>
       )}
 

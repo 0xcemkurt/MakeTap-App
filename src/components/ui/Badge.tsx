@@ -19,13 +19,15 @@ export interface BadgeProps {
   children: React.ReactNode;
   className?: string;
   title?: string;
+  /** Uzun metinlerde (örn. partner adı) satır kaydırmaya izin ver */
+  wrap?: boolean;
 }
 
 /** Küçük durum/etiket rozeti (sınıf, rol, durum). */
-export const Badge: React.FC<BadgeProps> = ({ tone = 'slate', children, className = '', title }) => (
+export const Badge: React.FC<BadgeProps> = ({ tone = 'slate', children, className = '', title, wrap = false }) => (
   <span
     title={title}
-    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black whitespace-nowrap ${toneMap[tone]} ${className}`}
+    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black ${wrap ? 'whitespace-normal text-left leading-snug max-w-full break-words' : 'whitespace-nowrap'} ${toneMap[tone]} ${className}`}
   >
     {children}
   </span>
