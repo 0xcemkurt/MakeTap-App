@@ -19,8 +19,10 @@ import {
   Clock,
   Zap,
   AlertTriangle,
+  Megaphone,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { PartnerSponsorModal } from './PartnerSponsorModal';
 
 interface ClassroomViewProps {
   classroom: Classroom;
@@ -53,6 +55,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   const [newParentName, setNewParentName] = useState('');
   const [newParentPhone, setNewParentPhone] = useState('');
   const [bouncingStudentId, setBouncingStudentId] = useState<string | null>(null);
+  const [showPartnerModal, setShowPartnerModal] = useState(false);
 
   const students = classroom.students;
   const totalPoints = students.reduce((sum, s) => sum + s.totalPoints, 0);
@@ -250,22 +253,25 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
           </div>
         </div>
 
-        {/* Card 4: STEM-X Robotik & Canlı Atölye (Clickable) */}
+        {/* Card 4: STEM-X Robotik & Canlı Atölye (Clickable - Sponsorlu Ayın Etkinliği) */}
         <div
           onClick={onOpenStemStore}
-          className="bg-gradient-to-br from-indigo-900 to-slate-900 text-white rounded-3xl p-4 sm:p-5 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between cursor-pointer group relative overflow-hidden"
+          className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-4 sm:p-5 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between cursor-pointer group relative overflow-hidden border-2 border-amber-400/50"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-black uppercase tracking-wider text-cyan-300 flex items-center gap-1">
+            <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 flex items-center gap-1 bg-amber-400/20 px-2 py-0.5 rounded-full border border-amber-400/30">
               <Sparkles className="w-3 h-3 text-amber-300" />
-              STEM-X Kulübü
+              Ayın Etkinliği (Sponsorlu)
             </span>
             <div className="w-8 h-8 rounded-xl bg-white/10 text-white flex items-center justify-center font-bold">
               <Bot className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-3">
-            <div className="text-xl font-black text-white tracking-tight flex items-center gap-2">
+            <div className="text-sm font-extrabold text-slate-300">
+              STEM-X Robotics A.Ş.
+            </div>
+            <div className="text-xl font-black text-white tracking-tight flex items-center gap-2 mt-0.5">
               <span>16 / {students.length} Sipariş</span>
               <span className="text-[10px] bg-emerald-500 text-slate-950 font-black px-1.5 py-0.5 rounded-md">
                 ₺450
@@ -276,43 +282,75 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               <span>Cumartesi 10:00 Canlı Atölye</span>
             </div>
           </div>
-          <div className="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-cyan-300 font-black flex items-center justify-between">
+          <div className="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-amber-300 font-black flex items-center justify-between">
             <span>Atölye Takvimi & Kit Detayı</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </div>
         </div>
       </div>
 
-      {/* 2. PROMOTIONAL STEM-X BANNER WITH WORKSHOP SCHEDULE */}
+      {/* 2. PROMOTIONAL STEM-X MONTHLY EVENT BOX (DISTINCT 3RD PARTY SHOWCASE) */}
       {stemProduct && (
-        <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 rounded-3xl p-4 sm:p-5 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-white/20 text-white flex items-center justify-center shrink-0 shadow-inner">
-              <Bot className="w-6 h-6" />
-            </div>
-            <div className="space-y-0.5">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[10px]">
-                <Zap className="w-3 h-3 fill-current" />
-                ÖZEL ETKİNLİK • STEM-X ROBOTİK KİTİ
+        <div className="bg-gradient-to-b from-amber-50/80 via-white to-amber-50/50 rounded-3xl p-4 sm:p-5 border-2 border-dashed border-amber-300/90 shadow-2xs space-y-3">
+          {/* Top Frame Bar for the Showcase Box */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-amber-200/70 pb-3">
+            <div className="flex items-center gap-2.5">
+              <span className="text-lg">🎪</span>
+              <div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h4 className="text-xs sm:text-sm font-black text-amber-950 uppercase tracking-wide">
+                    Ayın Etkinliği & Sponsorlu Eğitim Vitrini
+                  </h4>
+                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-amber-200/70 text-amber-900 border border-amber-300">
+                    Bağımsız Tedarikçi Alanı
+                  </span>
+                </div>
+                <p className="text-[11px] text-amber-800/80 font-medium">
+                  Bu alan bağımsız eğitim firmaları ve bilim atölyelerinin okullara özel tekliflerine ayrılmıştır.
+                </p>
               </div>
-              <h3 className="text-sm sm:text-base font-black tracking-tight">
-                {stemProduct.name} & Canlı Kodlama Atölyesi
-              </h3>
-              <p className="text-xs text-blue-100 font-medium">
-                İlk Atölye: <span className="font-bold text-white">21 Mart Cumartesi 10:00</span> — Robot Kol Montajı & Algoritmalar. Sınıf indirimli fiyatı ₺450.
-              </p>
             </div>
-          </div>
 
-          <div className="flex items-center gap-2.5 shrink-0 self-stretch md:self-auto">
             <button
               type="button"
-              onClick={onOpenStemStore}
-              className="flex-1 md:flex-initial min-h-[42px] px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95"
+              onClick={() => setShowPartnerModal(true)}
+              className="shrink-0 px-3 py-1.5 rounded-xl bg-white hover:bg-amber-100 border border-amber-300 text-amber-900 font-extrabold text-xs flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer"
             >
-              <Bot className="w-4 h-4" />
-              <span>STEM-X İncele & Sipariş Ver</span>
+              <Megaphone className="w-3.5 h-3.5 text-amber-600" />
+              <span>Siz de Satış Yapın / Reklam Verin</span>
             </button>
+          </div>
+
+          {/* Partner Product Showcase Banner inside the Box */}
+          <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-950 rounded-2xl p-4 sm:p-5 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="flex items-center gap-3.5">
+              <div className="w-12 h-12 rounded-2xl bg-white/20 text-white flex items-center justify-center shrink-0 shadow-inner">
+                <Bot className="w-6 h-6" />
+              </div>
+              <div className="space-y-0.5">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[10px]">
+                  <Zap className="w-3.5 h-3.5 fill-current" />
+                  ÖZEL ETKİNLİK • SPONSOR: STEM-X ROBOTICS & BİLİM A.Ş.
+                </div>
+                <h3 className="text-sm sm:text-base font-black tracking-tight">
+                  {stemProduct.name} & Canlı Kodlama Atölyesi
+                </h3>
+                <p className="text-xs text-blue-100 font-medium">
+                  İlk Atölye: <span className="font-bold text-white">21 Mart Cumartesi 10:00</span> — Robot Kol Montajı & Algoritmalar. Sınıf indirimli fiyatı ₺450.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5 shrink-0 self-stretch md:self-auto">
+              <button
+                type="button"
+                onClick={onOpenStemStore}
+                className="flex-1 md:flex-initial min-h-[42px] px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95 cursor-pointer"
+              >
+                <Bot className="w-4 h-4" />
+                <span>STEM-X İncele & Sipariş Ver</span>
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -650,6 +688,12 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
           </div>
         </div>
       )}
+
+      {/* Partner Sponsor Application Modal */}
+      <PartnerSponsorModal
+        isOpen={showPartnerModal}
+        onClose={() => setShowPartnerModal(false)}
+      />
     </div>
   );
 };

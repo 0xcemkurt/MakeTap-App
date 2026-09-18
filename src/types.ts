@@ -176,6 +176,7 @@ export interface StemWorkshopEvent {
   description: string;
   spotsLeft: number;
   enrolledStudentsCount: number;
+  gradeLevel?: string;
 }
 
 export interface StemProduct {

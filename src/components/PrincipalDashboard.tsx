@@ -9,6 +9,7 @@ import {
   PrincipalAiInsight,
   AuthUser,
 } from '../types';
+import { PRINCIPAL_AI_REPORT_SETS, AiReportSet } from '../data/principalData';
 import {
   Building2,
   Users,
@@ -106,9 +107,11 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [gradeFilter, setGradeFilter] = useState<'all' | '1' | '2' | '3' | '4'>('all');
 
-  // AI refresh simulation state
+  // AI report sets switcher state (3 distinct demo reports)
+  const [currentReportIndex, setCurrentReportIndex] = useState(0);
   const [isRefreshingAi, setIsRefreshingAi] = useState(false);
-  const [aiReportGeneratedDate, setAiReportGeneratedDate] = useState('Bugün, 09:15');
+  const activeAiReport: AiReportSet = PRINCIPAL_AI_REPORT_SETS[currentReportIndex] || PRINCIPAL_AI_REPORT_SETS[0];
+  const [aiReportGeneratedDate, setAiReportGeneratedDate] = useState(activeAiReport.generatedDate);
 
   // Calculate executive summary statistics
   const totalStudents = classesSummary.reduce((acc, c) => acc + c.studentCount, 0);
@@ -200,18 +203,26 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
     setShowAddEventModal(false);
   };
 
-  // Handle AI insights re-analysis simulation
-  const handleReanalyzeAi = () => {
+  // Handle AI insights re-analysis & cycle through the 3 distinct demo reports
+  const handleReanalyzeAi = (targetIndex?: number) => {
     setIsRefreshingAi(true);
+    const nextIdx =
+      targetIndex !== undefined
+        ? targetIndex
+        : (currentReportIndex + 1) % PRINCIPAL_AI_REPORT_SETS.length;
+    setCurrentReportIndex(nextIdx);
+    const nextReport = PRINCIPAL_AI_REPORT_SETS[nextIdx];
+
     setTimeout(() => {
       setIsRefreshingAi(false);
-      setAiReportGeneratedDate('Az önce güncellendi');
+      const currentTime = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+      setAiReportGeneratedDate(`Bugün ${currentTime} (Canlı Sentez)`);
       confetti({
-        particleCount: 35,
-        spread: 60,
+        particleCount: 40,
+        spread: 70,
         origin: { y: 0.4 },
       });
-    }, 1200);
+    }, 600);
   };
 
   return (
@@ -256,7 +267,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
           {/* Right Action buttons */}
           <div className="flex items-center gap-2.5 flex-wrap w-full lg:w-auto">
             <button
-              onClick={handleReanalyzeAi}
+              onClick={() => handleReanalyzeAi()}
               disabled={isRefreshingAi}
               className="py-2.5 px-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 active:scale-95 text-slate-950 text-xs font-black transition-all shadow-md shadow-amber-500/20 flex items-center gap-2 cursor-pointer disabled:opacity-70"
             >
@@ -351,90 +362,256 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
         </div>
       </div>
 
-      {/* 3. EXECUTIVE TABS NAVIGATION */}
-      <div className="bg-white rounded-2xl p-2 border border-slate-200/80 shadow-2xs flex items-center gap-1.5 overflow-x-auto scrollbar-none">
+      {/* 3. EXECUTIVE BUTTON DECK (RESPONSIVE HIGH-VISIBILITY BUTTON TILES - NO HIDDEN HORIZONTAL SCROLL) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-2.5">
+        {/* 1: Sınıflar & Okul Ortalamaları */}
         <button
+          type="button"
           onClick={() => setActiveTab('classes')}
-          className={`px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 shrink-0 cursor-pointer ${
+          className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'classes'
-              ? 'bg-slate-900 text-white shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              ? 'bg-slate-900 border-amber-500/80 text-white ring-2 ring-amber-400/40'
+              : 'bg-white border-slate-200/80 hover:border-slate-300 text-slate-800 hover:bg-slate-50'
           }`}
         >
-          <Building2 className="w-4 h-4 text-amber-400" />
-          <span>Sınıflar & Okul Ortalamaları ({classesSummary.length})</span>
+          <div className="flex items-center justify-between mb-2">
+            <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold ${
+              activeTab === 'classes' ? 'bg-amber-400/20 text-amber-300' : 'bg-amber-100 text-amber-800'
+            }`}>
+              <Building2 className="w-4 h-4" />
+            </div>
+            <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-md ${
+              activeTab === 'classes' ? 'bg-white/10 text-amber-300' : 'bg-slate-100 text-slate-600'
+            }`}>
+              {classesSummary.length} Şube
+            </span>
+          </div>
+          <div>
+            <div className={`text-xs font-black tracking-tight leading-snug ${
+              activeTab === 'classes' ? 'text-white' : 'text-slate-900'
+            }`}>
+              Sınıf & Okul Ortalamaları
+            </div>
+            <div className={`text-[10px] font-semibold mt-0.5 truncate ${
+              activeTab === 'classes' ? 'text-slate-300' : 'text-slate-500'
+            }`}>
+              Başarı & Devam Kıyası
+            </div>
+          </div>
         </button>
 
+        {/* 2: Öğretmenler & Veli Notları */}
         <button
+          type="button"
           onClick={() => setActiveTab('teachers')}
-          className={`px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 shrink-0 cursor-pointer ${
+          className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'teachers'
-              ? 'bg-slate-900 text-white shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              ? 'bg-slate-900 border-blue-500/80 text-white ring-2 ring-blue-400/40'
+              : 'bg-white border-slate-200/80 hover:border-slate-300 text-slate-800 hover:bg-slate-50'
           }`}
         >
-          <GraduationCap className="w-4 h-4 text-blue-400" />
-          <span>Öğretmenler & Veli Notları ({teacherEvaluations.length})</span>
+          <div className="flex items-center justify-between mb-2">
+            <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold ${
+              activeTab === 'teachers' ? 'bg-blue-400/20 text-blue-300' : 'bg-blue-100 text-blue-800'
+            }`}>
+              <GraduationCap className="w-4 h-4" />
+            </div>
+            <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-md ${
+              activeTab === 'teachers' ? 'bg-white/10 text-blue-300' : 'bg-slate-100 text-slate-600'
+            }`}>
+              {teacherEvaluations.length} Kadro
+            </span>
+          </div>
+          <div>
+            <div className={`text-xs font-black tracking-tight leading-snug ${
+              activeTab === 'teachers' ? 'text-white' : 'text-slate-900'
+            }`}>
+              Öğretmenler & Veli Notları
+            </div>
+            <div className={`text-[10px] font-semibold mt-0.5 truncate ${
+              activeTab === 'teachers' ? 'text-slate-300' : 'text-slate-500'
+            }`}>
+              360° Puan & Müdür Notu
+            </div>
+          </div>
         </button>
 
+        {/* 3: MakeTab AI Yönetici Raporu */}
         <button
+          type="button"
           onClick={() => setActiveTab('ai-insights')}
-          className={`px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 shrink-0 cursor-pointer ${
+          className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'ai-insights'
-              ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black shadow-xs'
-              : 'text-slate-600 hover:text-amber-700 hover:bg-amber-50'
+              ? 'bg-gradient-to-br from-amber-500 to-amber-600 border-amber-300 text-slate-950 ring-2 ring-amber-300/60 font-black'
+              : 'bg-amber-50/70 border-amber-200 hover:border-amber-300 text-amber-950 hover:bg-amber-100/50'
           }`}
         >
-          <Sparkles className="w-4 h-4 text-amber-500" />
-          <span>MakeTab AI Yönetici Raporu ({aiInsights.length})</span>
+          <div className="flex items-center justify-between mb-2">
+            <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold ${
+              activeTab === 'ai-insights' ? 'bg-slate-950 text-amber-400' : 'bg-amber-400 text-slate-950'
+            }`}>
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-md ${
+              activeTab === 'ai-insights' ? 'bg-slate-950/20 text-slate-950' : 'bg-amber-200 text-amber-900'
+            }`}>
+              {currentReportIndex + 1}/3 Rapor
+            </span>
+          </div>
+          <div>
+            <div className="text-xs font-black tracking-tight leading-snug">
+              AI Okul Raporu
+            </div>
+            <div className={`text-[10px] font-bold mt-0.5 truncate ${
+              activeTab === 'ai-insights' ? 'text-amber-950/80' : 'text-amber-800'
+            }`}>
+              3 Sentez (Tıklayınca Değişir)
+            </div>
+          </div>
         </button>
 
+        {/* 4: Bütçe & Okul Aile Birliği */}
         <button
+          type="button"
           onClick={() => setActiveTab('finance')}
-          className={`px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 shrink-0 cursor-pointer ${
+          className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'finance'
-              ? 'bg-slate-900 text-white shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              ? 'bg-slate-900 border-emerald-500/80 text-white ring-2 ring-emerald-400/40'
+              : 'bg-white border-slate-200/80 hover:border-slate-300 text-slate-800 hover:bg-slate-50'
           }`}
         >
-          <DollarSign className="w-4 h-4 text-emerald-400" />
-          <span>Bütçe & Okul Aile Birliği</span>
+          <div className="flex items-center justify-between mb-2">
+            <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold ${
+              activeTab === 'finance' ? 'bg-emerald-400/20 text-emerald-300' : 'bg-emerald-100 text-emerald-800'
+            }`}>
+              <DollarSign className="w-4 h-4" />
+            </div>
+            <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-md ${
+              activeTab === 'finance' ? 'bg-white/10 text-emerald-300' : 'bg-slate-100 text-slate-600'
+            }`}>
+              ₺{financialData.netReserve.toLocaleString('tr-TR')}
+            </span>
+          </div>
+          <div>
+            <div className={`text-xs font-black tracking-tight leading-snug ${
+              activeTab === 'finance' ? 'text-white' : 'text-slate-900'
+            }`}>
+              Bütçe & OAB Kasası
+            </div>
+            <div className={`text-[10px] font-semibold mt-0.5 truncate ${
+              activeTab === 'finance' ? 'text-slate-300' : 'text-slate-500'
+            }`}>
+              Gelir, Gider & STEM Fonu
+            </div>
+          </div>
         </button>
 
+        {/* 5: Personel (Hademeler & Güvenlik) */}
         <button
+          type="button"
           onClick={() => setActiveTab('staff')}
-          className={`px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 shrink-0 cursor-pointer ${
+          className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'staff'
-              ? 'bg-slate-900 text-white shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              ? 'bg-slate-900 border-purple-500/80 text-white ring-2 ring-purple-400/40'
+              : 'bg-white border-slate-200/80 hover:border-slate-300 text-slate-800 hover:bg-slate-50'
           }`}
         >
-          <ShieldCheck className="w-4 h-4 text-purple-400" />
-          <span>Personel (Hademeler & Güvenlik)</span>
+          <div className="flex items-center justify-between mb-2">
+            <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold ${
+              activeTab === 'staff' ? 'bg-purple-400/20 text-purple-300' : 'bg-purple-100 text-purple-800'
+            }`}>
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-md ${
+              activeTab === 'staff' ? 'bg-white/10 text-purple-300' : 'bg-slate-100 text-slate-600'
+            }`}>
+              {onDutyStaffCount} Görevde
+            </span>
+          </div>
+          <div>
+            <div className={`text-xs font-black tracking-tight leading-snug ${
+              activeTab === 'staff' ? 'text-white' : 'text-slate-900'
+            }`}>
+              Hademe & Güvenlik
+            </div>
+            <div className={`text-[10px] font-semibold mt-0.5 truncate ${
+              activeTab === 'staff' ? 'text-slate-300' : 'text-slate-500'
+            }`}>
+              Hijyen & Nöbet Çizelgesi
+            </div>
+          </div>
         </button>
 
+        {/* 6: Ziyaretçi Defteri */}
         <button
+          type="button"
           onClick={() => setActiveTab('visitors')}
-          className={`px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 shrink-0 cursor-pointer ${
+          className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'visitors'
-              ? 'bg-slate-900 text-white shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              ? 'bg-slate-900 border-rose-500/80 text-white ring-2 ring-rose-400/40'
+              : 'bg-white border-slate-200/80 hover:border-slate-300 text-slate-800 hover:bg-slate-50'
           }`}
         >
-          <UserCheck className="w-4 h-4 text-rose-400" />
-          <span>Ziyaretçi Defteri ({insideVisitorsCount} İçeride)</span>
+          <div className="flex items-center justify-between mb-2">
+            <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold ${
+              activeTab === 'visitors' ? 'bg-rose-400/20 text-rose-300' : 'bg-rose-100 text-rose-800'
+            }`}>
+              <UserCheck className="w-4 h-4" />
+            </div>
+            <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-md ${
+              activeTab === 'visitors' ? 'bg-white/10 text-rose-300' : 'bg-slate-100 text-slate-600'
+            }`}>
+              {insideVisitorsCount} İçeride
+            </span>
+          </div>
+          <div>
+            <div className={`text-xs font-black tracking-tight leading-snug ${
+              activeTab === 'visitors' ? 'text-white' : 'text-slate-900'
+            }`}>
+              Ziyaretçi Defteri
+            </div>
+            <div className={`text-[10px] font-semibold mt-0.5 truncate ${
+              activeTab === 'visitors' ? 'text-slate-300' : 'text-slate-500'
+            }`}>
+              Turnike & Kapı Güvenlik
+            </div>
+          </div>
         </button>
 
+        {/* 7: Müdürlük Ajandası */}
         <button
+          type="button"
           onClick={() => setActiveTab('calendar')}
-          className={`px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 shrink-0 cursor-pointer ${
+          className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'calendar'
-              ? 'bg-slate-900 text-white shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              ? 'bg-slate-900 border-indigo-500/80 text-white ring-2 ring-indigo-400/40'
+              : 'bg-white border-slate-200/80 hover:border-slate-300 text-slate-800 hover:bg-slate-50'
           }`}
         >
-          <Calendar className="w-4 h-4 text-blue-400" />
-          <span>Müdürlük Ajandası ({calendarEvents.length})</span>
+          <div className="flex items-center justify-between mb-2">
+            <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold ${
+              activeTab === 'calendar' ? 'bg-indigo-400/20 text-indigo-300' : 'bg-indigo-100 text-indigo-800'
+            }`}>
+              <Calendar className="w-4 h-4" />
+            </div>
+            <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-md ${
+              activeTab === 'calendar' ? 'bg-white/10 text-indigo-300' : 'bg-slate-100 text-slate-600'
+            }`}>
+              {calendarEvents.length} Etkinlik
+            </span>
+          </div>
+          <div>
+            <div className={`text-xs font-black tracking-tight leading-snug ${
+              activeTab === 'calendar' ? 'text-white' : 'text-slate-900'
+            }`}>
+              Müdürlük Ajandası
+            </div>
+            <div className={`text-[10px] font-semibold mt-0.5 truncate ${
+              activeTab === 'calendar' ? 'text-slate-300' : 'text-slate-500'
+            }`}>
+              MEB, Zümre & Teftiş
+            </div>
+          </div>
         </button>
       </div>
 
@@ -705,40 +882,110 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
         </div>
       )}
 
-      {/* 6. TAB CONTENT: MAKETAB AI EXECUTIVE INSIGHTS */}
+      {/* 6. TAB CONTENT: MAKETAB AI EXECUTIVE INSIGHTS (3 DISTINCT REPORT SETS) */}
       {activeTab === 'ai-insights' && (
         <div className="space-y-6">
-          <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-orange-600 rounded-3xl p-5 sm:p-6 text-slate-950 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded-md bg-slate-950 text-amber-300 text-[10px] font-black uppercase">
-                  Yapay Zeka Destekli
+          {/* Main AI Header Banner */}
+          <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-orange-600 rounded-3xl p-5 sm:p-6 text-slate-950 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="space-y-1 max-w-2xl">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="px-2.5 py-0.5 rounded-full bg-slate-950 text-amber-300 text-[10px] font-black uppercase">
+                  🤖 Gemini Destekli MEB AI Okul Raporu
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[10px] font-black border border-amber-500/40">
+                  {activeAiReport.badge}
                 </span>
                 <span className="text-xs font-bold text-slate-900">
-                  Rapor Durumu: {aiReportGeneratedDate}
+                  {aiReportGeneratedDate}
                 </span>
               </div>
-              <h2 className="text-xl font-black tracking-tight mt-1 text-slate-950">
-                MEB Uyumlu MakeTab AI Okul Yönetim & Risk Raporu
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-950">
+                {activeAiReport.name}
               </h2>
-              <p className="text-xs text-slate-900 font-semibold mt-0.5 max-w-2xl leading-relaxed">
-                Tüm okul verilerini (öğrenci devamları, öğretmen veli memnuniyetleri, bütçe ve güvenlik) analiz ederek okul müdürüne anlık stratejik kararlar ve MEB müfettişliği teftiş önerileri sunar.
+              <p className="text-xs text-slate-900 font-semibold leading-relaxed">
+                Tüm okul verilerini (öğrenci devamları, öğretmen veli memnuniyetleri, bütçe ve güvenlik) analiz ederek okul müdürüne anlık stratejik kararlar ve MEB teftiş önerileri sunar.
               </p>
             </div>
 
             <button
-              onClick={handleReanalyzeAi}
+              type="button"
+              onClick={() => handleReanalyzeAi()}
               disabled={isRefreshingAi}
-              className="py-3 px-5 rounded-2xl bg-slate-950 hover:bg-slate-900 active:scale-95 text-white text-xs font-black transition-all flex items-center gap-2 shadow-xl shrink-0 cursor-pointer disabled:opacity-70"
+              className="py-3 px-5 rounded-2xl bg-slate-950 hover:bg-slate-900 active:scale-95 text-white text-xs font-black transition-all flex items-center justify-center gap-2 shadow-xl shrink-0 cursor-pointer disabled:opacity-70 w-full md:w-auto"
             >
               <RefreshCw className={`w-4 h-4 text-amber-400 ${isRefreshingAi ? 'animate-spin' : ''}`} />
-              <span>{isRefreshingAi ? 'Veriler Taranıyor...' : 'Yeni AI Raporu Üret'}</span>
+              <span>{isRefreshingAi ? 'Yeni Sentez Hesaplanıyor...' : 'Yeni AI Raporu Üret (Sonraki Sentez)'}</span>
             </button>
+          </div>
+
+          {/* 3 Clickable Report Switcher Tabs (Demo Rapor Değiştirici) */}
+          <div className="bg-white rounded-2xl p-2.5 border border-amber-200/80 shadow-2xs">
+            <div className="text-[11px] font-bold text-amber-900/80 px-2 pb-2 flex items-center justify-between">
+              <span className="flex items-center gap-1.5 font-black uppercase tracking-wider text-[10px]">
+                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                Demo Okul AI Raporları — Tıklayarak Raporu Değiştirin:
+              </span>
+              <span className="text-[10px] text-slate-500">
+                Aktif Rapor: <strong className="text-slate-900">{currentReportIndex + 1} / {PRINCIPAL_AI_REPORT_SETS.length}</strong>
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              {PRINCIPAL_AI_REPORT_SETS.map((rep, idx) => {
+                const isCurrent = currentReportIndex === idx;
+                return (
+                  <button
+                    key={rep.id}
+                    type="button"
+                    onClick={() => handleReanalyzeAi(idx)}
+                    className={`p-3 rounded-xl border text-left transition-all flex items-start gap-2.5 cursor-pointer ${
+                      isCurrent
+                        ? 'bg-amber-500 border-amber-600 text-slate-950 ring-2 ring-amber-400 font-extrabold shadow-sm'
+                        : 'bg-slate-50 border-slate-200 hover:bg-amber-50/60 text-slate-700 hover:text-amber-950'
+                    }`}
+                  >
+                    <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs shrink-0 mt-0.5 ${
+                      isCurrent ? 'bg-slate-950 text-amber-300' : 'bg-slate-200 text-slate-700'
+                    }`}>
+                      {idx + 1}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs font-black truncate">
+                        {rep.focusArea}
+                      </div>
+                      <div className={`text-[10px] truncate font-medium mt-0.5 ${isCurrent ? 'text-slate-900' : 'text-slate-500'}`}>
+                        {rep.badge}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* AI Executive Summary Card */}
+          <div className="bg-amber-50/70 border border-amber-300/80 rounded-3xl p-4 sm:p-5 shadow-2xs flex items-start gap-3.5">
+            <div className="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-bold shrink-0 shadow-inner">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-black uppercase tracking-wider text-amber-950">
+                  Müdürlük Yönetici Özeti
+                </span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-200 text-amber-900">
+                  {activeAiReport.focusArea}
+                </span>
+              </div>
+              <p className="text-xs text-amber-950 font-medium leading-relaxed">
+                {activeAiReport.executiveSummary}
+              </p>
+            </div>
           </div>
 
           {/* AI Insight Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {aiInsights.map((insight) => (
+            {activeAiReport.insights.map((insight) => (
               <div
                 key={insight.id}
                 className={`bg-white rounded-3xl p-5 border shadow-2xs hover:shadow-md transition-all flex flex-col justify-between ${

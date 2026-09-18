@@ -211,22 +211,22 @@ export const ClassStory: React.FC<ClassStoryProps> = ({
             </div>
 
             {/* Post Content */}
-            <div className="px-4 sm:px-5 py-2 space-y-2">
+            <div className="px-4 sm:px-5 py-2 space-y-2 min-w-0">
               {post.title && (
-                <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug">
+                <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug break-words [overflow-wrap:anywhere]">
                   {post.title}
                 </h3>
               )}
-              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line font-medium">
+              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line font-medium break-words [overflow-wrap:anywhere]">
                 {post.content}
               </p>
             </div>
 
             {/* Post Stats & Actions */}
-            <div className="px-4 sm:px-5 py-3 border-t border-slate-100 flex items-center justify-between mt-2 text-xs font-bold text-slate-500">
+            <div className="px-4 sm:px-5 py-3 border-t border-slate-100 flex items-center justify-between mt-2 text-xs font-bold text-slate-500 min-w-0">
               <button
                 onClick={() => onLikePost(post.id)}
-                className={`flex items-center gap-1.5 transition-colors ${
+                className={`flex items-center gap-1.5 transition-colors cursor-pointer ${
                   post.likedByUser ? 'text-rose-500' : 'hover:text-rose-500'
                 }`}
               >
@@ -242,23 +242,23 @@ export const ClassStory: React.FC<ClassStoryProps> = ({
 
             {/* Comments List */}
             {post.comments.length > 0 && (
-              <div className="px-4 sm:px-5 py-3 bg-slate-50/70 border-t border-slate-100 space-y-2.5">
+              <div className="px-4 sm:px-5 py-3 bg-slate-50/70 border-t border-slate-100 space-y-2.5 min-w-0">
                 {post.comments.map((comment) => (
-                  <div key={comment.id} className="text-xs space-y-0.5">
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-extrabold text-slate-900">{comment.authorName}</span>
-                      <span className="text-[10px] text-slate-400 font-medium">
+                  <div key={comment.id} className="text-xs space-y-0.5 min-w-0">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="font-extrabold text-slate-900 truncate">{comment.authorName}</span>
+                      <span className="text-[10px] text-slate-400 font-medium shrink-0">
                         • {comment.timestamp}
                       </span>
                     </div>
-                    <p className="text-slate-600 leading-relaxed">{comment.text}</p>
+                    <p className="text-slate-600 leading-relaxed break-words [overflow-wrap:anywhere]">{comment.text}</p>
                   </div>
                 ))}
               </div>
             )}
 
             {/* Add Comment Input */}
-            <div className="p-3 bg-white border-t border-slate-100 flex items-center gap-2">
+            <div className="p-3 bg-white border-t border-slate-100 flex items-center gap-2 min-w-0">
               <input
                 type="text"
                 placeholder="Bu paylaşıma veli olarak yorum yapın..."
@@ -271,11 +271,12 @@ export const ClassStory: React.FC<ClassStoryProps> = ({
                     handleSendComment(post.id);
                   }
                 }}
-                className="flex-1 text-xs px-3 py-2 rounded-xl bg-slate-100/80 border border-transparent focus:border-blue-400 focus:bg-white focus:outline-hidden font-medium"
+                className="flex-1 min-w-0 text-xs px-3 py-2 rounded-xl bg-slate-100/80 border border-transparent focus:border-blue-400 focus:bg-white focus:outline-hidden font-medium"
               />
               <button
+                type="button"
                 onClick={() => handleSendComment(post.id)}
-                className="p-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+                className="p-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition-colors cursor-pointer shrink-0"
                 title="Yorum Gönder"
               >
                 <Send className="w-3.5 h-3.5" />

@@ -588,3 +588,146 @@ export const INITIAL_PRINCIPAL_AI_INSIGHTS: PrincipalAiInsight[] = [
     date: '14 Eylül 2026',
   },
 ];
+
+export interface AiReportSet {
+  id: string;
+  name: string;
+  badge: string;
+  focusArea: string;
+  generatedDate: string;
+  executiveSummary: string;
+  insights: PrincipalAiInsight[];
+}
+
+export const PRINCIPAL_AI_REPORT_SETS: AiReportSet[] = [
+  {
+    id: 'report-1',
+    name: 'Sentez 1: STEM Atılımı, Şube Devamsızlığı & Veli Memnuniyeti',
+    badge: '1. Rapor • Akademik & İklim',
+    focusArea: 'Öğrenci Motivasyonu & Devam Takibi',
+    generatedDate: 'Bugün 08:30 (Canlı Sentez)',
+    executiveSummary: 'Tüm okul genelinde MakeTab pozitif davranış puanlaması ve STEM-X atölye duyuruları sonrası veli etkileşimi %96.4 ile ilçe rekoru kırdı. 1-B sınıfı devamsızlık uyarısı acil aksiyon bekliyor.',
+    insights: INITIAL_PRINCIPAL_AI_INSIGHTS,
+  },
+  {
+    id: 'report-2',
+    name: 'Sentez 2: BİLSEM Erken Tarama, Kantin Hijyeni & Hızlı Okuma',
+    badge: '2. Rapor • Yetenek & Sağlık',
+    focusArea: 'BİLSEM Yetenekleri, Kantin & Kütüphane',
+    generatedDate: 'Bugün 11:45 (Tazelenmiş Veri)',
+    executiveSummary: '2. ve 3. sınıflarda yapılan BİLSEM ön değerlendirmelerinde 14 öğrencide üstün analitik ve görsel zeka potansiyeli saptandı. Okul kantini şekerli gıda denetiminde %98 yeşil sertifika aldı.',
+    insights: [
+      {
+        id: 'ai-2-1',
+        type: 'academic',
+        title: 'BİLSEM Ön Taramasında 14 Üstün Potansiyelli Öğrenci',
+        description: '2-A ve 3-A sınıflarında problem çözme ve fen deneylerinde 14 öğrencinin BİLSEM (Bilim ve Sanat Merkezi) sınav barajını aşacak seviyede olduğu tespit edildi.',
+        metric: '14 Üstün Yetenek',
+        recommendation: 'Rehberlik öğretmeni ile velilere BİLSEM başvuru takvimi hakkında bilgilendirme semineri düzenlenmeli.',
+        status: 'positive',
+        date: '18 Eylül 2026',
+      },
+      {
+        id: 'ai-2-2',
+        type: 'safety',
+        title: 'Kantin ve Beslenme Dostu Okul Kriterleri %98 Uygunluk',
+        description: 'İlçe Tarım ve MEB kantin denetim komisyonu teftişinde gazlı içecek ve kızartma satışı sıfırlandı. Meyve, kuruyemiş ve günlük süt tüketiminde %44 artış kaydedildi.',
+        metric: '%98 Hijyen Skoru',
+        recommendation: 'Kantin işletmecisine örnek beslenme dostu teşekkür belgesi takdim edilebilir.',
+        status: 'positive',
+        date: '18 Eylül 2026',
+      },
+      {
+        id: 'ai-2-3',
+        type: 'academic',
+        title: '3-B Sınıfında Kitap Okuma Hızı ve Anlama Artışı',
+        description: 'Ayşe Öztürk öğretmenimizin başlattığı "Her Gün 20 Sayfa Macera" projesi ile 3-B sınıfının dakikada kelime okuma ortalaması 92\'den 114\'e yükseldi.',
+        metric: '+%24 Hızlı Okuma',
+        recommendation: 'Kütüphaneye 50 adet yeni TÜBİTAK popüler bilim çocuk kitabı temin edilmeli.',
+        status: 'positive',
+        date: '17 Eylül 2026',
+      },
+      {
+        id: 'ai-2-4',
+        type: 'finance',
+        title: 'Öğrenci Lavabolarında Fotoselli Batarya ile Su Tasarrufu',
+        description: 'Süleyman Usta tarafından 1. ve 2. kat lavabolarına takılan zaman ayarlı fotoselli musluklar sayesinde şebeke suyu faturasında %30 tasarruf sağlandı.',
+        metric: '%30 Su Tasarrufu',
+        recommendation: '3. kat ve anaokulu lavabolarına da aynı sensörlü armatürlerin montajı tamamlanmalı.',
+        status: 'strategic',
+        date: '16 Eylül 2026',
+      },
+      {
+        id: 'ai-2-5',
+        type: 'climate',
+        title: 'Zümre Öğretmenler Arası Dijital Materyal Paylaşım Hızı',
+        description: 'Öğretmenler odasında kurulan ortak dijital havuzda bu hafta 42 özgün ders planı ve interaktif slayt paylaşıldı. Zümre dayanışması öğretmen motivasyonunu %91\'e taşıdı.',
+        metric: '42 Yeni Materyal',
+        recommendation: 'Cuma günleri 15:30 zümre değerlendirme kahvesi geleneği sürdürülmeli.',
+        status: 'positive',
+        date: '15 Eylül 2026',
+      },
+    ],
+  },
+  {
+    id: 'report-3',
+    name: 'Sentez 3: Okul Aile Birliği Bütçesi, Deprem Tatbikatı & Akran Barışı',
+    badge: '3. Rapor • Fonlama & Afet Hazırlığı',
+    focusArea: 'Bütçe Fazlası, Deprem Tahliyesi & Akran Rehberliği',
+    generatedDate: 'Bugün 13:10 (En Son Güncelleme)',
+    executiveSummary: 'Okul Aile Birliği bağış ve kermes fonunda bütçe hedefi %142 aşılarak ₺78.500 net kaynak üretildi. Deprem tahliye tatbikatı MEB süresinin 46 saniye altında başarıyla tamamlandı.',
+    insights: [
+      {
+        id: 'ai-3-1',
+        type: 'finance',
+        title: 'Okul Aile Birliği Fonunda %142 Hedef Aşımı',
+        description: 'Gülçin Yıldırım başkanlığındaki Okul Aile Birliği, kermes ve sponsorluk gelirleriyle toplam ₺78.500 net fon sağladı. Tüm sınıfların projeksiyon lambaları yenilenebilecek.',
+        metric: '₺78.500 Net Gelir',
+        recommendation: 'Bütçeden ayrılacak ₺25.000 ile okul bilişim sınıfındaki 10 bilgisayarın RAM yükseltmesi yapılabilir.',
+        status: 'positive',
+        date: '18 Eylül 2026',
+      },
+      {
+        id: 'ai-3-2',
+        type: 'safety',
+        title: 'Deprem ve Yangın Tahliye Tatbikatı Rekoru: 2 Dk 14 Sn',
+        description: 'Tüm okul (228 öğrenci ve 18 personel) siren çalmasından itibaren 2 dakika 14 saniye içinde bahçedeki toplanma alanında eksiksiz yerini aldı. MEB hedefinin 46 saniye önündeyiz.',
+        metric: '2 dk 14 sn Tahliye',
+        recommendation: 'Tahliye krokileri ve yangın söndürme tüplerinin yıllık basınç vizeleri okul panosuna asılmalı.',
+        status: 'positive',
+        date: '18 Eylül 2026',
+      },
+      {
+        id: 'ai-3-3',
+        type: 'climate',
+        title: 'Nezaket Elçileri Projesi Sayesinde Sıfır Disiplin Sevk',
+        description: 'MakeTab nezaket puanı lideri seçilen öğrencilerin teneffüslerde nöbetçi öğretmenlere yardımcı olmasıyla koridorda koşma ve itişme vakaları son 30 günde sıfıra indi.',
+        metric: '0 Disiplin Olayı',
+        recommendation: 'Ayın nezaket elçisi 8 öğrenciye bayrak töreninde müdürlük onur madalyası verilmeli.',
+        status: 'positive',
+        date: '17 Eylül 2026',
+      },
+      {
+        id: 'ai-3-4',
+        type: 'academic',
+        title: '1. Sınıflarda Uyum Haftası Sonrası Okuma Yazmaya Erken Geçiş',
+        description: '1-A sınıfında Fatma Çelik öğretmenimizin MakeTab harf oyunları sistemiyle 32 öğrencinin tamamı sesleri tanıdı; sınıfın %60\'ı hece birleştirmeye başarıyla geçti.',
+        metric: '32 Öğrenci Tam Uyum',
+        recommendation: '1. sınıf velilerine ses temelli okuma yöntemini destekleyen ev rehberi gönderilmeli.',
+        status: 'positive',
+        date: '16 Eylül 2026',
+      },
+      {
+        id: 'ai-3-5',
+        type: 'finance',
+        title: 'Ayın Sponsorlu Vitrini STEM-X ile Okul Bütçesine Kaynak',
+        description: 'Bağımsız partnerimiz STEM-X Robotics A.Ş.\'nin velilere sunduğu sınıf kiti toplu alımından okulumuz bilim laboratuvarına ₺14.500 hibe ekipman desteği sağlandı.',
+        metric: '₺14.500 Lab Desteği',
+        recommendation: 'Gelecek ay için müze gezisi ve drama atölyesi sunacak yeni partner firmalar davet edilebilir.',
+        status: 'strategic',
+        date: '15 Eylül 2026',
+      },
+    ],
+  },
+];
+
