@@ -17,6 +17,9 @@ import {
   Users,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { Button } from './ui/Button';
+import { Badge } from './ui/Badge';
+import { TextInput } from './ui/TextInput';
 
 interface ClassFinanceModalProps {
   isOpen: boolean;
@@ -101,7 +104,7 @@ export const ClassFinanceModal: React.FC<ClassFinanceModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="bg-white rounded-3xl max-w-4xl w-full border border-slate-200 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="bg-white rounded-2xl max-w-4xl w-full border border-slate-200 shadow-pop overflow-hidden flex flex-col max-h-[92vh]">
         {/* Header */}
         <div className="p-4 sm:p-5 bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -145,7 +148,7 @@ export const ClassFinanceModal: React.FC<ClassFinanceModalProps> = ({
             <span className="text-lg font-black text-slate-800">
               ₺{grandTargetTotal.toLocaleString('tr-TR')}
             </span>
-            <span className="text-[10px] text-blue-600 block font-semibold">
+            <span className="text-[10px] text-brand-600 block font-semibold">
               %{Math.round((grandTotalCollected / (grandTargetTotal || 1)) * 100)} Tamamlandı
             </span>
           </div>
@@ -161,13 +164,10 @@ export const ClassFinanceModal: React.FC<ClassFinanceModalProps> = ({
           </div>
 
           <div className="bg-white p-3 rounded-2xl border border-slate-200/90 shadow-2xs flex flex-col justify-center">
-            <button
-              onClick={() => setIsAddingNew(true)}
-              className="min-h-[38px] w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-xs"
-            >
+            <Button variant="primary" size="sm" onClick={() => setIsAddingNew(true)} className="w-full">
               <Plus className="w-4 h-4" />
               Yeni Kalem Ekle
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -204,7 +204,7 @@ export const ClassFinanceModal: React.FC<ClassFinanceModalProps> = ({
                   }}
                   className={`w-full text-left p-3.5 rounded-2xl border transition-all ${
                     isSelected
-                      ? 'bg-white border-blue-600 shadow-md ring-2 ring-blue-500/20'
+                      ? 'bg-white border-brand-600 shadow-md ring-2 ring-brand-500/20'
                       : 'bg-white/80 border-slate-200 hover:border-slate-300'
                   }`}
                 >
@@ -224,7 +224,7 @@ export const ClassFinanceModal: React.FC<ClassFinanceModalProps> = ({
                   <div className="space-y-1">
                     <div className="flex justify-between text-[10px] font-bold text-slate-500">
                       <span>{pCount}/{totalStudents} Veli Ödedi</span>
-                      <span className="text-blue-600">₺{col} / ₺{item.targetTotal}</span>
+                      <span className="text-brand-600">₺{col} / ₺{item.targetTotal}</span>
                     </div>
                     <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
                       <div
@@ -245,7 +245,7 @@ export const ClassFinanceModal: React.FC<ClassFinanceModalProps> = ({
               <form onSubmit={handleCreateItem} className="space-y-4 max-w-lg">
                 <div className="border-b border-slate-200 pb-3">
                   <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                    <Plus className="w-4 h-4 text-blue-600" />
+                    <Plus className="w-4 h-4 text-brand-600" />
                     Yeni Sınıf Etkinliği / Fon Kalemi Oluştur
                   </h3>
                   <p className="text-xs text-slate-500">
@@ -255,13 +255,13 @@ export const ClassFinanceModal: React.FC<ClassFinanceModalProps> = ({
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-slate-700">Etkinlik / Fon Başlığı</label>
-                  <input
+                  <TextInput
                     type="text"
                     required
+                    radius="xl"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
                     placeholder="Örn: Ankara Bilim Müzesi ve Planetaryum Gezisi"
-                    className="w-full text-xs sm:text-sm p-3 rounded-xl border border-slate-300 font-medium"
                   />
                 </div>
 
@@ -272,49 +272,42 @@ export const ClassFinanceModal: React.FC<ClassFinanceModalProps> = ({
                     value={newDescription}
                     onChange={(e) => setNewDescription(e.target.value)}
                     placeholder="Gezide otobüs ücreti, müze giriş bileti ve öğle sandviçi dahildir."
-                    className="w-full text-xs sm:text-sm p-3 rounded-xl border border-slate-300 font-medium"
+                    className="w-full text-xs sm:text-sm p-3 rounded-xl border border-slate-300 font-medium focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-hidden"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-slate-700">Öğrenci Başı Ücret (₺)</label>
-                    <input
+                    <TextInput
                       type="number"
                       required
+                      radius="xl"
                       min={10}
                       value={newAmount}
                       onChange={(e) => setNewAmount(Number(e.target.value))}
-                      className="w-full text-xs sm:text-sm p-3 rounded-xl border border-slate-300 font-bold text-slate-900"
                     />
                   </div>
 
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-slate-700">Son Ödeme Tarihi</label>
-                    <input
+                    <TextInput
                       type="text"
+                      radius="xl"
                       value={newDueDate}
                       onChange={(e) => setNewDueDate(e.target.value)}
                       placeholder="15 Nisan 2026"
-                      className="w-full text-xs sm:text-sm p-3 rounded-xl border border-slate-300 font-medium"
                     />
                   </div>
                 </div>
 
                 <div className="pt-2 flex items-center gap-2">
-                  <button
-                    type="submit"
-                    className="min-h-[42px] px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs transition-colors shadow-xs"
-                  >
+                  <Button variant="primary" size="sm" type="submit">
                     Kalemi Kaydet ve Velilere Aç
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setIsAddingNew(false)}
-                    className="min-h-[42px] px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs"
-                  >
+                  </Button>
+                  <Button variant="ghost" size="sm" onClick={() => setIsAddingNew(false)}>
                     İptal
-                  </button>
+                  </Button>
                 </div>
               </form>
             ) : currentItem ? (
@@ -324,9 +317,9 @@ export const ClassFinanceModal: React.FC<ClassFinanceModalProps> = ({
                 <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-blue-100 text-blue-700">
+                      <Badge tone="brand">
                         {currentItem.category.toUpperCase()}
-                      </span>
+                      </Badge>
                       <span className="text-xs font-bold text-slate-400">
                         Son Tarih: {currentItem.dueDate}
                       </span>
@@ -350,13 +343,13 @@ export const ClassFinanceModal: React.FC<ClassFinanceModalProps> = ({
                 </div>
 
                 {/* Progress Bar & Actions */}
-                <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl bg-blue-50/70 border border-blue-100">
+                <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl bg-brand-50/70 border border-brand-100">
                   <div className="space-y-1 flex-1 min-w-[200px]">
                     <div className="flex justify-between text-xs font-black text-slate-800">
                       <span>Tahsilat Durumu: {paidCount} / {totalStudents} Veli</span>
-                      <span className="text-blue-700">₺{totalCollected} / ₺{targetTotal} (%{progressPct})</span>
+                      <span className="text-brand-700">₺{totalCollected} / ₺{targetTotal} (%{progressPct})</span>
                     </div>
-                    <div className="w-full h-2.5 bg-blue-200/80 rounded-full overflow-hidden">
+                    <div className="w-full h-2.5 bg-brand-200/80 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-emerald-600 rounded-full transition-all"
                         style={{ width: `${progressPct}%` }}
@@ -365,21 +358,15 @@ export const ClassFinanceModal: React.FC<ClassFinanceModalProps> = ({
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <button
-                      onClick={handleSendReminderToAll}
-                      className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs flex items-center gap-1.5 transition-colors shadow-2xs"
-                    >
+                    <Button variant="amber" size="sm" onClick={handleSendReminderToAll}>
                       <Send className="w-3.5 h-3.5" />
                       Bekleyen Velilere Hatırlat ({totalStudents - paidCount})
-                    </button>
+                    </Button>
 
-                    <button
-                      onClick={() => window.print()}
-                      className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center gap-1.5 shadow-2xs"
-                    >
+                    <Button variant="secondary" size="sm" onClick={() => window.print()}>
                       <Printer className="w-3.5 h-3.5" />
                       Yazdır
-                    </button>
+                    </Button>
                   </div>
                 </div>
 
@@ -427,33 +414,31 @@ export const ClassFinanceModal: React.FC<ClassFinanceModalProps> = ({
                               <button
                                 onClick={() => handleSendReceipt(std)}
                                 title="Veliye Makbuz SMS Gönder"
-                                className="min-h-[34px] px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-600 font-bold text-[11px] flex items-center gap-1 transition-colors"
+                                className="min-h-[34px] px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-brand-50 hover:text-brand-700 text-slate-600 font-bold text-[11px] flex items-center gap-1 transition-colors"
                               >
                                 <Receipt className="w-3.5 h-3.5" />
                                 Makbuz
                               </button>
                             )}
 
-                            <button
-                              onClick={() => onTogglePayment(currentItem.id, std.id)}
-                              className={`min-h-[36px] px-3.5 py-1.5 rounded-xl font-black text-xs flex items-center gap-1.5 transition-all shadow-2xs ${
-                                isPaid
-                                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                                  : 'bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900'
-                              }`}
-                            >
-                              {isPaid ? (
-                                <>
-                                  <CheckCircle2 className="w-4 h-4" />
-                                  Ödendi (₺{currentItem.amountPerStudent})
-                                </>
-                              ) : (
-                                <>
-                                  <Clock className="w-4 h-4 text-amber-600" />
-                                  Ödeme Bekliyor
-                                </>
-                              )}
-                            </button>
+                            {isPaid ? (
+                              <Button
+                                variant="success"
+                                size="sm"
+                                onClick={() => onTogglePayment(currentItem.id, std.id)}
+                              >
+                                <CheckCircle2 className="w-4 h-4" />
+                                Ödendi (₺{currentItem.amountPerStudent})
+                              </Button>
+                            ) : (
+                              <button
+                                onClick={() => onTogglePayment(currentItem.id, std.id)}
+                                className="min-h-[36px] px-3.5 py-1.5 rounded-xl font-black text-xs flex items-center gap-1.5 transition-all shadow-2xs bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 cursor-pointer"
+                              >
+                                <Clock className="w-4 h-4 text-amber-600" />
+                                Ödeme Bekliyor
+                              </button>
+                            )}
                           </div>
                         </div>
                       );

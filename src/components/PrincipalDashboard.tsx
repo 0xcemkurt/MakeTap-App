@@ -10,6 +10,9 @@ import {
   AuthUser,
 } from '../types';
 import { PRINCIPAL_AI_REPORT_SETS, AiReportSet } from '../data/principalData';
+import { Button } from './ui/Button';
+import { Badge } from './ui/Badge';
+import { TextInput } from './ui/TextInput';
 import {
   Building2,
   Users,
@@ -245,7 +248,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
   return (
     <div className="space-y-6 pb-12">
       {/* 1. EXECUTIVE PRESTIGE HEADER BANNER */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-5 sm:p-7 text-white shadow-xl border border-amber-500/30 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-5 sm:p-7 text-white shadow-pop border border-amber-500/30 relative overflow-hidden">
         {/* Subtle gold shine & emblem effect */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-10 -left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
@@ -283,32 +286,32 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
 
           {/* Right Action buttons */}
           <div className="flex items-center gap-2.5 flex-wrap w-full lg:w-auto">
-            <button
+            <Button
+              variant="amber"
+              size="md"
               onClick={() => handleReanalyzeAi()}
               disabled={isRefreshingAi}
-              className="py-2.5 px-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 active:scale-95 text-slate-950 text-xs font-black transition-all shadow-md shadow-amber-500/20 flex items-center gap-2 cursor-pointer disabled:opacity-70"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isRefreshingAi ? 'animate-spin' : ''}`} />
               <span>{isRefreshingAi ? 'AI Analiz Ediyor...' : 'AI Okul Raporu (Canlı)'}</span>
-            </button>
+            </Button>
 
-            <button
-              onClick={() => setShowAddVisitorModal(true)}
-              className="py-2.5 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-white border border-white/20 text-xs font-bold transition-all flex items-center gap-2 cursor-pointer"
-            >
+            <Button variant="ghostDark" size="md" onClick={() => setShowAddVisitorModal(true)}>
               <UserCheck className="w-3.5 h-3.5 text-blue-300" />
               <span>+ Kapı Ziyaretçisi</span>
-            </button>
+            </Button>
 
             {onSwitchToTeacherMode && (
-              <button
+              <Button
+                variant="dark"
+                size="md"
                 onClick={onSwitchToTeacherMode}
-                className="py-2.5 px-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 hover:text-white border border-slate-700 text-xs font-bold transition-all flex items-center gap-1.5"
                 title="4-A Sınıfını İncele"
+                className="border border-slate-700"
               >
                 <GraduationCap className="w-3.5 h-3.5 text-blue-400" />
                 <span>Öğretmen Masasına Bak</span>
-              </button>
+              </Button>
             )}
           </div>
         </div>
@@ -320,7 +323,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
         <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs hover:shadow-md transition-all">
           <div className="flex items-center justify-between text-slate-500 text-xs font-bold mb-1">
             <span>Öğrenci Mevcudu</span>
-            <Users className="w-4 h-4 text-blue-600" />
+            <Users className="w-4 h-4 text-brand-600" />
           </div>
           <div className="text-xl sm:text-2xl font-black text-slate-900">{totalStudents}</div>
           <div className="text-[11px] text-emerald-600 font-bold mt-1 flex items-center gap-1">
@@ -362,7 +365,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
         <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs hover:shadow-md transition-all">
           <div className="flex items-center justify-between text-slate-500 text-xs font-bold mb-1">
             <span>Personel & Nöbet</span>
-            <ShieldCheck className="w-4 h-4 text-blue-600" />
+            <ShieldCheck className="w-4 h-4 text-brand-600" />
           </div>
           <div className="text-xl sm:text-2xl font-black text-slate-900">{onDutyStaffCount} <span className="text-xs text-slate-400 font-medium">/ {staffMembers.length}</span></div>
           <div className="text-[11px] text-emerald-600 font-bold mt-1">Hademe & Güvenlik Tam</div>
@@ -423,13 +426,13 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
           onClick={() => setActiveTab('teachers')}
           className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer group shadow-2xs hover:shadow-md ${
             activeTab === 'teachers'
-              ? 'bg-slate-900 border-blue-500/80 text-white ring-2 ring-blue-400/40'
+              ? 'bg-slate-900 border-brand-500/80 text-white ring-2 ring-brand-400/40'
               : 'bg-white border-slate-200/80 hover:border-slate-300 text-slate-800 hover:bg-slate-50'
           }`}
         >
           <div className="flex items-center justify-between mb-2">
             <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold ${
-              activeTab === 'teachers' ? 'bg-blue-400/20 text-blue-300' : 'bg-blue-100 text-blue-800'
+              activeTab === 'teachers' ? 'bg-brand-400/20 text-brand-300' : 'bg-brand-100 text-brand-800'
             }`}>
               <GraduationCap className="w-4 h-4" />
             </div>
@@ -636,16 +639,15 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
       {activeTab === 'classes' && (
         <div className="space-y-4">
           {/* Search & Buttonic Filters (No Hidden Horizontal Scroll) */}
-          <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-3.5">
+          <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-3.5">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="relative w-full sm:w-80">
-                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input
+              <div className="w-full sm:w-80">
+                <TextInput
                   type="text"
                   placeholder="Sınıf veya öğretmen adı ile ara..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 text-xs font-semibold rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-slate-900/20 shadow-2xs"
+                  leftIcon={<Search />}
                 />
               </div>
 
@@ -687,7 +689,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                   onClick={() => setClassStatusFilter(st.id as any)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
                     classStatusFilter === st.id
-                      ? 'bg-blue-600 text-white shadow-xs'
+                      ? 'bg-brand-600 text-white shadow-xs'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
                   }`}
                 >
@@ -726,7 +728,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
             {filteredClasses.map((cls) => (
               <div
                 key={cls.id}
-                className="bg-white rounded-3xl p-5 border border-slate-200 shadow-2xs hover:shadow-lg hover:border-slate-400 transition-all flex flex-col justify-between"
+                className="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs hover:shadow-lg hover:border-slate-400 transition-all flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-start justify-between gap-2 mb-2">
@@ -738,7 +740,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                         cls.status === 'excellent'
                           ? 'bg-emerald-100 text-emerald-800'
                           : cls.status === 'normal'
-                          ? 'bg-blue-100 text-blue-800'
+                          ? 'bg-brand-100 text-brand-800'
                           : 'bg-amber-100 text-amber-800'
                       }`}
                     >
@@ -751,7 +753,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                   </div>
 
                   <h3 className="text-sm font-black text-slate-900">{cls.teacherName}</h3>
-                  <p className="text-[11px] font-bold text-blue-600 mt-0.5">{cls.academicBadge}</p>
+                  <p className="text-[11px] font-bold text-brand-600 mt-0.5">{cls.academicBadge}</p>
 
                   {/* Class Metrics */}
                   <div className="mt-4 grid grid-cols-2 gap-2 bg-slate-50 rounded-2xl p-3 border border-slate-100 text-xs">
@@ -800,7 +802,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
       {/* 5. TAB CONTENT: TEACHER EVALUATIONS & PARENT RATINGS (360 DEĞERLENDİRME) */}
       {activeTab === 'teachers' && (
         <div className="space-y-6">
-          <div className="bg-gradient-to-r from-blue-900 to-indigo-950 rounded-3xl p-5 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="bg-gradient-to-r from-blue-900 to-indigo-950 rounded-2xl p-5 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
               <h2 className="text-lg font-black flex items-center gap-2">
                 <span>360° Öğretmen Değerlendirmeleri & Veli Anket Notları</span>
@@ -819,16 +821,15 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
           </div>
 
           {/* Buttonic Filter Deck for Teachers (No Horizontal Scroll) */}
-          <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-3">
+          <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-3">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="relative w-full sm:w-80">
-                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input
+              <div className="w-full sm:w-80">
+                <TextInput
                   type="text"
                   placeholder="Öğretmen, sınıf veya branş ara..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 text-xs font-semibold rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-slate-900/20 shadow-2xs"
+                  leftIcon={<Search />}
                 />
               </div>
 
@@ -851,7 +852,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                   onClick={() => setTeacherFilter(tf.id as any)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
                     teacherFilter === tf.id
-                      ? 'bg-blue-600 text-white shadow-xs'
+                      ? 'bg-brand-600 text-white shadow-xs'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
                   }`}
                 >
@@ -866,7 +867,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
             {filteredTeachers.map((teacher) => (
               <div
                 key={teacher.id}
-                className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs hover:shadow-md transition-all space-y-4"
+                className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-2xs hover:shadow-md transition-all space-y-4"
               >
                 {/* Header: Teacher Name, Badges, and Overall Rating */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
@@ -881,7 +882,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
                         <h3 className="text-base font-black text-slate-900">{teacher.name}</h3>
-                        <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-black">
+                        <span className="px-2.5 py-0.5 rounded-full bg-brand-100 text-brand-800 text-[10px] font-black">
                           {teacher.className}
                         </span>
                         <span className="text-xs text-slate-400 font-semibold">
@@ -982,7 +983,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                           </p>
                         </div>
                         <div className="mt-2 pt-1 border-t border-slate-200/60 flex items-center justify-between text-[10px] text-slate-400">
-                          <span className="font-semibold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-md">
+                          <span className="font-semibold text-brand-600 bg-brand-50 px-1.5 py-0.5 rounded-md">
                             #{comment.tag}
                           </span>
                           <span>{comment.date}</span>
@@ -1001,7 +1002,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
       {activeTab === 'ai-insights' && (
         <div className="space-y-6">
           {/* Main AI Header Banner */}
-          <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-orange-600 rounded-3xl p-5 sm:p-6 text-slate-950 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-orange-600 rounded-2xl p-5 sm:p-6 text-slate-950 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div className="space-y-1 max-w-2xl">
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="px-2.5 py-0.5 rounded-full bg-slate-950 text-amber-300 text-[10px] font-black uppercase flex items-center gap-1">
@@ -1080,7 +1081,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
           </div>
 
           {/* AI Executive Summary Card */}
-          <div className="bg-amber-50/70 border border-amber-300/80 rounded-3xl p-4 sm:p-5 shadow-2xs flex items-start gap-3.5">
+          <div className="bg-amber-50/70 border border-amber-300/80 rounded-2xl p-4 sm:p-5 shadow-2xs flex items-start gap-3.5">
             <div className="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-bold shrink-0 shadow-inner">
               <Sparkles className="w-5 h-5" />
             </div>
@@ -1104,12 +1105,12 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
             {activeAiReport.insights.map((insight) => (
               <div
                 key={insight.id}
-                className={`bg-white rounded-3xl p-5 border shadow-2xs hover:shadow-md transition-all flex flex-col justify-between ${
+                className={`bg-white rounded-2xl p-5 border shadow-2xs hover:shadow-md transition-all flex flex-col justify-between ${
                   insight.status === 'urgent'
                     ? 'border-rose-300 ring-2 ring-rose-200/50'
                     : insight.status === 'positive'
                     ? 'border-emerald-300'
-                    : 'border-blue-300'
+                    : 'border-brand-300'
                 }`}
               >
                 <div>
@@ -1120,7 +1121,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                           ? 'bg-rose-100 text-rose-800'
                           : insight.status === 'positive'
                           ? 'bg-emerald-100 text-emerald-800'
-                          : 'bg-blue-100 text-blue-800'
+                          : 'bg-brand-100 text-brand-800'
                       }`}
                     >
                       {insight.status === 'urgent'
@@ -1145,7 +1146,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
 
                 <div className="mt-4 pt-3 border-t border-slate-100 bg-slate-50/80 -mx-5 -mb-5 p-4 rounded-b-3xl">
                   <div className="flex items-start gap-2 text-xs">
-                    <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-brand-600 shrink-0 mt-0.5" />
                     <div>
                       <span className="font-extrabold text-slate-900 mr-1">Müdüre Tavsiye:</span>
                       <span className="text-slate-700 font-semibold">{insight.recommendation}</span>
@@ -1163,25 +1164,25 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
         <div className="space-y-6">
           {/* Finance Overview Bento */}
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-            <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-2xs">
+            <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs">
               <span className="text-xs font-bold text-slate-400 uppercase">Yıllık Bütçe Hedefi</span>
               <div className="text-2xl font-black text-slate-900 mt-1">₺{financialData.totalBudget.toLocaleString()}</div>
               <span className="text-[11px] text-slate-500 font-semibold">MEB + OAB Tahmini</span>
             </div>
 
-            <div className="bg-white rounded-3xl p-5 border border-emerald-200 shadow-2xs bg-emerald-50/30">
+            <div className="bg-white rounded-2xl p-5 border border-emerald-200 shadow-2xs bg-emerald-50/30">
               <span className="text-xs font-bold text-emerald-700 uppercase">Gerçekleşen Gelir</span>
               <div className="text-2xl font-black text-emerald-800 mt-1">₺{financialData.totalIncome.toLocaleString()}</div>
               <span className="text-[11px] text-emerald-600 font-bold">Kasa Tahsilatları</span>
             </div>
 
-            <div className="bg-white rounded-3xl p-5 border border-rose-200 shadow-2xs bg-rose-50/30">
+            <div className="bg-white rounded-2xl p-5 border border-rose-200 shadow-2xs bg-rose-50/30">
               <span className="text-xs font-bold text-rose-700 uppercase">Yapılan Harcamalar</span>
               <div className="text-2xl font-black text-rose-800 mt-1">₺{financialData.totalExpense.toLocaleString()}</div>
               <span className="text-[11px] text-rose-600 font-bold">Isınma, Güvenlik, Temizlik</span>
             </div>
 
-            <div className="bg-gradient-to-br from-indigo-900 to-slate-900 rounded-3xl p-5 text-white shadow-md">
+            <div className="bg-gradient-to-br from-indigo-900 to-slate-900 rounded-2xl p-5 text-white shadow-md">
               <span className="text-xs font-bold text-indigo-300 uppercase">Kasa Net Rezervi</span>
               <div className="text-2xl font-black text-white mt-1">₺{financialData.netReserve.toLocaleString()}</div>
               <span className="text-[11px] text-emerald-400 font-bold">Pozitif Likidite</span>
@@ -1191,7 +1192,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
           {/* Income & Expense Breakdown */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             {/* Gelir Kalemleri */}
-            <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-2xs space-y-3">
+            <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs space-y-3">
               <h3 className="text-sm font-black text-slate-900 flex items-center justify-between">
                 <span>Okul Gelir Kaynakları</span>
                 <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
@@ -1218,7 +1219,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
             </div>
 
             {/* Gider Kalemleri */}
-            <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-2xs space-y-3">
+            <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs space-y-3">
               <h3 className="text-sm font-black text-slate-900 flex items-center justify-between">
                 <span>Operasyonel Gider Dağılımı</span>
                 <span className="text-xs font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full">
@@ -1246,7 +1247,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
           </div>
 
           {/* Recent Financial Transactions */}
-          <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-2xs space-y-3">
+          <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs space-y-3">
             <h3 className="text-sm font-black text-slate-900">Son Kasa & Banka Hareketleri</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
@@ -1279,7 +1280,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
       {/* 8. TAB CONTENT: OPERATIONAL STAFF (HADEMELER, GÜVENLİK, TEKNİK) */}
       {activeTab === 'staff' && (
         <div className="space-y-6">
-          <div className="bg-gradient-to-r from-purple-900 to-indigo-950 rounded-3xl p-5 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="bg-gradient-to-r from-purple-900 to-indigo-950 rounded-2xl p-5 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
               <h2 className="text-lg font-black flex items-center gap-2">
                 <span>Okul Destek Personeli (Hademelerden Güvenliğe)</span>
@@ -1298,7 +1299,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
             {staffMembers.map((staff) => (
               <div
                 key={staff.id}
-                className="bg-white rounded-3xl p-5 border border-slate-200 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between"
+                className="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-start justify-between gap-2 mb-2">
@@ -1317,7 +1318,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                   </div>
 
                   <h3 className="text-base font-black text-slate-900">{staff.name}</h3>
-                  <p className="text-xs font-bold text-blue-600 mt-0.5">{staff.roleLabel}</p>
+                  <p className="text-xs font-bold text-brand-600 mt-0.5">{staff.roleLabel}</p>
 
                   <div className="mt-3 bg-slate-50 rounded-2xl p-3 border border-slate-100 text-xs space-y-1.5 text-slate-700">
                     <div className="flex justify-between">
@@ -1330,7 +1331,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400 font-semibold">İletişim:</span>
-                      <span className="font-mono font-bold text-blue-600">{staff.phone}</span>
+                      <span className="font-mono font-bold text-brand-600">{staff.phone}</span>
                     </div>
                     <div className="flex justify-between pt-1 border-t border-slate-200/70">
                       <span className="text-slate-500 font-bold">Denetim Skoru:</span>
@@ -1352,7 +1353,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
       {/* 9. TAB CONTENT: VISITOR MANAGEMENT (ZİYARETÇİ DEFTERİ) */}
       {activeTab === 'visitors' && (
         <div className="space-y-4">
-          <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
               <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
                 <span>Ana Giriş Turnike & Güvenlik Ziyaretçi Defteri</span>
@@ -1375,7 +1376,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
           </div>
 
           {/* Visitor Table */}
-          <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-2xs overflow-x-auto">
+          <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
                 <tr className="border-b border-slate-200 text-slate-400 font-bold">
@@ -1437,7 +1438,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
       {/* 10. TAB CONTENT: CALENDAR & APPOINTMENTS (MÜDÜRLÜK TAKVİMİ) */}
       {activeTab === 'calendar' && (
         <div className="space-y-4">
-          <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
               <h2 className="text-base font-black text-slate-900">Müdürlük Resmi Ajandası & Randevuları</h2>
               <p className="text-xs text-slate-500 font-medium mt-0.5">
@@ -1458,7 +1459,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
             {calendarEvents.map((evt) => (
               <div
                 key={evt.id}
-                className="bg-white rounded-3xl p-5 border border-slate-200 shadow-2xs hover:shadow-md transition-all flex items-start justify-between gap-4"
+                className="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs hover:shadow-md transition-all flex items-start justify-between gap-4"
               >
                 <div className="space-y-1.5 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -1470,7 +1471,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                           ? 'bg-amber-100 text-amber-800'
                           : evt.type === 'inspection'
                           ? 'bg-purple-100 text-purple-800'
-                          : 'bg-blue-100 text-blue-800'
+                          : 'bg-brand-100 text-brand-800'
                       }`}
                     >
                       {evt.type === 'mem'
@@ -1518,7 +1519,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
       {/* 11. MODAL: TEACHER PRINCIPAL NOTE */}
       {selectedTeacherForNote && (
         <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl border border-slate-200 space-y-4">
+          <div className="bg-white rounded-2xl p-6 max-w-lg w-full shadow-pop border border-slate-200 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2">
                 <Award className="w-5 h-5 text-amber-500" />
@@ -1550,25 +1551,18 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                   value={teacherNoteInput}
                   onChange={(e) => setTeacherNoteInput(e.target.value)}
                   placeholder="Öğretmenin sınıf başarısı, projeleri veya veli iletişimine dair takdir/rehberlik notunuzu buraya yazınız..."
-                  className="w-full p-3 text-xs sm:text-sm rounded-xl bg-slate-50 border border-slate-200 font-medium focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-slate-900/20"
+                  className="w-full p-3 text-xs sm:text-sm rounded-xl bg-slate-50 border border-slate-200 font-medium focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
                 />
               </div>
 
               <div className="flex items-center justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setSelectedTeacherForNote(null)}
-                  className="py-2.5 px-4 rounded-xl text-slate-600 hover:bg-slate-100 text-xs font-bold transition-all"
-                >
+                <Button variant="ghost" size="sm" onClick={() => setSelectedTeacherForNote(null)}>
                   Vazgeç
-                </button>
-                <button
-                  type="submit"
-                  className="py-2.5 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black transition-all flex items-center gap-1.5 shadow-md shadow-slate-900/20"
-                >
+                </Button>
+                <Button variant="dark" size="sm" type="submit">
                   <Send className="w-3.5 h-3.5 text-amber-400" />
                   <span>Notu Kaydet & Sicil Dosyasına Ekle</span>
-                </button>
+                </Button>
               </div>
             </form>
           </div>
@@ -1578,10 +1572,10 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
       {/* 12. MODAL: ADD VISITOR */}
       {showAddVisitorModal && (
         <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-slate-200 space-y-4">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-pop border border-slate-200 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2">
-                <UserCheck className="w-5 h-5 text-blue-600" />
+                <UserCheck className="w-5 h-5 text-brand-600" />
                 <h3 className="text-base font-black text-slate-900">Yeni Ziyaretçi Girişi</h3>
               </div>
               <button
@@ -1595,24 +1589,24 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
             <form onSubmit={handleCreateVisitorSubmit} className="space-y-3 text-xs">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">Ziyaretçi Adı Soyadı</label>
-                <input
+                <TextInput
                   type="text"
                   required
+                  radius="xl"
                   placeholder="Örn: Ayşe Yılmaz"
                   value={newVisitorName}
                   onChange={(e) => setNewVisitorName(e.target.value)}
-                  className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:bg-white"
                 />
               </div>
 
               <div>
                 <label className="block font-bold text-slate-700 mb-1">T.C. Kimlik No</label>
-                <input
+                <TextInput
                   type="text"
+                  radius="xl"
                   placeholder="11 haneli T.C. kimlik numarası"
                   value={newVisitorTc}
                   onChange={(e) => setNewVisitorTc(e.target.value)}
-                  className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:bg-white"
                 />
               </div>
 
@@ -1621,7 +1615,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                 <select
                   value={newVisitorWhom}
                   onChange={(e) => setNewVisitorWhom(e.target.value)}
-                  className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:bg-white"
+                  className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:bg-white focus:border-brand-500 focus:outline-hidden"
                 >
                   <option value="Hakan KAVUZKOZ (4-A Sınıf Öğretmeni)">Hakan KAVUZKOZ (4-A Sınıf Öğretmeni)</option>
                   <option value="Zeynep KAYA (4-B Sınıf Öğretmeni)">Zeynep KAYA (4-B Sınıf Öğretmeni)</option>
@@ -1633,40 +1627,34 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
 
               <div>
                 <label className="block font-bold text-slate-700 mb-1">Ziyaret Sebebi</label>
-                <input
+                <TextInput
                   type="text"
                   required
+                  radius="xl"
                   placeholder="Örn: Öğrenci gelişim görüşmesi, evrak teslimi vb."
                   value={newVisitorPurpose}
                   onChange={(e) => setNewVisitorPurpose(e.target.value)}
-                  className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:bg-white"
                 />
               </div>
 
               <div>
                 <label className="block font-bold text-slate-700 mb-1">Verilen Yaka Kartı No</label>
-                <input
+                <TextInput
                   type="text"
+                  radius="xl"
+                  mono
                   value={newVisitorBadge}
                   onChange={(e) => setNewVisitorBadge(e.target.value)}
-                  className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-mono font-bold focus:bg-white"
                 />
               </div>
 
               <div className="flex items-center justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowAddVisitorModal(false)}
-                  className="py-2.5 px-4 rounded-xl text-slate-600 hover:bg-slate-100 font-bold"
-                >
+                <Button variant="ghost" size="sm" onClick={() => setShowAddVisitorModal(false)}>
                   Vazgeç
-                </button>
-                <button
-                  type="submit"
-                  className="py-2.5 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black"
-                >
+                </Button>
+                <Button variant="dark" size="sm" type="submit">
                   Turnike Girişini Onayla
-                </button>
+                </Button>
               </div>
             </form>
           </div>
@@ -1676,10 +1664,10 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
       {/* 13. MODAL: ADD CALENDAR EVENT */}
       {showAddEventModal && (
         <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-slate-200 space-y-4">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-pop border border-slate-200 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-blue-600" />
+                <Calendar className="w-5 h-5 text-brand-600" />
                 <h3 className="text-base font-black text-slate-900">Yeni Ajanda Notu Ekle</h3>
               </div>
               <button
@@ -1693,47 +1681,47 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
             <form onSubmit={handleCreateEventSubmit} className="space-y-3 text-xs">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">Toplantı / Etkinlik Başlığı</label>
-                <input
+                <TextInput
                   type="text"
                   required
+                  radius="xl"
                   placeholder="Örn: 4. Sınıflar Zümre Değerlendirmesi"
                   value={newEventTitle}
                   onChange={(e) => setNewEventTitle(e.target.value)}
-                  className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:bg-white"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="block font-bold text-slate-700 mb-1">Tarih</label>
-                  <input
+                  <TextInput
                     type="text"
+                    radius="xl"
                     placeholder="Örn: 22 Eylül Salı"
                     value={newEventDate}
                     onChange={(e) => setNewEventDate(e.target.value)}
-                    className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:bg-white"
                   />
                 </div>
                 <div>
                   <label className="block font-bold text-slate-700 mb-1">Saat</label>
-                  <input
+                  <TextInput
                     type="text"
+                    radius="xl"
                     placeholder="Örn: 15:30"
                     value={newEventTime}
                     onChange={(e) => setNewEventTime(e.target.value)}
-                    className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:bg-white"
                   />
                 </div>
               </div>
 
               <div>
                 <label className="block font-bold text-slate-700 mb-1">Konum</label>
-                <input
+                <TextInput
                   type="text"
+                  radius="xl"
                   placeholder="Örn: Müdürlük Makamı veya Konferans Salonu"
                   value={newEventLocation}
                   onChange={(e) => setNewEventLocation(e.target.value)}
-                  className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:bg-white"
                 />
               </div>
 
@@ -1742,7 +1730,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                 <select
                   value={newEventType}
                   onChange={(e) => setNewEventType(e.target.value as any)}
-                  className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:bg-white"
+                  className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-semibold focus:bg-white focus:border-brand-500 focus:outline-hidden"
                 >
                   <option value="meeting">Kurul / Toplantı</option>
                   <option value="mem">İlçe MEM</option>
@@ -1753,19 +1741,12 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
               </div>
 
               <div className="flex items-center justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowAddEventModal(false)}
-                  className="py-2.5 px-4 rounded-xl text-slate-600 hover:bg-slate-100 font-bold"
-                >
+                <Button variant="ghost" size="sm" onClick={() => setShowAddEventModal(false)}>
                   Vazgeç
-                </button>
-                <button
-                  type="submit"
-                  className="py-2.5 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black"
-                >
+                </Button>
+                <Button variant="dark" size="sm" type="submit">
                   Ajandaya Kaydet
-                </button>
+                </Button>
               </div>
             </form>
           </div>

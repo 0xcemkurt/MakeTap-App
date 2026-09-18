@@ -14,6 +14,7 @@ import {
   Trophy,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { Button } from './ui/Button';
 
 interface ClassToolsModalProps {
   isOpen: boolean;
@@ -87,11 +88,11 @@ export const ClassToolsModal: React.FC<ClassToolsModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-pop overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-brand-600 text-white flex items-center justify-center">
               <Sparkles className="w-4 h-4" />
             </div>
             <h3 className="font-extrabold text-slate-800 text-base">MakeTab Sınıf Araçları</h3>
@@ -109,7 +110,7 @@ export const ClassToolsModal: React.FC<ClassToolsModalProps> = ({
           <button
             onClick={() => setActiveTool('random')}
             className={`py-2 rounded-xl flex items-center justify-center gap-1.5 transition-all ${
-              activeTool === 'random' ? 'bg-white text-blue-600 shadow-xs' : 'text-slate-600 hover:bg-white/50'
+              activeTool === 'random' ? 'bg-white text-brand-600 shadow-xs' : 'text-slate-600 hover:bg-white/50'
             }`}
           >
             <Shuffle className="w-3.5 h-3.5" />
@@ -118,7 +119,7 @@ export const ClassToolsModal: React.FC<ClassToolsModalProps> = ({
           <button
             onClick={() => setActiveTool('timer')}
             className={`py-2 rounded-xl flex items-center justify-center gap-1.5 transition-all ${
-              activeTool === 'timer' ? 'bg-white text-blue-600 shadow-xs' : 'text-slate-600 hover:bg-white/50'
+              activeTool === 'timer' ? 'bg-white text-brand-600 shadow-xs' : 'text-slate-600 hover:bg-white/50'
             }`}
           >
             <Timer className="w-3.5 h-3.5" />
@@ -127,7 +128,7 @@ export const ClassToolsModal: React.FC<ClassToolsModalProps> = ({
           <button
             onClick={() => setActiveTool('attendance')}
             className={`py-2 rounded-xl flex items-center justify-center gap-1.5 transition-all ${
-              activeTool === 'attendance' ? 'bg-white text-blue-600 shadow-xs' : 'text-slate-600 hover:bg-white/50'
+              activeTool === 'attendance' ? 'bg-white text-brand-600 shadow-xs' : 'text-slate-600 hover:bg-white/50'
             }`}
           >
             <CheckCheck className="w-3.5 h-3.5" />
@@ -156,8 +157,8 @@ export const ClassToolsModal: React.FC<ClassToolsModalProps> = ({
                     </p>
                   </div>
                 ) : (
-                  <div className="text-center p-6 border-2 border-dashed border-slate-200 rounded-3xl w-full">
-                    <Shuffle className="w-10 h-10 text-blue-400 mx-auto mb-2 animate-pulse" />
+                  <div className="text-center p-6 border-2 border-dashed border-slate-200 rounded-2xl w-full">
+                    <Shuffle className="w-10 h-10 text-brand-400 mx-auto mb-2 animate-pulse" />
                     <p className="text-xs font-semibold text-slate-500">
                       Derste soru sormak veya tahtaya kaldırmak için butona bas!
                     </p>
@@ -166,26 +167,29 @@ export const ClassToolsModal: React.FC<ClassToolsModalProps> = ({
               </div>
 
               <div className="flex flex-col sm:flex-row gap-2 w-full">
-                <button
+                <Button
+                  variant="primary"
+                  size="lg"
                   onClick={handlePickRandom}
                   disabled={isSpinning}
-                  className="flex-1 py-3 px-4 rounded-2xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-extrabold text-sm shadow-md shadow-blue-500/30 flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+                  className="flex-1"
                 >
                   <Shuffle className={`w-4 h-4 ${isSpinning ? 'animate-spin' : ''}`} />
                   {isSpinning ? 'Öğrenci Seçiliyor...' : 'Rastgele Öğrenci Seç'}
-                </button>
+                </Button>
 
                 {selectedStudent && !isSpinning && (
-                  <button
+                  <Button
+                    variant="success"
+                    size="lg"
                     onClick={() => {
                       onOpenAwardModal(selectedStudent);
                       onClose();
                     }}
-                    className="py-3 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold text-sm shadow-md shadow-emerald-500/30 flex items-center justify-center gap-1.5 transition-all"
                   >
                     <Trophy className="w-4 h-4" />
                     Puan Ver
-                  </button>
+                  </Button>
                 )}
               </div>
             </div>
@@ -194,11 +198,11 @@ export const ClassToolsModal: React.FC<ClassToolsModalProps> = ({
           {activeTool === 'timer' && (
             <div className="flex flex-col items-center text-center py-4 space-y-6">
               {/* Timer Display */}
-              <div className="w-44 h-44 rounded-full border-8 border-blue-500/20 bg-blue-50/50 flex flex-col items-center justify-center shadow-inner">
+              <div className="w-44 h-44 rounded-full border-8 border-brand-500/20 bg-brand-50/50 flex flex-col items-center justify-center shadow-inner">
                 <span className="text-4xl font-black text-slate-900 tracking-wider font-mono">
                   {formatTime(timerSeconds)}
                 </span>
-                <span className="text-xs text-blue-600 font-bold uppercase tracking-widest mt-1">
+                <span className="text-xs text-brand-600 font-bold uppercase tracking-widest mt-1">
                   {isRunning ? 'Çalışıyor' : 'Durduruldu'}
                 </span>
               </div>
@@ -214,7 +218,7 @@ export const ClassToolsModal: React.FC<ClassToolsModalProps> = ({
                     }}
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors ${
                       timerSeconds === sec
-                        ? 'bg-blue-600 text-white border-blue-600'
+                        ? 'bg-brand-600 text-white border-brand-600'
                         : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                     }`}
                   >
@@ -225,27 +229,25 @@ export const ClassToolsModal: React.FC<ClassToolsModalProps> = ({
 
               {/* Controls */}
               <div className="flex items-center gap-3 w-full">
-                <button
+                <Button
+                  variant={isRunning ? 'amber' : 'success'}
+                  size="lg"
                   onClick={() => setIsRunning(!isRunning)}
-                  className={`flex-1 py-3 px-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2 shadow-md transition-all ${
-                    isRunning
-                      ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-amber-500/30'
-                      : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/30'
-                  }`}
+                  className="flex-1"
                 >
                   {isRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                   {isRunning ? 'Duraklat' : 'Başlat'}
-                </button>
+                </Button>
 
-                <button
+                <Button
+                  variant="ghost"
                   onClick={() => {
                     setIsRunning(false);
                     setTimerSeconds(300);
                   }}
-                  className="py-3 px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm flex items-center justify-center transition-colors"
                 >
                   <RotateCcw className="w-4 h-4" />
-                </button>
+                </Button>
               </div>
             </div>
           )}

@@ -18,6 +18,8 @@ import {
   Search,
   Filter,
 } from 'lucide-react';
+import { Button } from './ui/Button';
+import { TextInput } from './ui/TextInput';
 
 interface AnalyticsReportsProps {
   classroom: Classroom;
@@ -69,9 +71,9 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
   return (
     <div className="space-y-6 pb-12">
       {/* Header */}
-      <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold text-blue-600 uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-xs font-bold text-brand-600 uppercase tracking-wider">
             <BarChart3 className="w-4 h-4" />
             Öğrenci & Sınıf Gelişim Raporlama Paneli
           </div>
@@ -89,7 +91,7 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
             <button
               onClick={() => setTimeRange('week')}
               className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-xl transition-all ${
-                timeRange === 'week' ? 'bg-white text-blue-600 shadow-xs' : 'text-slate-600'
+                timeRange === 'week' ? 'bg-white text-brand-600 shadow-xs' : 'text-slate-600'
               }`}
             >
               Bu Hafta
@@ -97,7 +99,7 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
             <button
               onClick={() => setTimeRange('month')}
               className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-xl transition-all ${
-                timeRange === 'month' ? 'bg-white text-blue-600 shadow-xs' : 'text-slate-600'
+                timeRange === 'month' ? 'bg-white text-brand-600 shadow-xs' : 'text-slate-600'
               }`}
             >
               Bu Ay
@@ -105,30 +107,31 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
             <button
               onClick={() => setTimeRange('term')}
               className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-xl transition-all ${
-                timeRange === 'term' ? 'bg-white text-blue-600 shadow-xs' : 'text-slate-600'
+                timeRange === 'term' ? 'bg-white text-brand-600 shadow-xs' : 'text-slate-600'
               }`}
             >
               Dönemlik
             </button>
           </div>
 
-          <button
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => window.print()}
-            className="p-2.5 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition-colors shadow-2xs"
             title="Raporu Yazdır"
           >
             <Printer className="w-4 h-4" />
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Top 4 KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Card 1: Toplam Puan */}
-        <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/80 shadow-xs space-y-2">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs space-y-2">
           <div className="flex justify-between items-center text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Sınıf Puanı</span>
-            <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center">
               <Award className="w-4 h-4" />
             </div>
           </div>
@@ -142,7 +145,7 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
         </div>
 
         {/* Card 2: Pozitif Oran */}
-        <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/80 shadow-xs space-y-2">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs space-y-2">
           <div className="flex justify-between items-center text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Olumlu Tutum</span>
             <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
@@ -158,7 +161,7 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
         </div>
 
         {/* Card 3: Günlük Devamlılık */}
-        <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/80 shadow-xs space-y-2">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs space-y-2">
           <div className="flex justify-between items-center text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Yoklama Durumu</span>
             <div className="w-8 h-8 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
@@ -176,7 +179,7 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
         </div>
 
         {/* Card 4: Öğrenci Ortalaması */}
-        <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/80 shadow-xs space-y-2">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs space-y-2">
           <div className="flex justify-between items-center text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Öğrenci Başı</span>
             <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
@@ -195,9 +198,9 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
       {/* 2 Sütun: Davranış Dağılımı ve Sınıf Hedef Çubuğu */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Davranış Dağılım Kartı */}
-        <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-xs space-y-4">
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4">
           <h3 className="text-sm font-extrabold text-slate-800 flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-blue-600" />
+            <BarChart3 className="w-4 h-4 text-brand-600" />
             En Çok Kazanılan Beceriler ve Erdemler
           </h3>
 
@@ -237,7 +240,7 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
         </div>
 
         {/* Sınıf Hedefi ve Veli İletişim İstatistiği */}
-        <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-xs space-y-4 flex flex-col justify-between">
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4 flex flex-col justify-between">
           <div>
             <h3 className="text-sm font-extrabold text-slate-800 flex items-center gap-2 mb-3">
               <Award className="w-4 h-4 text-amber-500" />
@@ -251,12 +254,12 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
             {/* Progress bar */}
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs font-bold">
-                <span className="text-blue-600">İlerleme: {totalClassPoints} / {classroom.pointsGoal}</span>
+                <span className="text-brand-600">İlerleme: {totalClassPoints} / {classroom.pointsGoal}</span>
                 <span className="text-slate-400">%{Math.round((totalClassPoints / classroom.pointsGoal) * 100)}</span>
               </div>
               <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden p-0.5 border border-slate-200">
                 <div
-                  className="bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 h-full rounded-full transition-all duration-500"
+                  className="bg-gradient-to-r from-brand-600 via-indigo-600 to-emerald-500 h-full rounded-full transition-all duration-500"
                   style={{
                     width: `${Math.min(100, Math.round((totalClassPoints / classroom.pointsGoal) * 100))}%`,
                   }}
@@ -265,12 +268,12 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
             </div>
           </div>
 
-          <div className="p-4 rounded-2xl bg-blue-50/70 border border-blue-100 space-y-2">
-            <div className="text-xs font-bold text-blue-900 flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-blue-600" />
+          <div className="p-4 rounded-2xl bg-brand-50/70 border border-brand-100 space-y-2">
+            <div className="text-xs font-bold text-brand-900 flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-brand-600" />
               Veli Bağlantı Oranı: %{Math.round((students.filter((s) => s.parentConnected).length / students.length) * 100)}
             </div>
-            <p className="text-[11px] text-blue-700 leading-snug">
+            <p className="text-[11px] text-brand-700 leading-snug">
               {students.filter((s) => s.parentConnected).length} / {students.length} veli MakeTab mobil platformuna bağlı ve gelişim bildirimlerini anlık alıyor.
             </p>
           </div>
@@ -278,7 +281,7 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
       </div>
 
       {/* Öğrenci Gelişim Tablosu & Karneleri */}
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
         <div className="p-4 sm:p-5 border-b border-slate-100 flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-slate-50/70">
           <div>
             <h3 className="text-sm sm:text-base font-extrabold text-slate-900">
@@ -290,14 +293,14 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
           </div>
 
           {/* Search bar */}
-          <div className="relative w-full sm:w-64">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
-            <input
+          <div className="w-full sm:w-64">
+            <TextInput
               type="text"
+              radius="xl"
               placeholder="Öğrenci ara..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl bg-white border border-slate-200 focus:outline-hidden focus:border-blue-500"
+              leftIcon={<Search />}
             />
           </div>
         </div>
@@ -356,12 +359,13 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
                     )}
                   </td>
                   <td className="py-3 px-4 text-right">
-                    <button
+                    <Button
+                      variant="softBrand"
+                      size="sm"
                       onClick={() => setSelectedStudentForReport(std)}
-                      className="py-1 px-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-[11px] transition-colors"
                     >
                       Karnesini Gör
-                    </button>
+                    </Button>
                   </td>
                 </tr>
               ))}
@@ -373,7 +377,7 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
       {/* Student Detailed Report Modal */}
       {selectedStudentForReport && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
-          <div className="w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+          <div className="w-full max-w-lg bg-white rounded-2xl shadow-pop overflow-hidden flex flex-col max-h-[85vh]">
             <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
               <div className="flex items-center gap-3">
                 <StudentAvatar
@@ -458,19 +462,13 @@ export const AnalyticsReports: React.FC<AnalyticsReportsProps> = ({ classroom })
             </div>
 
             <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
-              <button
-                onClick={() => window.print()}
-                className="py-2 px-3 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 shadow-2xs"
-              >
+              <Button variant="secondary" size="sm" onClick={() => window.print()}>
                 <Printer className="w-3.5 h-3.5" />
                 Karnesini Yazdır
-              </button>
-              <button
-                onClick={() => setSelectedStudentForReport(null)}
-                className="py-2 px-4 rounded-xl bg-blue-600 text-white font-bold text-xs"
-              >
+              </Button>
+              <Button variant="primary" size="sm" onClick={() => setSelectedStudentForReport(null)}>
                 Kapat
-              </button>
+              </Button>
             </div>
           </div>
         </div>

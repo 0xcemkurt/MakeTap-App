@@ -38,7 +38,7 @@ export const MakeTabLogo: React.FC<MakeTabLogoProps> = ({
         <div className="flex flex-col">
           <div className="flex items-center gap-1.5">
             <span className={`font-extrabold tracking-tight text-xl sm:text-2xl ${textColor} font-sans`}>
-              Make<span className="text-blue-600">Tab</span>
+              Make<span className="text-brand-600">Tab</span>
             </span>
           </div>
           {subtext && (

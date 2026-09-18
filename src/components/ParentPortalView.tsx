@@ -1,6 +1,8 @@
 import React from 'react';
 import { Student, Classroom } from '../types';
 import { StudentAvatar } from './StudentAvatar';
+import { Button } from './ui/Button';
+import { Badge } from './ui/Badge';
 import {
   Heart,
   Sparkles,
@@ -34,7 +36,7 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
   return (
     <div className="space-y-6 pb-12 max-w-2xl mx-auto">
       {/* Veli Karşılama Kartı */}
-      <div className="bg-gradient-to-br from-blue-600 via-indigo-600 to-sky-600 rounded-3xl p-5 sm:p-6 text-white shadow-xl shadow-blue-500/20 relative overflow-hidden">
+      <div className="bg-gradient-to-br from-brand-700 via-brand-600 to-indigo-600 rounded-2xl p-5 sm:p-6 text-white shadow-card relative overflow-hidden">
         <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none -mr-10 -mt-10" />
         <div className="relative z-10 flex items-center justify-between gap-4">
           <div className="space-y-1">
@@ -44,7 +46,7 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
             <h2 className="text-xl sm:text-2xl font-black tracking-tight mt-1">
               4-A Sınıfı • {student.name} {student.surname}
             </h2>
-            <p className="text-blue-100 text-xs sm:text-sm font-medium">
+            <p className="text-brand-100 text-xs sm:text-sm font-medium">
               Günlük başarılar, ödevler ve karakter gelişim karnesi (Öğretmen: Hakan KAVUZKOZ)
             </p>
           </div>
@@ -60,7 +62,7 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
       </div>
 
       {/* Çocuğun Günlük Özeti (Büyük Puan ve Durum) */}
-      <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-xs space-y-4">
+      <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div className="flex items-center gap-2">
             <Trophy className="w-5 h-5 text-amber-500" />
@@ -92,28 +94,22 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
 
         {/* Quick action buttons for parents */}
         <div className="grid grid-cols-2 gap-2.5 pt-2">
-          <button
-            onClick={onOpenChat}
-            className="py-2.5 px-3 rounded-2xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
-          >
+          <Button variant="softBrand" onClick={onOpenChat}>
             <MessageCircle className="w-4 h-4" />
             Öğretmene Mesaj Yaz
-          </button>
+          </Button>
 
-          <button
-            onClick={onOpenCharacterAnalysis}
-            className="py-2.5 px-3 rounded-2xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
-          >
+          <Button variant="softIndigo" onClick={onOpenCharacterAnalysis}>
             <Sparkles className="w-4 h-4" />
             Öğrenci Analizini Gör
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Son Davranışlar & Öğretmen Notları */}
-      <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-xs space-y-3">
+      <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-3">
         <h3 className="font-extrabold text-slate-800 text-sm flex items-center gap-2">
-          <Award className="w-4 h-4 text-blue-600" />
+          <Award className="w-4 h-4 text-brand-600" />
           Son Kazanılan Puanlar ve Öğretmen Yorumları
         </h3>
 
@@ -133,14 +129,14 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
                     "{log.note}"
                   </p>
                 )}
-                <p className="text-[10px] text-blue-600 font-semibold">
+                <p className="text-[10px] text-brand-600 font-semibold">
                   Tarafından verildi: {log.awardedBy}
                 </p>
               </div>
 
-              <span className="font-black text-xs px-2 py-1 rounded-xl bg-emerald-100 text-emerald-700 shrink-0">
+              <Badge tone="emerald" className="shrink-0">
                 +{log.pointValue}
-              </span>
+              </Badge>
             </div>
           ))}
         </div>
@@ -149,10 +145,10 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
       {/* Sınıf Akışı Teaser */}
       <div
         onClick={onOpenStory}
-        className="bg-white rounded-3xl p-5 border border-slate-200 hover:border-blue-300 shadow-xs cursor-pointer transition-all flex items-center justify-between"
+        className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-brand-300 shadow-xs cursor-pointer transition-all flex items-center justify-between"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-2xl bg-brand-100 text-brand-700 flex items-center justify-center">
             <Megaphone className="w-5 h-5" />
           </div>
           <div>

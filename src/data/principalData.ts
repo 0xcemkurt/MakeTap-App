@@ -21,18 +21,20 @@ export const DEMO_PRINCIPAL: AuthUser = {
 };
 
 // 8 Sınıfın Özet Verileri
+// NOT (Hafif MVP): class-4a özeti, demo CLASSROOM (16 öğrenci, initialData.ts) ile tutarlı.
+// Diğer şubeler okul geneli illüstratif aggregate'tir.
 export const INITIAL_CLASSES_SUMMARY: SchoolClassSummary[] = [
   {
     id: 'class-4a',
     name: '4-A Bilim ve Keşif',
     grade: 4,
     teacherName: 'Hakan KAVUZKOZ',
-    studentCount: 28,
-    presentCount: 27,
-    attendanceRate: 96.4,
-    totalPoints: 12450,
-    averageEfficiency: 94,
-    parentAppAdoptionRate: 96.4,
+    studentCount: 16,
+    presentCount: 14,
+    attendanceRate: 87.5,
+    totalPoints: 342,
+    averageEfficiency: 91,
+    parentAppAdoptionRate: 87.5,
     academicBadge: '🏆 STEM & Bilim Öncüsü',
     status: 'excellent',
   },

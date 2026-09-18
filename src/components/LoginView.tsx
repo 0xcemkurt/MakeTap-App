@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { AuthUser } from '../types';
 import { MakeTabLogo } from './MakeTabLogo';
+import { Button } from './ui/Button';
+import { Badge } from './ui/Badge';
+import { TextInput } from './ui/TextInput';
 import { DEMO_PRINCIPAL } from '../data/principalData';
 import {
   LogIn,
@@ -74,11 +77,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
 
   // Teacher Form State
   const [username, setUsername] = useState('Hakan KAVUZKOZ');
-  const [password, setPassword] = useState('123456789');
+  const [password, setPassword] = useState('');
 
   // Principal Form State
   const [principalUsername, setPrincipalUsername] = useState('Dr. Mehmet YILMAZ');
-  const [principalPassword, setPrincipalPassword] = useState('123456789');
+  const [principalPassword, setPrincipalPassword] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
@@ -108,9 +111,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
         onLogin(DEMO_TEACHER);
       } else {
         setIsLoading(false);
-        setError(
-          'Kullanıcı adı veya şifre hatalı! Lütfen demo hesabını kullanınız (Kullanıcı Adı: Hakan KAVUZKOZ, Şifre: 123456789).'
-        );
+        setError('Kullanıcı adı veya şifre hatalı. Lütfen bilgilerinizi kontrol edip tekrar deneyin.');
       }
     }, 350);
   };
@@ -138,9 +139,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
         onLogin(DEMO_PRINCIPAL);
       } else {
         setIsLoading(false);
-        setError(
-          'Müdürlük kullanıcı adı veya şifresi hatalı! (Demo: Dr. Mehmet YILMAZ, Şifre: 123456789)'
-        );
+        setError('Yönetici kullanıcı adı veya şifresi hatalı. Lütfen tekrar deneyin.');
       }
     }, 350);
   };
@@ -166,31 +165,30 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
         </>
       )}
 
-      {/* Demo Help Modal */}
+      {/* Help Modal */}
       {showForgotModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150">
-          <div className="bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border border-slate-200 text-slate-800">
-            <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mb-4 mx-auto">
+          <div className="bg-white rounded-2xl p-6 sm:p-7 max-w-md w-full shadow-pop border border-slate-200 text-slate-800">
+            <div className="w-12 h-12 rounded-2xl bg-brand-100 text-brand-600 flex items-center justify-center mb-4 mx-auto">
               <HelpCircle className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-black text-slate-900 text-center mb-2">
-              Demo Hesap Bilgileri
+              Giriş Yardımı
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 text-center mb-4 leading-relaxed">
-              MakeTab sisteminde doğrudan tanımlanmış iki farklı yetkili hesabı bulunmaktadır:
+              Öğretmen hesabınızla sınıfınıza, müdür hesabınızla yönetim masasına erişebilirsiniz.
+              Şifrenizi unuttuysanız lütfen okul yönetiminiz ile iletişime geçin.
             </p>
 
             <div className="space-y-3 mb-5 text-xs">
               <div className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200">
-                <span className="font-black text-blue-900 block mb-1">1. Öğretmen Girişi:</span>
-                <div className="text-slate-700">Kullanıcı: <strong>Hakan KAVUZKOZ</strong></div>
-                <div className="text-slate-700">Şifre: <strong>123456789</strong></div>
+                <span className="font-black text-blue-900 block mb-1">Öğretmen Girişi:</span>
+                <div className="text-slate-700">Kurumsal kullanıcı adınız ve şifreniz ile giriş yapın.</div>
               </div>
 
               <div className="bg-amber-50 rounded-2xl p-3.5 border border-amber-200">
-                <span className="font-black text-amber-900 block mb-1">2. Okul Müdürü Girişi (Üst Mod):</span>
-                <div className="text-slate-700">Kullanıcı: <strong>Dr. Mehmet YILMAZ</strong></div>
-                <div className="text-slate-700">Şifre: <strong>123456789</strong></div>
+                <span className="font-black text-amber-900 block mb-1">Okul Müdürü Girişi:</span>
+                <div className="text-slate-700">MEB yönetici hesabınız ile üst yönetim masasını açın.</div>
               </div>
             </div>
 
@@ -222,7 +220,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
       {/* ============================================================== */}
       {loginMode === 'principal' ? (
         <div className="max-w-md w-full mx-auto my-6 animate-in fade-in zoom-in-95 duration-200">
-          <div className="bg-slate-900/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-amber-500/50 relative overflow-hidden">
+          <div className="bg-slate-900/90 backdrop-blur-xl rounded-2xl p-6 sm:p-8 shadow-pop border-2 border-amber-500/50 relative overflow-hidden">
             {/* Top Amber Bar */}
             <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600" />
 
@@ -257,16 +255,14 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
               </p>
             </div>
 
-            {/* Quick One-Click Principal Login Banner */}
+            {/* Quick Principal Login Banner */}
             <div className="mb-5 rounded-2xl bg-gradient-to-br from-amber-950/60 to-slate-800/80 border border-amber-500/40 p-4 text-xs">
               <div className="flex items-center justify-between gap-2 mb-2">
                 <div className="flex items-center gap-1.5 font-black text-amber-300">
                   <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span>Tanımlı Okul Müdürü Hesabı</span>
+                  <span>Kayıtlı Yönetici Hesabı</span>
                 </div>
-                <span className="text-[10px] px-2 py-0.5 bg-amber-500 text-slate-950 rounded-full font-black">
-                  Resmi Makam
-                </span>
+                <Badge tone="amber">Resmi Makam</Badge>
               </div>
 
               <div className="bg-slate-950/80 rounded-xl p-2.5 border border-amber-500/20 mb-3 space-y-1 text-slate-300">
@@ -274,25 +270,22 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                   <span className="text-slate-400 font-semibold">Müdür:</span>
                   <span className="font-black text-amber-200">Dr. Mehmet YILMAZ</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-400 font-semibold">Şifre:</span>
-                  <span className="font-mono font-black text-amber-400">123456789</span>
-                </div>
                 <div className="flex items-center justify-between pt-0.5 border-t border-slate-800 text-[11px]">
                   <span className="text-slate-400">Yetki:</span>
                   <span className="text-emerald-400 font-bold">Tüm Sınıflar, Öğretmenler, Bütçe & AI</span>
                 </div>
               </div>
 
-              <button
-                type="button"
+              <Button
+                variant="amber"
+                size="md"
+                className="w-full"
                 onClick={() => onLogin(DEMO_PRINCIPAL)}
-                className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 active:scale-[0.98] text-slate-950 text-xs font-black transition-all shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <SuitTieIcon className="w-4 h-4 text-slate-950" />
-                <span>Dr. Mehmet YILMAZ Olarak Tek Tıkla Giriş Yap</span>
+                <span>Yönetici Olarak Devam Et</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              </Button>
             </div>
 
             {/* Error Message */}
@@ -309,45 +302,48 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                 <label className="block text-xs font-bold text-slate-300 mb-1.5">
                   MEB Yönetici Kullanıcı Adı
                 </label>
-                <div className="relative">
-                  <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    required
-                    value={principalUsername}
-                    onChange={(e) => setPrincipalUsername(e.target.value)}
-                    className="w-full pl-10 pr-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-semibold text-xs focus:outline-hidden focus:border-amber-400"
-                  />
-                </div>
+                <TextInput
+                  tone="dark"
+                  radius="xl"
+                  type="text"
+                  required
+                  value={principalUsername}
+                  onChange={(e) => setPrincipalUsername(e.target.value)}
+                  leftIcon={<User />}
+                />
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-300 mb-1.5">
                   Yönetici Şifresi
                 </label>
-                <div className="relative">
-                  <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    value={principalPassword}
-                    onChange={(e) => setPrincipalPassword(e.target.value)}
-                    className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-semibold text-xs focus:outline-hidden focus:border-amber-400 font-mono"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
+                <TextInput
+                  tone="dark"
+                  radius="xl"
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  mono
+                  value={principalPassword}
+                  onChange={(e) => setPrincipalPassword(e.target.value)}
+                  leftIcon={<KeyRound />}
+                  rightSlot={
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="text-slate-400 hover:text-white p-1"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  }
+                />
               </div>
 
-              <button
+              <Button
                 type="submit"
+                variant="amber"
+                size="lg"
                 disabled={isLoading}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20 disabled:opacity-70"
+                className="w-full rounded-xl"
               >
                 {isLoading ? (
                   <span>Giriş Doğrulanıyor...</span>
@@ -357,7 +353,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                     <span>Okul Müdürü Yönetim Masasını Aç</span>
                   </>
                 )}
-              </button>
+              </Button>
             </form>
           </div>
         </div>
@@ -366,15 +362,13 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
         /* MODE 2: STANDART ÖĞRETMEN & VELİ GİRİŞİ                        */
         /* ============================================================== */
         <div className="max-w-md w-full mx-auto my-6 animate-in fade-in zoom-in-95 duration-200">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/60 border border-slate-200/80">
+          <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-card border border-slate-200/80">
             {/* Friendly Greeting & Monster Banner */}
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
               <div>
                 <h2 className="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
                   <span>Üye Girişi</span>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-blue-100 text-blue-700">
-                    MEB Uyumlu
-                  </span>
+                  <Badge tone="brand">MEB Uyumlu</Badge>
                 </h2>
                 <p className="text-xs text-slate-500 font-semibold mt-0.5">
                   Sınıfınıza veya veli portalınıza erişin
@@ -382,7 +376,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
               </div>
               <div className="flex -space-x-1.5">
                 <span
-                  className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs font-black shadow-xs border border-white"
+                  className="w-8 h-8 rounded-xl bg-brand-600 text-white flex items-center justify-center text-xs font-black shadow-xs border border-white"
                   title="MakeTab Akıllı Sınıf"
                 >
                   <Sparkles className="w-4 h-4 text-amber-300" />
@@ -396,90 +390,48 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
               </div>
             </div>
 
-            {/* =============================================================== */}
-            {/* THE USER REQUESTED BUTTON:                                      */}
-            {/* "bir buton ekle ve takım elbise ikonu koy, altında Okul Müdürü Giriş yaz" */}
-            {/* =============================================================== */}
-            <div className="mb-4">
-              <button
-                type="button"
-                id="btn-principal-mode-login"
-                onClick={() => {
-                  setLoginMode('principal');
-                  setError(null);
-                }}
-                className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 text-white border-2 border-amber-400 shadow-lg shadow-amber-500/15 hover:border-amber-300 hover:shadow-amber-500/25 active:scale-[0.98] transition-all flex flex-col items-center justify-center gap-1 group cursor-pointer"
-              >
-                {/* Takım Elbise İkonu */}
-                <div className="w-10 h-10 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
-                  <SuitTieIcon className="w-6 h-6" />
-                </div>
-
-                {/* Altında "Okul Müdürü Giriş" yazısı */}
-                <span className="text-sm sm:text-base font-black tracking-wide text-amber-300 mt-0.5">
-                  Okul Müdürü Giriş
-                </span>
-
-                <span className="text-[10px] text-slate-300 font-medium">
-                  Tüm Sınıflar, Öğretmen Puanlamaları, AI İçgörüler & Finans
-                </span>
-              </button>
-            </div>
-
-            {/* Quick Demo Login Banner for Teacher */}
-            <div className="mb-5 rounded-2xl bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-200/90 p-3.5 sm:p-4 text-xs">
+            {/* Quick Teacher Login Banner */}
+            <div className="mb-5 rounded-2xl bg-brand-50 border border-brand-100 p-3.5 sm:p-4 text-xs">
               <div className="flex items-start justify-between gap-2 mb-2">
-                <div className="flex items-center gap-1.5 font-black text-blue-900 text-xs">
+                <div className="flex items-center gap-1.5 font-black text-brand-800 text-xs">
                   <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
-                  <span>Tanımlı Demo Öğretmen Girişi</span>
+                  <span>Kayıtlı Öğretmen Hesabı</span>
                 </div>
-                <span className="text-[10px] px-2 py-0.5 bg-blue-600 text-white rounded-full font-black">
-                  Aktif Demo
-                </span>
+                <Badge tone="brand">4-A Sınıfı</Badge>
               </div>
 
-              <div className="bg-white/95 rounded-2xl p-3 border border-blue-200/60 mb-3 space-y-2 text-slate-700">
+              <div className="bg-white/95 rounded-2xl p-3 border border-brand-100 mb-3 space-y-2 text-slate-700">
                 <div className="flex items-center gap-3">
                   <img
                     src="/hakan_kavuzkoz.jpg"
                     alt="Hakan KAVUZKOZ"
                     referrerPolicy="no-referrer"
-                    className="w-12 h-12 rounded-xl object-cover border-2 border-blue-500 shadow-sm shrink-0"
+                    className="w-12 h-12 rounded-xl object-cover border-2 border-brand-500 shadow-sm shrink-0"
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
                       <span className="font-black text-slate-900 text-sm truncate">Hakan KAVUZKOZ</span>
-                      <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md">4-A Sınıfı</span>
+                      <Badge tone="brand">4-A Sınıfı</Badge>
                     </div>
                     <p className="text-[11px] text-slate-500 font-semibold truncate">Uzman Sınıf Öğretmeni & STEM Koordinatörü</p>
                   </div>
                 </div>
-
-                <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-100 text-[11px]">
-                  <div>
-                    <span className="text-slate-400 font-medium block">Kullanıcı Adı:</span>
-                    <strong className="text-slate-800 font-mono">Hakan KAVUZKOZ</strong>
-                  </div>
-                  <div>
-                    <span className="text-slate-400 font-medium block">Şifre:</span>
-                    <strong className="text-blue-700 font-mono">123456789</strong>
-                  </div>
-                </div>
               </div>
 
-              <button
-                type="button"
+              <Button
+                variant="primary"
+                size="md"
+                className="w-full"
                 onClick={() => {
                   setUsername('Hakan KAVUZKOZ');
                   setPassword('123456789');
                   onLogin(DEMO_TEACHER);
                 }}
-                className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.98] text-white text-xs font-black transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <LogIn className="w-3.5 h-3.5" />
-                <span>Hakan KAVUZKOZ Hesabıyla Giriş Yap</span>
+                <span>Öğretmen Olarak Devam Et</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              </Button>
             </div>
 
             {/* Error Banner */}
@@ -496,39 +448,36 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
                   Kullanıcı Adı veya E-Posta
                 </label>
-                <div className="relative">
-                  <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                  <input
-                    type="text"
-                    required
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Örn: Hakan KAVUZKOZ"
-                    className="w-full pl-10 pr-3 py-2.5 text-xs sm:text-sm font-semibold rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-slate-800 placeholder:text-slate-400"
-                  />
-                </div>
+                <TextInput
+                  type="text"
+                  required
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Örn: Hakan KAVUZKOZ"
+                  leftIcon={<User />}
+                />
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1.5">Şifre</label>
-                <div className="relative">
-                  <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="•••••••••"
-                    className="w-full pl-10 pr-10 py-2.5 text-xs sm:text-sm font-semibold rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-slate-800 font-mono"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
+                <TextInput
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  mono
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="•••••••••"
+                  leftIcon={<KeyRound />}
+                  rightSlot={
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="text-slate-400 hover:text-slate-600 transition-colors p-1"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  }
+                />
               </div>
 
               <div className="flex items-center justify-between pt-1">
@@ -537,7 +486,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 rounded-md border-slate-300 text-blue-600 focus:ring-blue-500"
+                    className="w-4 h-4 rounded-md border-slate-300 text-brand-600 focus:ring-brand-500"
                   />
                   <span className="text-xs font-bold text-slate-600">Beni Hatırla</span>
                 </label>
@@ -548,14 +497,16 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                   className="text-xs font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1"
                 >
                   <HelpCircle className="w-3.5 h-3.5" />
-                  <span>Demo İpuçları</span>
+                  <span>Giriş Yardımı</span>
                 </button>
               </div>
 
-              <button
+              <Button
                 type="submit"
+                variant="primary"
+                size="lg"
                 disabled={isLoading}
-                className="w-full mt-2 py-3 px-4 rounded-2xl bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white text-xs sm:text-sm font-black transition-all shadow-md shadow-blue-500/25 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full mt-2"
               >
                 {isLoading ? (
                   <div className="flex items-center gap-2">
@@ -568,8 +519,26 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                     <span>Sisteme Giriş Yap</span>
                   </>
                 )}
-              </button>
+              </Button>
             </form>
+
+            {/* Müdür girişi: küçük alternatif bağlantı */}
+            <div className="mt-4 pt-4 border-t border-slate-100 flex justify-center">
+              <button
+                type="button"
+                id="btn-principal-mode-login"
+                onClick={() => {
+                  setLoginMode('principal');
+                  setError(null);
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold text-slate-500 hover:text-amber-700 hover:bg-amber-50 border border-transparent hover:border-amber-200 transition-all cursor-pointer"
+                title="Okul yönetimi hesabıyla giriş"
+              >
+                <SuitTieIcon className="w-3.5 h-3.5 text-amber-500" />
+                <span>Okul Müdürü Girişi</span>
+                <ChevronLeft className="w-3 h-3 rotate-180" />
+              </button>
+            </div>
           </div>
 
           {/* Security info */}

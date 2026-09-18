@@ -14,6 +14,8 @@ import {
   Calendar,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { Button } from './ui/Button';
+import { TextInput } from './ui/TextInput';
 
 interface PartnerSponsorModalProps {
   isOpen: boolean;
@@ -48,7 +50,7 @@ export const PartnerSponsorModal: React.FC<PartnerSponsorModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="bg-white rounded-3xl max-w-2xl w-full border border-slate-200 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="bg-white rounded-2xl max-w-2xl w-full border border-slate-200 shadow-pop overflow-hidden flex flex-col max-h-[92vh]">
         {/* Header */}
         <div className="p-4 sm:p-5 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex items-center justify-between border-b border-indigo-900/50">
           <div className="flex items-center gap-3">
@@ -113,7 +115,7 @@ export const PartnerSponsorModal: React.FC<PartnerSponsorModalProps> = ({
                   <span className="text-[11px] font-bold text-slate-800">Canlı Bilim & Sanat Atölyeleri</span>
                 </div>
                 <div className="bg-white/80 p-2.5 rounded-xl border border-amber-200 flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-blue-600 shrink-0" />
+                  <TrendingUp className="w-4 h-4 text-brand-600 shrink-0" />
                   <span className="text-[11px] font-bold text-slate-800">Toplu Sınıf Alımı & Fonlama</span>
                 </div>
               </div>
@@ -122,55 +124,55 @@ export const PartnerSponsorModal: React.FC<PartnerSponsorModalProps> = ({
             {/* Application Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <h4 className="text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                <Building className="w-3.5 h-3.5 text-blue-600" />
+                <Building className="w-3.5 h-3.5 text-brand-600" />
                 Firma & Etkinlik Başvuru Formu
               </h4>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="text-[11px] font-bold text-slate-700">Firma / Kurum Adı *</label>
-                  <input
+                  <TextInput
                     type="text"
                     required
+                    radius="xl"
                     placeholder="Örn: BilimX Akademi, Doğa STEM A.Ş."
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
-                    className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-hidden focus:border-blue-500 font-medium"
                   />
                 </div>
 
                 <div className="space-y-1">
                   <label className="text-[11px] font-bold text-slate-700">Yetkili Adı Soyadı *</label>
-                  <input
+                  <TextInput
                     type="text"
                     required
+                    radius="xl"
                     placeholder="Ad Soyad"
                     value={contactName}
                     onChange={(e) => setContactName(e.target.value)}
-                    className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-hidden focus:border-blue-500 font-medium"
                   />
                 </div>
 
                 <div className="space-y-1">
                   <label className="text-[11px] font-bold text-slate-700">Telefon Numarası *</label>
-                  <input
+                  <TextInput
                     type="tel"
                     required
+                    radius="xl"
                     placeholder="05XX XXX XX XX"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-hidden focus:border-blue-500 font-medium"
                   />
                 </div>
 
                 <div className="space-y-1">
                   <label className="text-[11px] font-bold text-slate-700">Kurumsal E-Posta</label>
-                  <input
+                  <TextInput
                     type="email"
+                    radius="xl"
                     placeholder="iletisim@sirketiniz.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-hidden focus:border-blue-500 font-medium"
                   />
                 </div>
               </div>
@@ -191,7 +193,7 @@ export const PartnerSponsorModal: React.FC<PartnerSponsorModalProps> = ({
                       onClick={() => setCategory(cat.id as any)}
                       className={`p-2 rounded-xl text-[11px] font-bold border text-left transition-all ${
                         category === cat.id
-                          ? 'bg-blue-50 border-blue-500 text-blue-800 ring-1 ring-blue-500'
+                          ? 'bg-brand-50 border-brand-500 text-brand-800 ring-1 ring-brand-500'
                           : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
                       }`}
                     >
@@ -208,25 +210,18 @@ export const PartnerSponsorModal: React.FC<PartnerSponsorModalProps> = ({
                   placeholder="Okullara ve sınıflara sunmak istediğiniz ürün, kit veya atölye içeriği hakkında kısa bilgi..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-hidden focus:border-blue-500 font-medium resize-none"
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-hidden focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 font-medium resize-none"
                 />
               </div>
 
               <div className="pt-2 flex items-center justify-end gap-2.5">
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 rounded-xl"
-                >
+                <Button variant="ghost" size="sm" onClick={onClose}>
                   Vazgeç
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white text-xs font-black shadow-md shadow-blue-500/20 flex items-center gap-2 cursor-pointer transition-all"
-                >
+                </Button>
+                <Button variant="primary" size="md" type="submit">
                   <Send className="w-3.5 h-3.5" />
                   <span>Vitrin Başvurusunu Gönder</span>
-                </button>
+                </Button>
               </div>
             </form>
           </div>

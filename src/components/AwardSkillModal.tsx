@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { BehaviorSkill, Student } from '../types';
 import { StudentAvatar } from './StudentAvatar';
+import { Badge } from './ui/Badge';
+import { TextInput } from './ui/TextInput';
 import confetti from 'canvas-confetti';
 import {
   HeartHandshake,
@@ -96,7 +98,7 @@ export const AwardSkillModal: React.FC<AwardSkillModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity animate-in fade-in">
       <div
-        className="w-full max-w-lg sm:max-w-xl bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] sm:max-h-[88vh] animate-in slide-in-from-bottom duration-200"
+        className="w-full max-w-lg sm:max-w-xl bg-white rounded-t-2xl sm:rounded-2xl shadow-pop overflow-hidden flex flex-col max-h-[92vh] sm:max-h-[88vh] animate-in slide-in-from-bottom duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header bar */}
@@ -110,7 +112,7 @@ export const AwardSkillModal: React.FC<AwardSkillModalProps> = ({
                 size="sm"
               />
             ) : (
-              <div className="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20">
+              <div className="w-10 h-10 rounded-2xl bg-brand-600 text-white flex items-center justify-center shadow-md shadow-brand-600/20">
                 <Users className="w-5 h-5" />
               </div>
             )}
@@ -138,9 +140,7 @@ export const AwardSkillModal: React.FC<AwardSkillModalProps> = ({
           <div className="px-5 py-2.5 bg-slate-50/90 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs">
             <div className="flex items-center gap-2 flex-wrap">
               {targetStudent.archetypeLabel && (
-                <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-black">
-                  {targetStudent.archetypeLabel}
-                </span>
+                <Badge tone="brand">{targetStudent.archetypeLabel}</Badge>
               )}
               {targetStudent.bestFriendName && (
                 <span className="text-[11px] font-semibold text-slate-600">
@@ -201,19 +201,19 @@ export const AwardSkillModal: React.FC<AwardSkillModalProps> = ({
           {!showNoteInput ? (
             <button
               onClick={() => setShowNoteInput(true)}
-              className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1.5 py-1"
+              className="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center gap-1.5 py-1"
             >
               <MessageSquare className="w-3.5 h-3.5" />
               + Öğretmen Gözlem Notu Ekle (İsteğe Bağlı)
             </button>
           ) : (
             <div className="space-y-1.5">
-              <input
+              <TextInput
                 type="text"
+                radius="xl"
                 placeholder="Örn: Bugün fen deneyinde arkadaşlarına çok yardımcı oldu..."
                 value={customNote}
                 onChange={(e) => setCustomNote(e.target.value)}
-                className="w-full text-xs px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-hidden focus:border-blue-500 transition-colors"
                 autoFocus
               />
               <div className="flex justify-between items-center text-[10px] text-slate-400">
@@ -240,7 +240,7 @@ export const AwardSkillModal: React.FC<AwardSkillModalProps> = ({
               <button
                 key={skill.id}
                 onClick={() => handleSelectSkill(skill)}
-                className="group p-3.5 pb-4 sm:p-4 sm:pb-5 rounded-2xl border border-slate-200/90 bg-white hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all flex flex-col items-center justify-between text-center relative min-h-[160px] sm:min-h-[170px]"
+                className="group p-3.5 pb-4 sm:p-4 sm:pb-5 rounded-2xl border border-slate-200/90 bg-white hover:border-brand-300 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all flex flex-col items-center justify-between text-center relative min-h-[160px] sm:min-h-[170px]"
               >
                 {/* Point badge pill */}
                 <div

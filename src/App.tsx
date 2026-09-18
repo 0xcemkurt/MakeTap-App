@@ -65,7 +65,11 @@ import {
   UserCheck,
   Wallet,
   Bot,
+  Eye,
+  X,
 } from 'lucide-react';
+import { usePersistentState, clearDemoStorage } from './hooks/usePersistentState';
+import { Button } from './components/ui/Button';
 
 export default function App() {
   // Authentication State (defaults to null to prompt Member Login Screen, remembers session via localStorage)
@@ -87,8 +91,8 @@ export default function App() {
     }
   });
 
-  // Application State
-  const [classroom, setClassroom] = useState<Classroom>(INITIAL_CLASSROOM);
+  // Application State (Hafif MVP: localStorage'da kalıcı — refresh'te kaybolmaz)
+  const [classroom, setClassroom] = usePersistentState<Classroom>('classroom', INITIAL_CLASSROOM);
   const [currentRole, setCurrentRole] = useState<Role>(() => {
     try {
       const saved = localStorage.getItem('maketab_auth_user');
@@ -119,15 +123,17 @@ export default function App() {
   // Modals state
   const [awardTarget, setAwardTarget] = useState<Student | 'all' | null>(null);
   const [isToolsOpen, setIsToolsOpen] = useState(false);
-  const [financeItems, setFinanceItems] = useState<ClassFinanceItem[]>(INITIAL_FINANCE_ITEMS);
+  const [financeItems, setFinanceItems] = usePersistentState<ClassFinanceItem[]>('finance', INITIAL_FINANCE_ITEMS);
   const [stemProduct, setStemProduct] = useState<StemProduct>(STEM_X_PRODUCT_DATA);
   const [isFinanceOpen, setIsFinanceOpen] = useState(false);
   const [isStemStoreOpen, setIsStemStoreOpen] = useState(false);
 
-  // Story & Messages state
-  const [posts, setPosts] = useState<ClassStoryPost[]>(INITIAL_STORY_POSTS);
-  const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
+  // Story & Messages state (Hafif MVP: kalıcı)
+  const [posts, setPosts] = usePersistentState<ClassStoryPost[]>('story_posts', INITIAL_STORY_POSTS);
+  const [messages, setMessages] = usePersistentState<ChatMessage[]>('messages', INITIAL_MESSAGES);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  // Giriş ekranı önizleme (çıkış yapmadan login tasarımını görmek için)
+  const [showLoginPreview, setShowLoginPreview] = useState(false);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -200,12 +206,25 @@ export default function App() {
 
   const handleLogout = () => {
     setAuthUser(null);
+    setCurrentRole('teacher');
+    setActiveTab('classroom');
+    setShowLoginPreview(false);
     try {
       localStorage.removeItem('maketab_auth_user');
     } catch (e) {
       console.error(e);
     }
     showToast('Oturum başarıyla sonlandırıldı.');
+  };
+
+  const handleResetDemo = () => {
+    if (!window.confirm('Demo verileri sıfırlansın mı? Puan, mesaj, hikaye ve finans başa döner.')) return;
+    clearDemoStorage();
+    setClassroom(INITIAL_CLASSROOM);
+    setPosts(INITIAL_STORY_POSTS);
+    setMessages(INITIAL_MESSAGES);
+    setFinanceItems(INITIAL_FINANCE_ITEMS);
+    showToast('Demo verileri sıfırlandı.');
   };
 
   // Awarding points to single student or entire class
@@ -464,7 +483,7 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-sans selection:bg-blue-500 selection:text-white">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 backdrop-blur-md text-white px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold shadow-2xl flex items-center gap-2 border border-slate-700 animate-in fade-in slide-in-from-top duration-200">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 backdrop-blur-md text-white px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold shadow-pop flex items-center gap-2 border border-slate-700 animate-in fade-in slide-in-from-top duration-200">
           <Sparkles className="w-4 h-4 text-amber-300 shrink-0" />
           <span>{toastMessage}</span>
         </div>
@@ -472,29 +491,29 @@ export default function App() {
 
       {/* Top Application Bar */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-2xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 xl:px-6 h-16 sm:h-18 flex items-center justify-between gap-2">
           {/* Brand Logo & Title */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0 min-w-0">
             <div
-              className="cursor-pointer"
+              className="cursor-pointer shrink-0"
               onClick={() => setActiveTab('classroom')}
               title="Ana Sayfaya Dön"
             >
-              <MakeTabLogo size="md" showText={true} />
-            </div>
-
-            {/* Class Pill indicator */}
-            <div className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200/60">
-              <span className="w-2 h-2 rounded-full bg-blue-600" />
-              <span>4-A Sınıfı ({classroom.students.length} Öğrenci)</span>
+              {/* Mobil: sadece ikon (yer kazan) */}
+              <span className="sm:hidden">
+                <MakeTabLogo size="sm" showText={false} />
+              </span>
+              <span className="hidden sm:block">
+                <MakeTabLogo size="md" showText={true} />
+              </span>
             </div>
           </div>
 
-          {/* Desktop Navigation Tabs */}
-          <nav className="hidden lg:flex items-center gap-1 bg-slate-100/90 p-1 rounded-2xl border border-slate-200/60">
+          {/* Desktop Navigation Tabs (xl+: üstte, altı: altta sabit nav) */}
+          <nav className="hidden xl:flex items-center gap-1 bg-slate-100/90 p-1 rounded-2xl border border-slate-200/60 shrink-0">
             <button
               onClick={() => setActiveTab('classroom')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 2xl:px-3.5 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1 2xl:gap-1.5 ${
                 activeTab === 'classroom'
                   ? 'bg-white text-blue-600 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
@@ -506,7 +525,7 @@ export default function App() {
 
             <button
               onClick={() => setActiveTab('story')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 2xl:px-3.5 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1 2xl:gap-1.5 ${
                 activeTab === 'story'
                   ? 'bg-white text-blue-600 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
@@ -518,7 +537,7 @@ export default function App() {
 
             <button
               onClick={() => setActiveTab('messages')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 relative ${
+              className={`px-2.5 2xl:px-3.5 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1 2xl:gap-1.5 relative ${
                 activeTab === 'messages'
                   ? 'bg-white text-blue-600 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
@@ -531,7 +550,7 @@ export default function App() {
 
             <button
               onClick={() => setActiveTab('reports')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 2xl:px-3.5 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1 2xl:gap-1.5 ${
                 activeTab === 'reports'
                   ? 'bg-white text-blue-600 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
@@ -543,7 +562,7 @@ export default function App() {
 
             <button
               onClick={() => setActiveTab('ai-exam')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 2xl:px-3.5 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1 2xl:gap-1.5 ${
                 activeTab === 'ai-exam'
                   ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xs'
                   : 'text-slate-600 hover:text-blue-600'
@@ -555,7 +574,7 @@ export default function App() {
 
             <button
               onClick={() => setActiveTab('ai-character')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 2xl:px-3.5 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1 2xl:gap-1.5 ${
                 activeTab === 'ai-character'
                   ? 'bg-gradient-to-r from-indigo-600 to-sky-600 text-white shadow-xs'
                   : 'text-slate-600 hover:text-indigo-600'
@@ -567,12 +586,12 @@ export default function App() {
           </nav>
 
           {/* Right Header Actions: Role Switcher & User Profile */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Role Switcher Pill (Öğretmen vs Veli vs Okul Müdürü) */}
-            <div className="bg-slate-100 p-1 rounded-2xl flex items-center border border-slate-200/80 text-[11px] font-bold">
+            <div className="bg-slate-100 p-1 rounded-2xl flex items-center border border-slate-200/80 text-[11px] font-bold shrink-0">
               <button
                 onClick={() => setCurrentRole('teacher')}
-                className={`px-2.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
+                className={`px-2 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
                   currentRole === 'teacher'
                     ? 'bg-blue-600 text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
@@ -580,12 +599,12 @@ export default function App() {
                 title="Öğretmen Hesabı"
               >
                 <GraduationCap className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Öğretmen</span>
+                <span className="hidden 2xl:inline">Öğretmen</span>
               </button>
 
               <button
                 onClick={() => setCurrentRole('parent')}
-                className={`px-2.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
+                className={`px-2 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
                   currentRole === 'parent'
                     ? 'bg-emerald-600 text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
@@ -593,12 +612,12 @@ export default function App() {
                 title="Veli Hesabı"
               >
                 <Heart className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Veli Modu</span>
+                <span className="hidden 2xl:inline">Veli Modu</span>
               </button>
 
               <button
                 onClick={() => setCurrentRole('principal')}
-                className={`px-2.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
+                className={`px-2 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
                   currentRole === 'principal'
                     ? 'bg-slate-950 text-amber-300 border border-amber-400/50 shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
@@ -606,12 +625,12 @@ export default function App() {
                 title="Okul Müdürü Yönetim Masası (Üst Mod)"
               >
                 <SuitTieIcon className="w-3.5 h-3.5 text-amber-400" />
-                <span className="hidden sm:inline">Okul Müdürü</span>
+                <span className="hidden 2xl:inline">Okul Müdürü</span>
               </button>
             </div>
 
             {/* Authenticated User Badge & Logout Button */}
-            <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
+            <div className="flex items-center gap-1.5 sm:gap-2 pl-1.5 sm:pl-2 border-l border-slate-200 shrink-0">
               <div className="flex items-center gap-2">
                 {authUser.avatar || (authUser.name.includes('Hakan') ? '/hakan_kavuzkoz.jpg' : null) ? (
                   <img
@@ -637,11 +656,11 @@ export default function App() {
                       .slice(0, 2)}
                   </div>
                 )}
-                <div className="text-left leading-tight hidden xl:block">
-                  <div className="text-xs font-black text-slate-800 tracking-tight">
+                <div className="text-left leading-tight hidden 2xl:block max-w-36">
+                  <div className="text-xs font-black text-slate-800 tracking-tight truncate">
                     {authUser.name}
                   </div>
-                  <div className="text-[10px] text-slate-500 font-bold">
+                  <div className="text-[10px] text-slate-500 font-bold truncate">
                     {currentRole === 'principal'
                       ? 'Okul Müdürü Makamı'
                       : currentRole === 'teacher'
@@ -651,14 +670,24 @@ export default function App() {
                 </div>
               </div>
 
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowLoginPreview(true)}
+                title="Çıkış yapmadan giriş ekranını önizle"
+              >
+                <Eye className="w-3.5 h-3.5 shrink-0" />
+              </Button>
+
+              <Button
+                variant="danger"
+                size="sm"
                 onClick={handleLogout}
-                className="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-600 text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-200/80 cursor-pointer active:scale-95"
                 title="Oturumu Kapat (Çıkış Yap)"
               >
                 <LogOut className="w-3.5 h-3.5 shrink-0" />
                 <span className="hidden md:inline">Çıkış</span>
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -749,8 +778,19 @@ export default function App() {
         )}
       </main>
 
-      {/* Mobile Bottom Floating Navigation Bar */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-slate-200/80 px-2 py-2 shadow-2xl flex items-center justify-around safe-bottom">
+      {/* Footer: göze batmayan demo sıfırlama */}
+      <footer className="max-w-7xl w-full mx-auto px-4 sm:px-6 pb-20 sm:pb-8 text-center">
+        <button
+          onClick={handleResetDemo}
+          className="text-[11px] font-semibold text-slate-400 hover:text-amber-600 transition-colors cursor-pointer"
+          title="Puan, mesaj, hikaye ve finans verilerini başa döndür (çıkış yapmaz)"
+        >
+          Demo verilerini sıfırla
+        </button>
+      </footer>
+
+      {/* Mobile Bottom Floating Navigation Bar (xl altına kadar) */}
+      <nav className="xl:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-slate-200/80 px-2 py-2 shadow-2xl flex items-center justify-around safe-bottom">
         <button
           onClick={() => {
             setCurrentRole(currentRole === 'principal' ? 'teacher' : 'principal');
@@ -829,6 +869,28 @@ export default function App() {
           <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-1 right-2" />
         </button>
       </nav>
+
+      {/* Login Preview Overlay (çıkış yapmadan giriş ekranını gör) */}
+      {showLoginPreview && (
+        <div className="fixed inset-0 z-[60] overflow-y-auto bg-white">
+          <Button
+            variant="dark"
+            size="sm"
+            onClick={() => setShowLoginPreview(false)}
+            title="Önizlemeyi kapat (oturum açık kalır)"
+            className="fixed top-4 right-4 z-[70] shadow-pop"
+          >
+            <X className="w-4 h-4" />
+            <span>Önizlemeyi Kapat</span>
+          </Button>
+          <LoginView
+            onLogin={(user) => {
+              handleLogin(user);
+              setShowLoginPreview(false);
+            }}
+          />
+        </div>
+      )}
 
       {/* Award Skill Modal */}
       {awardTarget !== null && (

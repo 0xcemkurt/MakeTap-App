@@ -31,6 +31,9 @@ import {
   X,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { Button } from './ui/Button';
+import { Badge } from './ui/Badge';
+import { TextInput } from './ui/TextInput';
 
 interface AiExamGeneratorProps {
   onAssignToClass?: (exam: GeneratedExam) => void;
@@ -262,7 +265,7 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
   return (
     <div className="space-y-6 pb-12">
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-indigo-800 rounded-3xl p-5 sm:p-6 text-white shadow-lg shadow-blue-500/15 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-brand-700 via-indigo-700 to-indigo-800 rounded-2xl p-5 sm:p-6 text-white shadow-lg shadow-brand-500/15 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
         <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="space-y-1.5">
@@ -283,9 +286,9 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
               type="button"
               id="btn-direct-send-exam"
               onClick={handleDirectSendToStudents}
-              className="py-2.5 px-4 rounded-2xl bg-white hover:bg-blue-50 text-blue-900 active:scale-95 font-black text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-black/10 transition-all shrink-0 cursor-pointer"
+              className="py-2.5 px-4 rounded-2xl bg-white hover:bg-brand-50 text-brand-900 active:scale-95 font-black text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-black/10 transition-all shrink-0 cursor-pointer"
             >
-              <Send className="w-4 h-4 text-blue-600" />
+              <Send className="w-4 h-4 text-brand-600" />
               <span>Öğrencilere Soruları Gönder</span>
             </button>
             <div className="w-12 h-12 rounded-2xl bg-white/20 hidden md:flex items-center justify-center shrink-0 shadow-inner">
@@ -296,10 +299,10 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
       </div>
 
       {/* Generator Configuration Card */}
-      <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-sm space-y-6">
+      <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-sm space-y-6">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <h3 className="text-base font-extrabold text-slate-800 flex items-center gap-2">
-            <GraduationCap className="w-5 h-5 text-blue-600" />
+            <GraduationCap className="w-5 h-5 text-brand-600" />
             Sınav Kriterlerini Belirleyin
           </h3>
           <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
@@ -319,7 +322,7 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                   onClick={() => setGradeLevel(lvl)}
                   className={`min-h-[38px] px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
                     gradeLevel === lvl
-                      ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/30 ring-2 ring-blue-500/20'
+                      ? 'bg-brand-600 text-white shadow-sm shadow-brand-500/30 ring-2 ring-brand-500/20'
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200/80'
                   }`}
                 >
@@ -344,12 +347,12 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                 }}
                 className={`p-3.5 min-h-[58px] rounded-2xl border text-left flex items-center gap-3 transition-all ${
                   subject === subj.name
-                    ? 'border-blue-600 bg-blue-50/80 text-blue-900 shadow-xs ring-2 ring-blue-500/20 font-bold'
+                    ? 'border-brand-600 bg-brand-50/80 text-brand-900 shadow-xs ring-2 ring-brand-500/20 font-bold'
                     : 'border-slate-200 bg-white hover:border-slate-300 text-slate-700'
                 }`}
               >
                 <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
-                  subject === subj.name ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600'
+                  subject === subj.name ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600'
                 }`}>
                   <subj.icon className="w-5 h-5" />
                 </div>
@@ -368,12 +371,11 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
             <span>Konu / Ünite Başlığı</span>
             <span className="text-[10px] text-slate-400 font-normal">İstediğiniz konuyu yazabilir veya seçebilirsiniz</span>
           </label>
-          <input
+          <TextInput
             type="text"
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             placeholder="Örn: Basit Elektrik Devreleri ve İletkenler"
-            className="w-full text-xs sm:text-sm px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50/70 focus:outline-hidden focus:border-blue-500 focus:bg-white transition-all font-medium"
           />
 
           {quickTopics[subject] && (
@@ -386,8 +388,8 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                   onClick={() => setTopic(t)}
                   className={`text-[11px] px-3 py-1.5 rounded-xl font-medium transition-colors ${
                     topic === t
-                      ? 'bg-blue-600 text-white font-bold'
-                      : 'bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-600'
+                      ? 'bg-brand-600 text-white font-bold'
+                      : 'bg-slate-100 hover:bg-brand-50 hover:text-brand-700 text-slate-600'
                   }`}
                 >
                   {t}
@@ -422,7 +424,7 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-slate-700">Hedef Soru Sayısı</label>
-              <span className="text-[11px] font-extrabold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">
+              <span className="text-[11px] font-extrabold text-brand-600 bg-brand-50 px-2 py-0.5 rounded-md">
                 {questionCount} Soru Oluşturulacak
               </span>
             </div>
@@ -434,7 +436,7 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                   onClick={() => setQuestionCount(count)}
                   className={`min-h-[42px] py-2 rounded-xl text-xs font-black transition-all ${
                     questionCount === count
-                      ? 'bg-blue-600 text-white shadow-sm ring-2 ring-blue-500/20'
+                      ? 'bg-brand-600 text-white shadow-sm ring-2 ring-brand-500/20'
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
                 >
@@ -447,33 +449,34 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
 
         {/* Action Buttons */}
         <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-          <button
-            type="button"
+          <Button
+            variant="primary"
+            size="lg"
             disabled={isLoading}
             onClick={handleGenerate}
-            className="flex-1 min-h-[46px] py-3 px-5 rounded-2xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm shadow-blue-500/25 transition-all disabled:opacity-50"
+            className="flex-1"
           >
             <Sparkles className="w-4 h-4 text-amber-300" />
             {isLoading ? 'Sınav Hazırlanıyor...' : `MakeTab AI ile ${questionCount} Soru Üret`}
-          </button>
+          </Button>
 
-          <button
-            type="button"
+          <Button
+            variant="success"
+            size="lg"
             disabled={isLoading}
             onClick={() => handleGenerateDemo(subject, questionCount)}
-            className="min-h-[46px] py-3 px-5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm shadow-emerald-500/20 transition-all disabled:opacity-50"
           >
             <Zap className="w-4 h-4 text-amber-200" />
             Hızlı Demo Sınavı Üret (2 sn)
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* 2-Second Realistic Generation Sequence Modal/Overlay */}
       {isLoading && (
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-blue-200 shadow-xl space-y-5 animate-in fade-in zoom-in-95 duration-200">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-brand-200 shadow-xl space-y-5 animate-in fade-in zoom-in-95 duration-200">
           <div className="text-center space-y-1.5">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-black">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-100 text-brand-700 text-xs font-black">
               <Zap className="w-3.5 h-3.5 animate-pulse text-amber-500" />
               MakeTab AI Sınav Motoru Çalışıyor (2 Saniye)
             </div>
@@ -489,11 +492,11 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs font-black text-slate-700">
               <span>İşlem Aşaması</span>
-              <span className="text-blue-600">%{sequenceProgress}</span>
+              <span className="text-brand-600">%{sequenceProgress}</span>
             </div>
             <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
               <div
-                className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full transition-all duration-300 ease-out"
+                className="h-full bg-gradient-to-r from-brand-600 to-indigo-600 rounded-full transition-all duration-300 ease-out"
                 style={{ width: `${sequenceProgress}%` }}
               />
             </div>
@@ -511,12 +514,12 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                     isPast
                       ? 'border-emerald-200 bg-emerald-50/70 text-emerald-900'
                       : isCurrent
-                      ? 'border-blue-500 bg-blue-50/80 text-blue-900 shadow-xs ring-2 ring-blue-500/20'
+                      ? 'border-brand-500 bg-brand-50/80 text-brand-900 shadow-xs ring-2 ring-brand-500/20'
                       : 'border-slate-100 bg-slate-50/50 text-slate-400 opacity-60'
                   }`}
                 >
                   <div className="flex items-center gap-2 font-black text-xs">
-                    <span className="w-5 h-5 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center font-black text-[11px] shrink-0">
+                    <span className="w-5 h-5 rounded-md bg-brand-100 text-brand-700 flex items-center justify-center font-black text-[11px] shrink-0">
                       {st.step}
                     </span>
                     <span className="line-clamp-1">{st.title}</span>
@@ -534,11 +537,11 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
 
       {/* Result Display */}
       {exam && (
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-md overflow-hidden animate-in fade-in slide-in-from-bottom duration-300">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden animate-in fade-in slide-in-from-bottom duration-300">
           {/* Exam Header */}
           <div className="p-5 sm:p-6 bg-slate-50/90 border-b border-slate-200 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
             <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-xs font-black text-blue-600 uppercase tracking-wide">
+              <div className="flex items-center gap-2 text-xs font-black text-brand-600 uppercase tracking-wide">
                 <span>{exam.gradeLevel}</span>
                 <span>•</span>
                 <span>{exam.subject}</span>
@@ -555,56 +558,44 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                 {exam.title}
               </h3>
               <p className="text-xs text-slate-600 font-medium flex items-center gap-1.5">
-                <Target className="w-4 h-4 text-blue-600 shrink-0" />
+                <Target className="w-4 h-4 text-brand-600 shrink-0" />
                 <span><strong className="text-slate-800">Hedef Kazanım:</strong> {exam.targetOutcome}</span>
               </p>
             </div>
 
             {/* Action buttons */}
             <div className="flex flex-wrap items-center gap-2 shrink-0">
-              <button
-                type="button"
+              <Button
+                variant="primary"
+                size="sm"
                 id="btn-exam-send-to-students"
                 onClick={() => {
                   setShowSendModal(true);
                   setSendSuccessState(false);
                 }}
-                className="min-h-[42px] py-2 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white font-black text-xs flex items-center gap-1.5 transition-all shadow-md shadow-blue-500/20 cursor-pointer"
               >
                 <Send className="w-4 h-4 text-amber-300" />
                 <span>Öğrencilere Soruları Gönder</span>
-              </button>
+              </Button>
 
-              <button
-                type="button"
-                onClick={handlePrint}
-                className="min-h-[42px] py-2 px-3.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold text-xs flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer"
-              >
+              <Button variant="secondary" size="sm" onClick={handlePrint}>
                 <Printer className="w-4 h-4 text-slate-600" />
                 Yazdır / PDF
-              </button>
+              </Button>
 
-              <button
-                type="button"
-                onClick={handleAssign}
-                className="min-h-[42px] py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs flex items-center gap-1.5 transition-colors shadow-sm shadow-emerald-500/25 cursor-pointer"
-              >
+              <Button variant="success" size="sm" onClick={handleAssign}>
                 <CheckCheck className="w-4 h-4" />
                 Sınıfa Ata
-              </button>
+              </Button>
 
-              <button
-                type="button"
+              <Button
+                variant={showSolutions ? 'amber' : 'primary'}
+                size="sm"
                 onClick={() => setShowSolutions(!showSolutions)}
-                className={`min-h-[42px] py-2 px-4 rounded-xl font-black text-xs flex items-center gap-1.5 transition-colors shadow-xs ${
-                  showSolutions
-                    ? 'bg-amber-500 hover:bg-amber-600 text-white'
-                    : 'bg-blue-600 hover:bg-blue-700 text-white'
-                }`}
               >
                 <Lightbulb className="w-4 h-4" />
                 {showSolutions ? 'Cevapları Gizle' : 'Cevap Anahtarı'}
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -629,7 +620,7 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                 >
                   {/* Question Title & Badge */}
                   <div className="flex items-start gap-3">
-                    <span className="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-sm flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+                    <span className="w-8 h-8 rounded-xl bg-brand-600 text-white font-black text-sm flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
                       {idx + 1}
                     </span>
                     <div className="space-y-1 flex-1">
@@ -656,7 +647,7 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                           q.correctAnswer.startsWith(optKey) ||
                           q.correctAnswer.trim().toLowerCase() === opt.trim().toLowerCase();
 
-                        let buttonStyle = 'bg-white border-slate-300 text-slate-800 hover:border-blue-500 hover:bg-blue-50/40';
+                        let buttonStyle = 'bg-white border-slate-300 text-slate-800 hover:border-brand-500 hover:bg-brand-50/40';
 
                         if (showSolutions || isThisSelected) {
                           if (isThisTheCorrectAnswer) {
@@ -694,7 +685,7 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                     <div className="pl-0 sm:pl-11 space-y-2.5">
                       <div className="space-y-1">
                         <label className="text-[11px] font-bold text-slate-600 flex items-center gap-1.5">
-                          <FileText className="w-3.5 h-3.5 text-blue-600" />
+                          <FileText className="w-3.5 h-3.5 text-brand-600" />
                           Öğrenci Yanıtı Metin Alanı
                         </label>
                         <textarea
@@ -702,7 +693,7 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                           value={userAns || ''}
                           onChange={(e) => handleSelectAnswer(q.id, e.target.value)}
                           placeholder="Cevabınızı buraya kendi cümlelerinizle ve gerekçeleriyle yazınız..."
-                          className="w-full text-xs sm:text-sm p-3.5 rounded-2xl border border-slate-300 bg-white focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 font-medium text-slate-800 shadow-2xs leading-relaxed"
+                          className="w-full text-xs sm:text-sm p-3.5 rounded-2xl border border-slate-300 bg-white focus:outline-hidden focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 font-medium text-slate-800 shadow-2xs leading-relaxed"
                         />
                       </div>
 
@@ -713,16 +704,16 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                             : 'Açık uçlu cevap için öğrenci metin girişi yapabilir.'}
                         </span>
 
-                        <button
-                          type="button"
+                        <Button
+                          variant="softBrand"
+                          size="sm"
                           onClick={() => {
                             setOpenEndedSubmitted((prev) => ({ ...prev, [q.id]: true }));
                           }}
-                          className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 font-bold text-xs flex items-center gap-1.5 transition-colors border border-blue-200"
                         >
-                          <Check className="w-3.5 h-3.5 text-blue-600" />
+                          <Check className="w-3.5 h-3.5 text-brand-600" />
                           Cevabı Kaydet ve Karşılaştır
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   )}
@@ -761,13 +752,13 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                         )
                       ) : (
                         openEndedSubmitted[q.id] && (
-                          <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 flex items-start gap-2.5">
-                            <CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                          <div className="p-3.5 rounded-xl bg-brand-50 border border-brand-200 text-brand-900 flex items-start gap-2.5">
+                            <CheckCircle2 className="w-5 h-5 text-brand-600 shrink-0 mt-0.5" />
                             <div className="flex-1">
                               <p className="text-xs font-black">
                                 Öğrenci Yanıtı Kaydedildi
                               </p>
-                              <p className="text-xs text-blue-800 font-medium mt-0.5">
+                              <p className="text-xs text-brand-800 font-medium mt-0.5">
                                 Öğrenci Açıklaması: <span className="italic font-semibold">"{userAns}"</span>
                               </p>
                             </div>
@@ -805,7 +796,7 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
           <div className="p-4 sm:p-5 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="text-xs font-bold text-slate-700 flex items-center gap-2">
               <span>Cevaplanan:</span>
-              <span className="text-blue-600 font-black">
+              <span className="text-brand-600 font-black">
                 {Object.keys(userAnswers).length} / {exam.questions.length} Soru
               </span>
               <span>•</span>
@@ -816,26 +807,18 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
             </div>
 
             <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => {
+              <Button variant="secondary" size="sm" onClick={() => {
                   setUserAnswers({});
                   setOpenEndedSubmitted({});
                   setShowSolutions(false);
-                }}
-                className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition-colors shadow-2xs"
-              >
+                }}>
                 <RotateCcw className="w-3.5 h-3.5" />
                 Cevapları Temizle
-              </button>
+              </Button>
 
-              <button
-                type="button"
-                onClick={() => setShowSolutions(true)}
-                className="min-h-[38px] px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs transition-colors shadow-xs"
-              >
+              <Button variant="primary" size="sm" onClick={() => setShowSolutions(true)}>
                 Tüm Çözümleri Değerlendir →
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -844,9 +827,9 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
       {/* Send to Students Modal */}
       {showSendModal && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl max-w-lg w-full border border-slate-200 shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+          <div className="bg-white rounded-2xl max-w-lg w-full border border-slate-200 shadow-pop overflow-hidden animate-in zoom-in-95 duration-200">
             {/* Modal Header */}
-            <div className="p-5 sm:p-6 bg-gradient-to-r from-blue-700 via-indigo-700 to-indigo-800 text-white flex items-center justify-between">
+            <div className="p-5 sm:p-6 bg-gradient-to-r from-brand-700 via-indigo-700 to-indigo-800 text-white flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
                   <Send className="w-5 h-5 text-white" />
@@ -880,12 +863,12 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
               ) : (
                 <>
                   {/* Exam preview capsule */}
-                  <div className="p-4 rounded-2xl bg-blue-50/70 border border-blue-200 space-y-2">
+                  <div className="p-4 rounded-2xl bg-brand-50/70 border border-brand-200 space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-black text-blue-800">
+                      <span className="text-xs font-black text-brand-800">
                         {exam?.subject || subject} • {exam?.gradeLevel || gradeLevel}
                       </span>
-                      <span className="text-[11px] font-bold text-slate-600 bg-white px-2 py-0.5 rounded-md border border-blue-100">
+                      <span className="text-[11px] font-bold text-slate-600 bg-white px-2 py-0.5 rounded-md border border-brand-100">
                         {exam?.questions.length || questionCount} Soru • {exam?.durationMinutes || 25} dk
                       </span>
                     </div>
@@ -893,7 +876,7 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                       {exam?.title || topic}
                     </div>
                     <div className="text-[11px] text-slate-600 flex items-center gap-1">
-                      <Target className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                      <Target className="w-3.5 h-3.5 text-brand-600 shrink-0" />
                       <span>{exam?.targetOutcome || 'Kazanım kavrama ve uygulama alıştırması'}</span>
                     </div>
                   </div>
@@ -904,7 +887,7 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                     <div className="space-y-2">
                       <label className="flex items-center justify-between p-3 rounded-xl border border-slate-200 bg-slate-50/60 cursor-pointer hover:bg-slate-50">
                         <div className="flex items-center gap-2.5">
-                          <Tablet className="w-4 h-4 text-blue-600" />
+                          <Tablet className="w-4 h-4 text-brand-600" />
                           <span className="text-xs font-bold text-slate-800">4-A Sınıfı Öğrenci Tabletleri</span>
                         </div>
                         <span className="text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
@@ -917,7 +900,7 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                           <Users className="w-4 h-4 text-indigo-600" />
                           <span className="text-xs font-bold text-slate-800">Veli Bilgilendirme Portalı & SMS</span>
                         </div>
-                        <span className="text-[11px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">
+                        <span className="text-[11px] font-bold text-brand-700 bg-brand-100 px-2 py-0.5 rounded-full">
                           Otomatik
                         </span>
                       </label>
@@ -928,9 +911,9 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-slate-700">Sınav Modu</label>
                     <div className="grid grid-cols-2 gap-2">
-                      <div className="p-3 rounded-xl border-2 border-blue-600 bg-blue-50/50 text-left">
-                        <div className="text-xs font-extrabold text-blue-900">Canlı Tablet Oturumu</div>
-                        <div className="text-[10px] text-blue-700 mt-0.5">Öğretmen kontrollü eşzamanlı</div>
+                      <div className="p-3 rounded-xl border-2 border-brand-600 bg-brand-50/50 text-left">
+                        <div className="text-xs font-extrabold text-brand-900">Canlı Tablet Oturumu</div>
+                        <div className="text-[10px] text-brand-700 mt-0.5">Öğretmen kontrollü eşzamanlı</div>
                       </div>
                       <div className="p-3 rounded-xl border border-slate-200 text-left hover:bg-slate-50 opacity-80">
                         <div className="text-xs font-bold text-slate-700">Ev Ödevi Modu</div>
@@ -945,22 +928,18 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
             {/* Modal Footer */}
             {!sendSuccessState && (
               <div className="p-4 sm:p-5 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2.5">
-                <button
-                  type="button"
-                  onClick={() => setShowSendModal(false)}
-                  className="min-h-[40px] px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-white text-xs font-bold transition-all cursor-pointer"
-                >
+                <Button variant="ghost" size="sm" onClick={() => setShowSendModal(false)}>
                   Vazgeç
-                </button>
-                <button
-                  type="button"
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
                   id="btn-confirm-send-questions"
                   onClick={handleConfirmSendToStudents}
-                  className="min-h-[40px] px-5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-black flex items-center gap-2 shadow-sm shadow-blue-500/25 active:scale-95 transition-all cursor-pointer"
                 >
                   <Send className="w-3.5 h-3.5" />
                   <span>Soruları Şimdi Gönder</span>
-                </button>
+                </Button>
               </div>
             )}
           </div>

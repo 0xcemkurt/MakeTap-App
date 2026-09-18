@@ -23,6 +23,9 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { PartnerSponsorModal } from './PartnerSponsorModal';
+import { Button } from './ui/Button';
+import { Badge } from './ui/Badge';
+import { TextInput } from './ui/TextInput';
 
 interface ClassroomViewProps {
   classroom: Classroom;
@@ -127,7 +130,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       };
     }
     return {
-      cardBorder: 'border border-slate-200/90 bg-white hover:border-blue-400 hover:shadow-xl shadow-2xs',
+      cardBorder: 'border border-slate-200/90 bg-white hover:border-brand-400 hover:shadow-xl shadow-2xs',
       badgeBg: 'bg-slate-100 text-slate-700',
       badgeIcon: <Sparkles className="w-3 h-3 shrink-0 text-slate-500" />,
       defaultLabel: 'Öğrenci',
@@ -173,12 +176,12 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       {/* 1. EXECUTIVE CLASSROOM DASHBOARD SUMMARY */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Card 1: Attendance & Class Size */}
-        <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-black uppercase tracking-wider text-slate-500">
               Sınıf & Devam
             </span>
-            <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+            <div className="w-8 h-8 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold">
               <Users className="w-4 h-4" />
             </div>
           </div>
@@ -197,7 +200,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         </div>
 
         {/* Card 2: Erdem Puanları */}
-        <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-black uppercase tracking-wider text-slate-500">
               Toplam Erdem Puanı
@@ -218,14 +221,14 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             </div>
           </div>
           <div className="mt-3 pt-2.5 border-t border-slate-100 text-[11px] text-slate-500 font-medium">
-            20 Öğrenci Aktif Takip Ediliyor
+            {students.length} Öğrenci Aktif Takip Ediliyor
           </div>
         </div>
 
         {/* Card 3: Sınıf Kasası & Aidat (Clickable) */}
         <div
           onClick={onOpenFinance}
-          className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs hover:shadow-md hover:border-emerald-300 transition-all flex flex-col justify-between cursor-pointer group"
+          className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs hover:shadow-md hover:border-emerald-300 transition-all flex flex-col justify-between cursor-pointer group"
         >
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-black uppercase tracking-wider text-slate-500 group-hover:text-emerald-700 transition-colors">
@@ -247,7 +250,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               <span>%{financePct} Tahsil Edildi ({financeItems.length} Fon)</span>
             </div>
           </div>
-          <div className="mt-3 pt-2.5 border-t border-slate-100 text-[11px] text-blue-600 font-black flex items-center justify-between">
+          <div className="mt-3 pt-2.5 border-t border-slate-100 text-[11px] text-brand-600 font-black flex items-center justify-between">
             <span>Bütçe ve Makbuzları Yönet</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </div>
@@ -256,7 +259,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         {/* Card 4: Ayın Sponsorlu Etkinliği (Bağımsız Tedarikçi Vitrini) */}
         <div
           onClick={onOpenStemStore}
-          className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-4 sm:p-5 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between cursor-pointer group relative overflow-hidden border-2 border-amber-400/50"
+          className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between cursor-pointer group relative overflow-hidden border-2 border-amber-400/50"
         >
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 flex items-center gap-1 bg-amber-400/20 px-2 py-0.5 rounded-full border border-amber-400/30">
@@ -291,7 +294,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
       {/* 2. PROMOTIONAL STEM-X MONTHLY EVENT BOX (DISTINCT 3RD PARTY SHOWCASE) */}
       {stemProduct && (
-        <div className="bg-gradient-to-b from-amber-50/90 via-white to-amber-50/60 rounded-3xl p-4 sm:p-6 border-2 border-dashed border-amber-400/90 shadow-sm space-y-4">
+        <div className="bg-gradient-to-b from-amber-50/90 via-white to-amber-50/60 rounded-2xl p-4 sm:p-6 border-2 border-dashed border-amber-400/90 shadow-sm space-y-4">
           {/* Top Frame Bar for the Showcase Box */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-amber-200 pb-3.5">
             <div className="flex items-center gap-3">
@@ -303,9 +306,9 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   <h4 className="text-xs sm:text-sm font-black text-amber-950 uppercase tracking-wide">
                     Ayın Etkinliği & Sponsorlu Eğitim Vitrini
                   </h4>
-                  <span className="text-[10px] font-black px-2 py-0.5 rounded-md bg-amber-200 text-amber-950 border border-amber-300">
+                  <Badge tone="amber" className="border border-amber-300">
                     3. Taraf Bağımsız Firma İlanı
-                  </span>
+                  </Badge>
                 </div>
                 <p className="text-[11px] text-amber-900/90 font-medium mt-0.5 leading-snug">
                   MakeTab sisteminin bir ürünü değildir. MEB standartlarına uygun bağımsız eğitim şirketleri, bilim atölyeleri ve yayınevlerinin okullara özel teklif alanıdır.
@@ -330,10 +333,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 <Bot className="w-6 h-6" />
               </div>
               <div className="space-y-1">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[10px]">
+                <Badge tone="amber">
                   <Zap className="w-3.5 h-3.5 fill-current" />
                   BU AYIN PARTNERİ: STEM-X ROBOTICS & BİLİM A.Ş.
-                </div>
+                </Badge>
                 <h3 className="text-sm sm:text-base font-black tracking-tight text-white">
                   {stemProduct.name} & Canlı Kodlama Atölyesi
                 </h3>
@@ -366,10 +369,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       )}
 
       {/* 3. SOLID QUICK ACTION BAR (UNIFIED BUTTON STRUCTURE) */}
-      <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-4">
+      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-4">
         <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-slate-100 pb-3">
           <div>
-            <div className="flex items-center gap-2 text-xs font-bold text-blue-600">
+            <div className="flex items-center gap-2 text-xs font-bold text-brand-600">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               {classroom.schoolName} • {classroom.name}
             </div>
@@ -385,54 +388,34 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         {/* Standardized, Tactile Buttons */}
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Award Whole Class */}
-          <button
-            type="button"
-            onClick={onAwardWholeClass}
-            className="min-h-[42px] px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-sm shadow-blue-500/25 transition-all"
-          >
+          <Button variant="primary" onClick={onAwardWholeClass}>
             <Trophy className="w-4 h-4 text-amber-300 shrink-0" />
             <span>Bütün Sınıfa Puan Ver</span>
-          </button>
+          </Button>
 
           {/* Sınıf Kasası & Aidat */}
-          <button
-            type="button"
-            onClick={onOpenFinance}
-            className="min-h-[42px] px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-sm shadow-emerald-500/20 transition-all"
-          >
-            <Wallet className="w-4 h-4 text-emerald-200 shrink-0" />
+          <Button variant="success" onClick={onOpenFinance}>
+            <Wallet className="w-4 h-4 text-emerald-100 shrink-0" />
             <span>Sınıf Kasası & Aidat (₺)</span>
-          </button>
+          </Button>
 
           {/* STEM-X Store */}
-          <button
-            type="button"
-            onClick={onOpenStemStore}
-            className="min-h-[42px] px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-sm shadow-indigo-500/20 transition-all"
-          >
+          <Button variant="indigo" onClick={onOpenStemStore}>
             <Bot className="w-4 h-4 text-cyan-200 shrink-0" />
             <span>STEM-X Robotik & Atölye</span>
-          </button>
+          </Button>
 
           {/* Sınıf Araçları */}
-          <button
-            type="button"
-            onClick={onOpenTools}
-            className="min-h-[42px] px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-800 font-extrabold text-xs flex items-center justify-center gap-2 border border-slate-200 transition-all shadow-2xs"
-          >
-            <Shuffle className="w-4 h-4 text-blue-600 shrink-0" />
+          <Button variant="ghost" onClick={onOpenTools}>
+            <Shuffle className="w-4 h-4 text-brand-600 shrink-0" />
             <span>Sınıf Araçları</span>
-          </button>
+          </Button>
 
           {/* + Öğrenci Ekle */}
-          <button
-            type="button"
-            onClick={() => setShowAddModal(true)}
-            className="min-h-[42px] px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 active:scale-95 text-slate-800 font-extrabold text-xs flex items-center justify-center gap-2 border border-slate-300 transition-all shadow-2xs ml-auto"
-          >
+          <Button variant="secondary" onClick={() => setShowAddModal(true)} className="ml-auto">
             <UserPlus className="w-4 h-4 text-slate-600 shrink-0" />
             <span>+ Öğrenci Ekle</span>
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -446,14 +429,13 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         </div>
 
         {/* Search Input */}
-        <div className="relative w-full sm:w-72">
-          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3.5 top-3" />
-          <input
+        <div className="w-full sm:w-72">
+          <TextInput
             type="text"
             placeholder="Öğrenci adı veya numarası ara..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3.5 py-2 text-xs rounded-xl bg-white border border-slate-300 focus:outline-hidden focus:border-blue-500 font-medium shadow-2xs"
+            leftIcon={<Search />}
           />
         </div>
       </div>
@@ -466,7 +448,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             <div
               key={student.id}
               onClick={() => handleStudentClick(student)}
-              className={`group cursor-pointer rounded-3xl p-4 sm:p-4.5 transition-all duration-200 flex flex-col items-center text-center relative select-none hover:-translate-y-1 active:translate-y-0 justify-between min-h-[220px] ${style.cardBorder}`}
+              className={`group cursor-pointer rounded-2xl p-4 sm:p-4.5 transition-all duration-200 flex flex-col items-center text-center relative select-none hover:-translate-y-1 active:translate-y-0 justify-between min-h-[220px] ${style.cardBorder}`}
             >
               {/* Card Header: Archetype badge & Points / Attendance */}
               <div className="w-full flex items-center justify-between gap-1.5 mb-2">
@@ -481,19 +463,13 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 {/* Points & Attendance */}
                 <div className="flex items-center gap-1 shrink-0">
                   {student.attendance !== 'present' && (
-                    <span
-                      className={`px-1.5 py-0.5 rounded-md text-[9px] font-black uppercase ${
-                        student.attendance === 'late'
-                          ? 'bg-amber-100 text-amber-800'
-                          : 'bg-rose-100 text-rose-800'
-                      }`}
-                    >
+                    <Badge tone={student.attendance === 'late' ? 'amberSoft' : 'roseSoft'} className="uppercase">
                       {student.attendance === 'late' ? 'Geç' : 'Yok'}
-                    </span>
+                    </Badge>
                   )}
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-black">
+                  <Badge tone="emerald" className="border border-emerald-200">
                     +{student.totalPoints}
-                  </span>
+                  </Badge>
                 </div>
               </div>
 
@@ -511,7 +487,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
               {/* Student Name */}
               <div className="text-center w-full">
-                <h4 className="font-black text-slate-900 text-sm sm:text-base group-hover:text-blue-600 transition-colors">
+                <h4 className="font-black text-slate-900 text-sm sm:text-base group-hover:text-brand-600 transition-colors">
                   {student.name} {student.surname}
                 </h4>
                 <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-400 font-semibold mt-0.5">
@@ -583,7 +559,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               )}
 
               {/* Card Footer: + Puan Ver Action */}
-              <div className="mt-3 pt-2 border-t border-slate-100/90 w-full flex items-center justify-center text-[11px] font-black text-blue-600 group-hover:text-blue-700 transition-colors">
+              <div className="mt-3 pt-2 border-t border-slate-100/90 w-full flex items-center justify-center text-[11px] font-black text-brand-600 group-hover:text-brand-700 transition-colors">
                 <span>+ Erdem Puanı Ver</span>
               </div>
             </div>
@@ -594,10 +570,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       {/* 6. ADD STUDENT MODAL */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 border border-slate-200 shadow-2xl space-y-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 border border-slate-200 shadow-pop space-y-4">
             <div className="flex justify-between items-center border-b border-slate-100 pb-3">
               <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                <UserPlus className="w-5 h-5 text-blue-600" />
+                <UserPlus className="w-5 h-5 text-brand-600" />
                 4-A Sınıfına Yeni Öğrenci Ekle
               </h3>
               <button
@@ -615,26 +591,26 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   <label className="text-xs font-bold text-slate-700 block mb-1">
                     Öğrenci Adı
                   </label>
-                  <input
+                  <TextInput
                     type="text"
                     required
+                    radius="xl"
                     placeholder="Örn: Kerem"
                     value={newStudentName}
                     onChange={(e) => setNewStudentName(e.target.value)}
-                    className="w-full text-xs p-2.5 rounded-xl border border-slate-300 font-medium"
                   />
                 </div>
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1">
                     Soyadı
                   </label>
-                  <input
+                  <TextInput
                     type="text"
                     required
+                    radius="xl"
                     placeholder="Örn: Aksoy"
                     value={newStudentSurname}
                     onChange={(e) => setNewStudentSurname(e.target.value)}
-                    className="w-full text-xs p-2.5 rounded-xl border border-slate-300 font-medium"
                   />
                 </div>
               </div>
@@ -643,12 +619,12 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 <label className="text-xs font-bold text-slate-700 block mb-1">
                   Okul No
                 </label>
-                <input
+                <TextInput
                   type="text"
+                  radius="xl"
                   placeholder="Örn: 156"
                   value={newStudentNumber}
                   onChange={(e) => setNewStudentNumber(e.target.value)}
-                  className="w-full text-xs p-2.5 rounded-xl border border-slate-300 font-medium"
                 />
               </div>
 
@@ -657,42 +633,35 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   <label className="text-xs font-bold text-slate-700 block mb-1">
                     Veli Adı Soyadı
                   </label>
-                  <input
+                  <TextInput
                     type="text"
+                    radius="xl"
                     placeholder="Örn: Leyla Aksoy"
                     value={newParentName}
                     onChange={(e) => setNewParentName(e.target.value)}
-                    className="w-full text-xs p-2.5 rounded-xl border border-slate-300 font-medium"
                   />
                 </div>
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1">
                     Veli Telefon No
                   </label>
-                  <input
+                  <TextInput
                     type="tel"
+                    radius="xl"
                     placeholder="0532 000 0000"
                     value={newParentPhone}
                     onChange={(e) => setNewParentPhone(e.target.value)}
-                    className="w-full text-xs p-2.5 rounded-xl border border-slate-300 font-medium"
                   />
                 </div>
               </div>
 
               <div className="pt-2 flex items-center justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowAddModal(false)}
-                  className="min-h-[40px] px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs"
-                >
+                <Button variant="ghost" size="sm" onClick={() => setShowAddModal(false)}>
                   İptal
-                </button>
-                <button
-                  type="submit"
-                  className="min-h-[40px] px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs shadow-xs"
-                >
+                </Button>
+                <Button variant="primary" size="sm" type="submit">
                   Öğrenciyi Kaydet
-                </button>
+                </Button>
               </div>
             </form>
           </div>

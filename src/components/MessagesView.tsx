@@ -16,6 +16,9 @@ import {
   Phone,
   Info,
 } from 'lucide-react';
+import { Button } from './ui/Button';
+import { Badge } from './ui/Badge';
+import { TextInput } from './ui/TextInput';
 
 interface MessagesViewProps {
   students: Student[];
@@ -111,7 +114,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
         ];
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200/80 shadow-2xs overflow-hidden flex flex-col md:flex-row h-[calc(100vh-190px)] min-h-[520px] max-h-[760px] max-w-full min-w-0">
+    <div className="bg-white rounded-2xl border border-slate-200/80 shadow-2xs overflow-hidden flex flex-col md:flex-row h-[calc(100vh-190px)] min-h-[520px] max-h-[760px] max-w-full min-w-0">
       {/* Left Sidebar: Parent/Student Chat List */}
       <div
         className={`w-full md:w-80 md:border-r border-slate-200 flex-col bg-slate-50/60 shrink-0 ${
@@ -121,24 +124,22 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
         <div className="p-3.5 sm:p-4 border-b border-slate-200/80 space-y-2.5">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-black text-slate-900 flex items-center gap-1.5">
-              <MessageCircle className="w-4 h-4 text-blue-600" />
+              <MessageCircle className="w-4 h-4 text-brand-600" />
               Güvenli Veli Sohbetleri
             </h3>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-blue-100 text-blue-700">
+            <Badge tone="brand">
               {students.length} Veli
-            </span>
+            </Badge>
           </div>
 
-          <div className="relative">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
-            <input
-              type="text"
-              placeholder="Veli veya öğrenci ara..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl bg-white border border-slate-200 focus:outline-hidden focus:border-blue-500 font-medium"
-            />
-          </div>
+          <TextInput
+            type="text"
+            radius="xl"
+            placeholder="Veli veya öğrenci ara..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            leftIcon={<Search />}
+          />
         </div>
 
         {/* List of chats */}
@@ -162,8 +163,8 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
                   key={std.id}
                   type="button"
                   onClick={() => handleSelectStudent(std.id)}
-                  className={`w-full p-3.5 text-left flex items-center gap-3 transition-colors cursor-pointer select-none active:bg-blue-100 ${
-                    isSelected ? 'bg-blue-50/90 border-l-4 border-blue-600' : 'hover:bg-white'
+                  className={`w-full p-3.5 text-left flex items-center gap-3 transition-colors cursor-pointer select-none active:bg-brand-100 ${
+                    isSelected ? 'bg-brand-50/90 border-l-4 border-brand-600' : 'hover:bg-white'
                   }`}
                 >
                   <div className="relative shrink-0">
@@ -184,7 +185,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
                         {std.parentName}
                       </p>
                       {hasRecent && (
-                        <span className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
+                        <span className="w-2 h-2 rounded-full bg-brand-500 shrink-0" />
                       )}
                     </div>
                     <p className="text-[11px] text-slate-500 truncate mt-0.5">
@@ -223,7 +224,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
                 className="md:hidden flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-800 hover:bg-slate-100 transition-colors shrink-0 font-extrabold text-xs shadow-2xs cursor-pointer"
                 title="Tüm Sohbetlere Dön"
               >
-                <ChevronLeft className="w-4 h-4 text-blue-600" />
+                <ChevronLeft className="w-4 h-4 text-brand-600" />
                 <span className="text-[11px]">Sohbetler</span>
               </button>
 
@@ -251,7 +252,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
             </div>
 
             <div className="shrink-0 flex items-center gap-1 text-[10px] sm:text-xs font-bold text-slate-600 bg-white px-2.5 py-1.5 rounded-xl border border-slate-200 shadow-2xs whitespace-nowrap">
-              <Lock className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+              <Lock className="w-3.5 h-3.5 text-brand-600 shrink-0" />
               <span className="hidden sm:inline">MEB Şifreli İletişim</span>
               <span className="sm:hidden">Güvenli</span>
             </div>
@@ -263,14 +264,14 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
           {/* Security Banner inside chat */}
           <div className="text-center my-1">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-[10px] text-slate-500 font-semibold border border-slate-200/60 max-w-[90%] truncate">
-              <Shield className="w-3 h-3 text-blue-600 shrink-0" />
+              <Shield className="w-3 h-3 text-brand-600 shrink-0" />
               MakeTab Uçtan Uca Şifreli Veli-Öğretmen İletişim Hattı
             </span>
           </div>
 
           {studentMessages.length === 0 ? (
             <div className="text-center py-12 px-4 max-w-sm mx-auto">
-              <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-3">
+              <div className="w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center mx-auto mb-3">
                 <MessageCircle className="w-6 h-6" />
               </div>
               <h5 className="text-sm font-black text-slate-800">Henüz Mesajlaşma Başlamadı</h5>
@@ -293,7 +294,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
                   <div
                     className={`max-w-[85%] sm:max-w-[75%] p-3 rounded-2xl text-xs sm:text-sm leading-relaxed min-w-0 break-words [overflow-wrap:anywhere] [word-break:break-word] overflow-hidden ${
                       isMe
-                        ? 'bg-blue-600 text-white rounded-br-xs shadow-xs'
+                        ? 'bg-brand-600 text-white rounded-br-xs shadow-xs'
                         : 'bg-white text-slate-800 border border-slate-200/90 rounded-bl-xs shadow-2xs'
                     }`}
                   >
@@ -303,7 +304,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
                   </div>
                   <div className="flex items-center gap-1 mt-1 text-[10px] text-slate-400 font-medium px-1">
                     <span>{msg.timestamp}</span>
-                    {isMe && <CheckCheck className="w-3.5 h-3.5 text-blue-500" />}
+                    {isMe && <CheckCheck className="w-3.5 h-3.5 text-brand-500" />}
                   </div>
                 </div>
               );
@@ -322,7 +323,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
                 key={i}
                 type="button"
                 onClick={() => setInputText(tpl)}
-                className="text-[11px] font-semibold text-slate-700 hover:text-blue-700 bg-white hover:bg-blue-50 border border-slate-200/90 px-3 py-1.5 rounded-xl shrink-0 truncate max-w-xs transition-colors cursor-pointer shadow-2xs"
+                className="text-[11px] font-semibold text-slate-700 hover:text-brand-700 bg-white hover:bg-brand-50 border border-slate-200/90 px-3 py-1.5 rounded-xl shrink-0 truncate max-w-xs transition-colors cursor-pointer shadow-2xs"
               >
                 {tpl}
               </button>
@@ -335,25 +336,28 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
           onSubmit={handleSend}
           className="p-2.5 sm:p-3 border-t border-slate-200 flex items-center gap-2 bg-white min-w-0 max-w-full shrink-0"
         >
-          <input
-            type="text"
-            placeholder={
-              currentRole === 'teacher'
-                ? `${currentStudent?.parentName || 'Velimize'} mesaj yazın...`
-                : 'Öğretmenimize mesaj iletin...'
-            }
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            className="flex-1 min-w-0 text-xs sm:text-sm px-3.5 py-2.5 rounded-2xl bg-slate-100/80 border border-slate-200/60 focus:border-blue-500 focus:bg-white focus:outline-hidden font-medium"
-          />
-          <button
+          <div className="flex-1 min-w-0">
+            <TextInput
+              type="text"
+              placeholder={
+                currentRole === 'teacher'
+                  ? `${currentStudent?.parentName || 'Velimize'} mesaj yazın...`
+                  : 'Öğretmenimize mesaj iletin...'
+              }
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+            />
+          </div>
+          <Button
+            variant="primary"
+            size="sm"
             type="submit"
             disabled={!inputText.trim()}
-            className="py-2.5 px-4 rounded-2xl bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white text-xs font-black flex items-center gap-1.5 transition-all shadow-xs cursor-pointer shrink-0"
+            className="shrink-0"
           >
             <Send className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Gönder</span>
-          </button>
+          </Button>
         </form>
       </div>
     </div>

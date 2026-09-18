@@ -16,6 +16,8 @@ import {
   Info,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { Button } from './ui/Button';
+import { Badge } from './ui/Badge';
 
 interface StemXStoreModalProps {
   isOpen: boolean;
@@ -72,7 +74,7 @@ export const StemXStoreModal: React.FC<StemXStoreModalProps> = ({
   return (
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
-        <div className="bg-white rounded-3xl max-w-4xl w-full border border-slate-200 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+        <div className="bg-white rounded-2xl max-w-4xl w-full border border-slate-200 shadow-pop overflow-hidden flex flex-col max-h-[92vh]">
           {/* Header */}
           <div className="p-4 sm:p-5 bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-950 text-white flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -113,7 +115,7 @@ export const StemXStoreModal: React.FC<StemXStoreModalProps> = ({
             {/* Open Ecosystem & Sponsor Banner Callout */}
             <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-slate-700">
               <div className="flex items-start gap-2.5">
-                <Info className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                <Info className="w-4 h-4 text-brand-600 shrink-0 mt-0.5" />
                 <div>
                   <span className="font-extrabold text-slate-900 block text-xs">
                     Bu Bölüm Bağımsız Eğitim & Teknoloji Şirketlerinin Sponsorlu Vitrinidir
@@ -124,18 +126,19 @@ export const StemXStoreModal: React.FC<StemXStoreModalProps> = ({
                 </div>
               </div>
 
-              <button
-                type="button"
+              <Button
+                variant="softBrand"
+                size="sm"
                 onClick={() => setShowPartnerModal(true)}
-                className="shrink-0 px-3.5 py-2 rounded-xl bg-white hover:bg-blue-50 border border-blue-200 text-blue-700 font-extrabold text-xs flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+                className="shrink-0"
               >
                 <Megaphone className="w-3.5 h-3.5 text-amber-500" />
                 <span>Bu Alanda Reklam Ver / Satış Yap</span>
-              </button>
+              </Button>
             </div>
 
             {/* Main Product Showcase Card */}
-            <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-slate-900 to-indigo-950 text-white border border-slate-800 shadow-lg relative overflow-hidden">
+            <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-slate-900 to-indigo-950 text-white border border-slate-800 shadow-lg relative overflow-hidden">
               <div className="absolute right-0 top-0 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
               <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-5">
@@ -188,23 +191,23 @@ export const StemXStoreModal: React.FC<StemXStoreModalProps> = ({
                     </div>
                   </div>
 
-                  <button
-                    type="button"
+                  <Button
+                    variant="success"
                     onClick={handleCreateClassOrder}
-                    className="w-full min-h-[44px] py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-500/25 active:scale-[0.98] cursor-pointer"
+                    className="w-full min-h-[44px]"
                   >
                     <ShoppingCart className="w-4 h-4" />
                     Sınıf Kasa/Fonuna Ekle (₺450)
-                  </button>
+                  </Button>
 
-                  <button
-                    type="button"
+                  <Button
+                    variant="ghostDark"
                     onClick={handleShareStory}
-                    className="w-full min-h-[38px] py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors border border-white/10 cursor-pointer"
+                    className="w-full"
                   >
                     <Share2 className="w-3.5 h-3.5" />
                     Hikayede & Panoda Duyur
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -241,9 +244,9 @@ export const StemXStoreModal: React.FC<StemXStoreModalProps> = ({
                     >
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-indigo-100 text-indigo-800">
+                          <Badge tone="indigo">
                             {ev.gradeLevel}
-                          </span>
+                          </Badge>
                           <span className="text-[11px] font-bold text-slate-500">
                             {ev.instructor}
                           </span>
@@ -255,7 +258,7 @@ export const StemXStoreModal: React.FC<StemXStoreModalProps> = ({
 
                         <div className="space-y-1 text-xs text-slate-600 font-medium">
                           <div className="flex items-center gap-1.5">
-                            <Calendar className="w-3.5 h-3.5 text-blue-600" />
+                            <Calendar className="w-3.5 h-3.5 text-brand-600" />
                             <span>{ev.date}</span>
                           </div>
                           <div className="flex items-center gap-1.5">
@@ -271,14 +274,10 @@ export const StemXStoreModal: React.FC<StemXStoreModalProps> = ({
                           <span className="text-emerald-700 font-black">{ev.spotsLeft} Boş Yer</span>
                         </div>
 
-                        <button
-                          type="button"
+                        <Button
+                          variant={isEnrolled ? 'success' : 'indigo'}
                           onClick={() => handleEnrollEvent(ev.id)}
-                          className={`w-full min-h-[38px] py-2 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 transition-all shadow-2xs cursor-pointer ${
-                            isEnrolled
-                              ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                              : 'bg-indigo-600 hover:bg-indigo-700 text-white'
-                          }`}
+                          className="w-full min-h-[38px]"
                         >
                           {isEnrolled ? (
                             <>
@@ -291,7 +290,7 @@ export const StemXStoreModal: React.FC<StemXStoreModalProps> = ({
                               Sınıfı Atölyeye Kaydet
                             </>
                           )}
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   );
@@ -317,13 +316,14 @@ export const StemXStoreModal: React.FC<StemXStoreModalProps> = ({
                 <span>Reklam / Vitrin Başvurusu</span>
               </button>
 
-              <button
-                type="button"
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={onClose}
-                className="min-h-[38px] px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold transition-colors cursor-pointer"
+                className="min-h-[38px]"
               >
                 Kapat
-              </button>
+              </Button>
             </div>
           </div>
         </div>
