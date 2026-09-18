@@ -13,6 +13,7 @@ import {
   Award,
   Bell,
   ArrowRight,
+  Megaphone,
 } from 'lucide-react';
 
 interface ParentPortalViewProps {
@@ -38,7 +39,7 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
         <div className="relative z-10 flex items-center justify-between gap-4">
           <div className="space-y-1">
             <span className="px-2.5 py-1 rounded-full bg-white/20 text-white text-[11px] font-bold backdrop-blur-md">
-              👨‍👩‍👧 MakeTab Veli Bilgilendirme Portalı
+              MakeTab Veli Bilgilendirme Portalı
             </span>
             <h2 className="text-xl sm:text-2xl font-black tracking-tight mt-1">
               4-A Sınıfı • {student.name} {student.surname}
@@ -85,7 +86,7 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
           <div className="w-px h-10 bg-slate-200" />
           <div>
             <span className="text-[11px] text-slate-400 font-bold uppercase">Sınıf Katılımı</span>
-            <div className="text-sm font-black text-slate-800 mt-2">🌟 Örnek Öğrenci</div>
+            <div className="text-sm font-black text-slate-800 mt-2">Örnek Öğrenci</div>
           </div>
         </div>
 
@@ -93,7 +94,7 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
         <div className="grid grid-cols-2 gap-2.5 pt-2">
           <button
             onClick={onOpenChat}
-            className="py-2.5 px-3 rounded-2xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center gap-2 transition-colors"
+            className="py-2.5 px-3 rounded-2xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
           >
             <MessageCircle className="w-4 h-4" />
             Öğretmene Mesaj Yaz
@@ -101,10 +102,10 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
 
           <button
             onClick={onOpenCharacterAnalysis}
-            className="py-2.5 px-3 rounded-2xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center justify-center gap-2 transition-colors"
+            className="py-2.5 px-3 rounded-2xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
           >
             <Sparkles className="w-4 h-4" />
-            AI Karakter Raporunu Gör
+            Öğrenci Analizini Gör
           </button>
         </div>
       </div>
@@ -151,12 +152,12 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
         className="bg-white rounded-3xl p-5 border border-slate-200 hover:border-blue-300 shadow-xs cursor-pointer transition-all flex items-center justify-between"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg">
-            📸
+          <div className="w-10 h-10 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center">
+            <Megaphone className="w-5 h-5" />
           </div>
           <div>
             <h4 className="font-extrabold text-slate-800 text-xs sm:text-sm">
-              4-A Sınıf Hikayesi ve Fotoğrafları
+              4-A Sınıf Duyuruları ve Fotoğrafları
             </h4>
             <p className="text-xs text-slate-400">
               Fen laboratuvarı etkinliği ve haftalık duyurulara göz atın

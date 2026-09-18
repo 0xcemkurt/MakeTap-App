@@ -75,6 +75,9 @@ export default function App() {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed?.id && parsed?.role) {
+          if (parsed.name?.includes('Hakan') && !parsed.avatar) {
+            parsed.avatar = '/hakan_kavuzkoz.jpg';
+          }
           return parsed;
         }
       }
@@ -364,7 +367,8 @@ export default function App() {
       classId: 'class-4a',
       authorName: authUser?.name || 'Hakan KAVUZKOZ',
       authorRole: 'Sınıf Öğretmeni',
-      title: `📝 Yeni Ödev: ${exam.title}`,
+      authorAvatar: authUser?.avatar || '/hakan_kavuzkoz.jpg',
+      title: `Yeni Ödev: ${exam.title}`,
       content: `Sevgili öğrencilerimiz ve değerli velilerimiz, ${exam.subject} dersinden '${exam.topic}' konulu ${exam.questions.length} soruluk MakeTab alıştırması ödev olarak tanımlanmıştır. Başarılar dileriz!`,
       tag: 'Ödev',
       timestamp: 'Az önce',
@@ -438,7 +442,8 @@ export default function App() {
       classId: 'class-4a',
       authorName: authUser?.name || 'Hakan KAVUZKOZ',
       authorRole: 'Sınıf Öğretmeni',
-      title: '🚀 STEM-X Robotik Kiti Sınıf Siparişi Açıldı!',
+      authorAvatar: authUser?.avatar || '/hakan_kavuzkoz.jpg',
+      title: 'STEM-X Robotik Kiti Sınıf Siparişi Açıldı!',
       content: `Değerli velilerimiz, öğrencilerimizin bilişim ve mühendislik becerilerini geliştirecek 'STEM-X Yeni Nesil Robotik Kodlama ve Deney Kiti' sınıfımıza özel ₺450 indirimli fiyatıyla kasaya eklenmiştir. İlk canlı atölyemiz 21 Mart Cumartesi günü saat 10:00'da!`,
       tag: 'Duyuru',
       timestamp: 'Az önce',
@@ -508,7 +513,7 @@ export default function App() {
               }`}
             >
               <Megaphone className="w-3.5 h-3.5" />
-              <span>Sınıf Hikayesi</span>
+              <span>Duyurular</span>
             </button>
 
             <button
@@ -545,7 +550,7 @@ export default function App() {
               }`}
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>AI Sınav & Eğitim</span>
+              <span>Sınav Atölyesi</span>
             </button>
 
             <button
@@ -557,7 +562,7 @@ export default function App() {
               }`}
             >
               <BrainCircuit className="w-3.5 h-3.5 text-amber-300" />
-              <span>AI Karakter Analisti</span>
+              <span>Öğrenci Analiz</span>
             </button>
           </nav>
 
@@ -608,20 +613,30 @@ export default function App() {
             {/* Authenticated User Badge & Logout Button */}
             <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
               <div className="flex items-center gap-2">
-                <div
-                  className={`w-8 h-8 rounded-xl font-black text-xs flex items-center justify-center shadow-xs select-none ${
-                    currentRole === 'principal'
-                      ? 'bg-gradient-to-tr from-amber-500 to-amber-700 text-slate-950 border border-amber-300'
-                      : 'bg-linear-to-tr from-blue-700 to-indigo-600 text-white'
-                  }`}
-                  title={`${authUser.name} (${authUser.title})`}
-                >
-                  {authUser.name
-                    .split(' ')
-                    .map((w) => w[0])
-                    .join('')
-                    .slice(0, 2)}
-                </div>
+                {authUser.avatar || (authUser.name.includes('Hakan') ? '/hakan_kavuzkoz.jpg' : null) ? (
+                  <img
+                    src={authUser.avatar || '/hakan_kavuzkoz.jpg'}
+                    alt={authUser.name}
+                    referrerPolicy="no-referrer"
+                    className="w-8 h-8 rounded-xl object-cover border-2 border-blue-500 shadow-xs"
+                    title={`${authUser.name} (${authUser.title})`}
+                  />
+                ) : (
+                  <div
+                    className={`w-8 h-8 rounded-xl font-black text-xs flex items-center justify-center shadow-xs select-none ${
+                      currentRole === 'principal'
+                        ? 'bg-gradient-to-tr from-amber-500 to-amber-700 text-slate-950 border border-amber-300'
+                        : 'bg-linear-to-tr from-blue-700 to-indigo-600 text-white'
+                    }`}
+                    title={`${authUser.name} (${authUser.title})`}
+                  >
+                    {authUser.name
+                      .split(' ')
+                      .map((w) => w[0])
+                      .join('')
+                      .slice(0, 2)}
+                  </div>
+                )}
                 <div className="text-left leading-tight hidden xl:block">
                   <div className="text-xs font-black text-slate-800 tracking-tight">
                     {authUser.name}
@@ -770,7 +785,7 @@ export default function App() {
           }`}
         >
           <Megaphone className="w-5 h-5" />
-          <span className="text-[10px] mt-0.5">Hikaye</span>
+          <span className="text-[10px] mt-0.5">Duyurular</span>
         </button>
 
         <button
@@ -780,7 +795,7 @@ export default function App() {
           }`}
         >
           <Sparkles className="w-5 h-5 text-amber-500" />
-          <span className="text-[10px] mt-0.5">AI Sınav</span>
+          <span className="text-[10px] mt-0.5">Sınav Atölyesi</span>
         </button>
 
         <button
@@ -790,7 +805,7 @@ export default function App() {
           }`}
         >
           <BrainCircuit className="w-5 h-5 text-indigo-500" />
-          <span className="text-[10px] mt-0.5">Analist</span>
+          <span className="text-[10px] mt-0.5">Öğrenci Analiz</span>
         </button>
 
         <button

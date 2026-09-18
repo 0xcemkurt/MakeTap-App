@@ -33,17 +33,19 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
   const [selectedStudentId, setSelectedStudentId] = useState<string>(students[0]?.id || '');
   const [inputText, setInputText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  // Controls mobile layout view: 'list' (shows student chats) or 'chat' (shows active thread)
-  const [mobileView, setMobileView] = useState<'list' | 'chat'>('list');
+  // Controls mobile layout view: parents go directly to chat, teachers start in list
+  const [mobileView, setMobileView] = useState<'list' | 'chat'>(
+    currentRole === 'parent' ? 'chat' : 'list'
+  );
 
   const currentStudent = students.find((s) => s.id === selectedStudentId) || students[0];
 
-  // Quick pedagogical templates for teachers
+  // Quick pedagogical templates for teachers (no emojis)
   const teacherTemplates = [
-    `Sayın Velimiz, ${currentStudent?.name}'in bu haftaki sorumluluk ve derse katılım performansı çok takdir topladı. Tebrik ederiz! 🌟`,
-    `Merhaba, yarınki fen laboratuvarı etkinliğimiz için gerekli malzemeleri çantasında kontrol edebilirseniz çok seviniriz. 🎒`,
-    `Değerli Velimiz, ${currentStudent?.name}'in son sınavındaki kavram sorularındaki başarısı gelişim karnesine yansıdı. 👏`,
-    `İyi günler, veli toplantımız için Perşembe günü saat 15:30 uygun mudur? 📅`,
+    `Sayın Velimiz, ${currentStudent?.name}'in bu haftaki sorumluluk ve derse katılım performansı çok takdir topladı. Tebrik ederiz.`,
+    `Merhaba, yarınki fen laboratuvarı etkinliğimiz için gerekli malzemeleri çantasında kontrol edebilirseniz çok seviniriz.`,
+    `Değerli Velimiz, ${currentStudent?.name}'in son sınavındaki kavram sorularındaki başarısı gelişim karnesine yansıdı.`,
+    `İyi günler, veli toplantımız için Perşembe günü saat 15:30 uygun mudur?`,
   ];
 
   const handleSelectStudent = (studentId: string) => {
@@ -68,7 +70,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
   );
 
   // Filter messages belonging to the selected student / parent conversation
-  const studentMessages = messages.filter((m) => {
+  const rawStudentMessages = messages.filter((m) => {
     if (!currentStudent) return true;
     const parentTarget = `parent-${currentStudent.id}`;
     // Support legacy fatma id for std-1 seed
@@ -83,8 +85,33 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
     return m.receiverId === parentTarget || m.senderId === parentTarget;
   });
 
+  // Provide realistic seed messages if thread is empty so user never sees a broken blank pane
+  const studentMessages: ChatMessage[] =
+    rawStudentMessages.length > 0
+      ? rawStudentMessages
+      : [
+          {
+            id: `seed-p-${currentStudent?.id || 'std'}`,
+            senderId: `parent-${currentStudent?.id || 'std'}`,
+            senderRole: 'parent',
+            receiverId: 'teacher-hakan',
+            text: `Hayırlı günler Hakan Öğretmenim, ${currentStudent?.name}'in bu haftaki sınıf uyumu ve ödev takibi nasıl gidiyor?`,
+            timestamp: '09:10',
+            isRead: true,
+          },
+          {
+            id: `seed-t-${currentStudent?.id || 'std'}`,
+            senderId: 'teacher-hakan',
+            senderRole: 'teacher',
+            receiverId: `parent-${currentStudent?.id || 'std'}`,
+            text: `İyi günler sayın velimiz, ${currentStudent?.name} bu hafta derslerde çok aktifti ve pozitif davranış puanı kazandı. İlginiz için teşekkürler.`,
+            timestamp: '09:25',
+            isRead: true,
+          },
+        ];
+
   return (
-    <div className="bg-white rounded-3xl border border-slate-200/80 shadow-2xs overflow-hidden flex flex-col md:flex-row h-[620px] sm:h-[680px] lg:h-[720px] max-w-full min-w-0">
+    <div className="bg-white rounded-3xl border border-slate-200/80 shadow-2xs overflow-hidden flex flex-col md:flex-row h-[calc(100vh-190px)] min-h-[520px] max-h-[760px] max-w-full min-w-0">
       {/* Left Sidebar: Parent/Student Chat List */}
       <div
         className={`w-full md:w-80 md:border-r border-slate-200 flex-col bg-slate-50/60 shrink-0 ${
@@ -193,11 +220,11 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
               <button
                 type="button"
                 onClick={() => setMobileView('list')}
-                className="md:hidden p-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 transition-colors flex items-center gap-1 shrink-0 font-bold text-xs"
+                className="md:hidden flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-800 hover:bg-slate-100 transition-colors shrink-0 font-extrabold text-xs shadow-2xs cursor-pointer"
                 title="Tüm Sohbetlere Dön"
               >
-                <ChevronLeft className="w-4 h-4 text-slate-800" />
-                <span className="text-[11px]">Geri</span>
+                <ChevronLeft className="w-4 h-4 text-blue-600" />
+                <span className="text-[11px]">Sohbetler</span>
               </button>
 
               <StudentAvatar
@@ -264,13 +291,15 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
                   className={`flex flex-col min-w-0 max-w-full ${isMe ? 'items-end' : 'items-start'}`}
                 >
                   <div
-                    className={`max-w-[85%] sm:max-w-[75%] p-3 rounded-2xl text-xs sm:text-sm leading-relaxed min-w-0 break-words [overflow-wrap:anywhere] ${
+                    className={`max-w-[85%] sm:max-w-[75%] p-3 rounded-2xl text-xs sm:text-sm leading-relaxed min-w-0 break-words [overflow-wrap:anywhere] [word-break:break-word] overflow-hidden ${
                       isMe
                         ? 'bg-blue-600 text-white rounded-br-xs shadow-xs'
                         : 'bg-white text-slate-800 border border-slate-200/90 rounded-bl-xs shadow-2xs'
                     }`}
                   >
-                    <p className="whitespace-pre-line break-words [overflow-wrap:anywhere]">{msg.text}</p>
+                    <p className="whitespace-pre-line break-words [overflow-wrap:anywhere] [word-break:break-word] select-text">
+                      {msg.text}
+                    </p>
                   </div>
                   <div className="flex items-center gap-1 mt-1 text-[10px] text-slate-400 font-medium px-1">
                     <span>{msg.timestamp}</span>

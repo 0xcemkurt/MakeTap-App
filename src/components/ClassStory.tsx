@@ -13,6 +13,7 @@ import {
   Pin,
   Smile,
   Plus,
+  X,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -78,21 +79,21 @@ export const ClassStory: React.FC<ClassStoryProps> = ({
       <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200 shadow-xs flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-md shadow-blue-500/20">
-            📢
+            <Megaphone className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="text-sm font-extrabold text-slate-900">4-A Sınıf Hikayesi</h3>
-            <p className="text-xs text-slate-500">Öğretmen ve veliler için güvenli sınıf akışı</p>
+            <h3 className="text-sm font-extrabold text-slate-900">4-A Sınıf Duyuruları</h3>
+            <p className="text-xs text-slate-500">Öğretmen ve veliler için resmi ve güvenli duyuru akışı</p>
           </div>
         </div>
 
         {currentRole === 'teacher' && (
           <button
             onClick={() => setShowCreateModal(true)}
-            className="py-2.5 px-4 rounded-2xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-extrabold text-xs flex items-center gap-1.5 shadow-md shadow-blue-500/20 transition-all"
+            className="py-2.5 px-4 rounded-2xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-extrabold text-xs flex items-center gap-1.5 shadow-md shadow-blue-500/20 transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
-            Yeni Paylaşım
+            Yeni Duyuru Paylaş
           </button>
         )}
       </div>
@@ -102,12 +103,12 @@ export const ClassStory: React.FC<ClassStoryProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
           <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-5 sm:p-6 space-y-4">
             <div className="flex justify-between items-center pb-2 border-b border-slate-100">
-              <h3 className="text-base font-extrabold text-slate-900">Sınıfa Duyuru veya Anı Paylaş</h3>
+              <h3 className="text-base font-extrabold text-slate-900">Sınıfa Duyuru veya Etkinlik Paylaş</h3>
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center"
+                className="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center cursor-pointer"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -136,7 +137,7 @@ export const ClassStory: React.FC<ClassStoryProps> = ({
                 <label className="text-xs font-bold text-slate-700 block mb-1">Başlık (İsteğe Bağlı)</label>
                 <input
                   type="text"
-                  placeholder="Örn: 🔬 Fen Laboratuvarı Manyetizma Keşfi"
+                  placeholder="Örn: Fen Laboratuvarı Manyetizma Keşfi"
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   className="w-full text-xs px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-hidden focus:border-blue-500 font-medium"
@@ -159,15 +160,15 @@ export const ClassStory: React.FC<ClassStoryProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="py-2 px-3 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100"
+                  className="py-2 px-3 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 cursor-pointer"
                 >
                   Vazgeç
                 </button>
                 <button
                   type="submit"
-                  className="py-2 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md"
+                  className="py-2 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md cursor-pointer"
                 >
-                  Sınıf Akışında Paylaş
+                  Duyurularda Paylaş
                 </button>
               </div>
             </form>
@@ -185,9 +186,18 @@ export const ClassStory: React.FC<ClassStoryProps> = ({
             {/* Post Header */}
             <div className="p-4 sm:p-5 pb-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-extrabold flex items-center justify-center text-sm shadow-sm">
-                  {post.authorName[0]}
-                </div>
+                {post.authorAvatar || post.authorName.includes('Hakan') ? (
+                  <img
+                    src={post.authorAvatar || '/hakan_kavuzkoz.jpg'}
+                    alt={post.authorName}
+                    referrerPolicy="no-referrer"
+                    className="w-10 h-10 rounded-2xl object-cover border-2 border-blue-500 shadow-sm"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-extrabold flex items-center justify-center text-sm shadow-sm">
+                    {post.authorName[0]}
+                  </div>
+                )}
                 <div>
                   <div className="flex items-center gap-2">
                     <h4 className="text-xs sm:text-sm font-extrabold text-slate-900">

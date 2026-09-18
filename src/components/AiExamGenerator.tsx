@@ -16,6 +16,19 @@ import {
   AlertCircle,
   FileText,
   RotateCcw,
+  FlaskConical,
+  Calculator,
+  BookOpen,
+  Globe,
+  Languages,
+  Sprout,
+  Search,
+  Share2,
+  Target,
+  Tablet,
+  Users,
+  CheckCheck,
+  X,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -35,24 +48,26 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
   const [openEndedSubmitted, setOpenEndedSubmitted] = useState<Record<string, boolean>>({});
   const [showSolutions, setShowSolutions] = useState(false);
   const [assignedNotice, setAssignedNotice] = useState(false);
+  const [showSendModal, setShowSendModal] = useState(false);
+  const [sendSuccessState, setSendSuccessState] = useState(false);
 
   // 2-Second Generation Sequence State
   const [sequenceStep, setSequenceStep] = useState(0);
   const [sequenceProgress, setSequenceProgress] = useState(0);
 
   const SEQUENCE_STEPS = [
-    { title: 'MEB 2025-2026 Müfredatı Taranıyor', subtitle: 'Kazanım ve yaş seviyesi doğrulanıyor...', icon: '🔍' },
-    { title: 'Pedagojik Zorluk & Kalıplar İşleniyor', subtitle: `${questionCount} soru pedagojik olarak derleniyor...`, icon: '🧠' },
-    { title: 'Çözüm Notları ve Sorular Derleniyor', subtitle: 'Pedagojik ipuçları ve cevap anahtarı tamamlanıyor...', icon: '✨' },
+    { title: 'MEB 2025-2026 Müfredatı Taranıyor', subtitle: 'Kazanım ve yaş seviyesi doğrulanıyor...', step: '1' },
+    { title: 'Pedagojik Zorluk & Kalıplar İşleniyor', subtitle: `${questionCount} soru pedagojik olarak derleniyor...`, step: '2' },
+    { title: 'Çözüm Notları ve Sorular Derleniyor', subtitle: 'Pedagojik ipuçları ve cevap anahtarı tamamlanıyor...', step: '3' },
   ];
 
   const subjectOptions = [
-    { name: 'Fen Bilimleri', icon: '🔬', defaultTopic: 'Kuvvetin Etkileri ve Mıknatıslar' },
-    { name: 'Matematik', icon: '📐', defaultTopic: 'Kesirlerle Toplama ve Problem Çözme' },
-    { name: 'Türkçe', icon: '📖', defaultTopic: 'Okuduğunu Anlama ve Ana Fikir' },
-    { name: 'Sosyal Bilgiler', icon: '🌍', defaultTopic: 'Milli Mücadele ve Kahramanlarımız' },
-    { name: 'İngilizce', icon: '🇬🇧', defaultTopic: 'My Daily Routine & Action Verbs' },
-    { name: 'Hayat Bilgisi', icon: '🌱', defaultTopic: 'Okul Kuralları ve Sağlıklı Yaşam' },
+    { name: 'Fen Bilimleri', icon: FlaskConical, defaultTopic: 'Kuvvetin Etkileri ve Mıknatıslar' },
+    { name: 'Matematik', icon: Calculator, defaultTopic: 'Kesirlerle Toplama ve Problem Çözme' },
+    { name: 'Türkçe', icon: BookOpen, defaultTopic: 'Okuduğunu Anlama ve Ana Fikir' },
+    { name: 'Sosyal Bilgiler', icon: Globe, defaultTopic: 'Milli Mücadele ve Kahramanlarımız' },
+    { name: 'İngilizce', icon: Languages, defaultTopic: 'My Daily Routine & Action Verbs' },
+    { name: 'Hayat Bilgisi', icon: Sprout, defaultTopic: 'Okul Kuralları ve Sağlıklı Yaşam' },
   ];
 
   const quickTopics: Record<string, string[]> = {
@@ -218,6 +233,32 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
     }
   };
 
+  const handleDirectSendToStudents = () => {
+    if (!exam) {
+      const generated = getCurriculumExam(subject, topic, questionCount, difficulty, gradeLevel);
+      setExam({
+        ...generated,
+        createdAt: new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
+      });
+    }
+    setShowSendModal(true);
+    setSendSuccessState(false);
+  };
+
+  const handleConfirmSendToStudents = () => {
+    if (exam && onAssignToClass) {
+      onAssignToClass(exam);
+    }
+    setSendSuccessState(true);
+    confetti({ particleCount: 50, spread: 60, origin: { y: 0.5 } });
+    setTimeout(() => {
+      setShowSendModal(false);
+      setSendSuccessState(false);
+      setAssignedNotice(true);
+      setTimeout(() => setAssignedNotice(false), 4000);
+    }, 1500);
+  };
+
   return (
     <div className="space-y-6 pb-12">
       {/* Top Banner */}
@@ -227,17 +268,29 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-white text-xs font-black backdrop-blur-md">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              MakeTab AI Sınav & Eğitim Laboratuvarı
+              MakeTab Sınav Atölyesi
             </div>
             <h2 className="text-xl sm:text-2xl font-black tracking-tight">
-              MEB Uyumlu Sınav ve Alıştırma Oluşturucu
+              MEB Müfredatı Sınav ve Alıştırma Atölyesi
             </h2>
             <p className="text-blue-100 text-xs sm:text-sm max-w-xl font-medium">
-              Soru sayısını, sınıf seviyesini ve ders kazanımlarını seçin. Çoktan seçmeli, doğru-yanlış ve açık uçlu soruları pedagojik çözüm notlarıyla saniyeler içinde üretin.
+              Soru sayısını, sınıf seviyesini ve ders kazanımlarını seçin. Çoktan seçmeli, doğru-yanlış ve açık uçlu soruları pedagojik çözüm notlarıyla saniyeler içinde hazırlayıp öğrenci tabletlerine anında iletin.
             </p>
           </div>
-          <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center shrink-0 shadow-inner">
-            <BrainCircuit className="w-8 h-8 text-white" />
+          
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              id="btn-direct-send-exam"
+              onClick={handleDirectSendToStudents}
+              className="py-2.5 px-4 rounded-2xl bg-white hover:bg-blue-50 text-blue-900 active:scale-95 font-black text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-black/10 transition-all shrink-0 cursor-pointer"
+            >
+              <Send className="w-4 h-4 text-blue-600" />
+              <span>Öğrencilere Soruları Gönder</span>
+            </button>
+            <div className="w-12 h-12 rounded-2xl bg-white/20 hidden md:flex items-center justify-center shrink-0 shadow-inner">
+              <BrainCircuit className="w-7 h-7 text-white" />
+            </div>
           </div>
         </div>
       </div>
@@ -295,7 +348,11 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                     : 'border-slate-200 bg-white hover:border-slate-300 text-slate-700'
                 }`}
               >
-                <span className="text-2xl">{subj.icon}</span>
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                  subject === subj.name ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600'
+                }`}>
+                  <subj.icon className="w-5 h-5" />
+                </div>
                 <div>
                   <div className="text-xs font-extrabold">{subj.name}</div>
                   <div className="text-[10px] text-slate-400 font-semibold">MEB Müfredatı</div>
@@ -459,7 +516,9 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                   }`}
                 >
                   <div className="flex items-center gap-2 font-black text-xs">
-                    <span className="text-base">{st.icon}</span>
+                    <span className="w-5 h-5 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center font-black text-[11px] shrink-0">
+                      {st.step}
+                    </span>
                     <span className="line-clamp-1">{st.title}</span>
                     {isPast && <Check className="w-3.5 h-3.5 text-emerald-600 ml-auto shrink-0" />}
                   </div>
@@ -495,8 +554,9 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
               <h3 className="text-lg sm:text-xl font-black text-slate-900 leading-snug">
                 {exam.title}
               </h3>
-              <p className="text-xs text-slate-600 font-medium">
-                🎯 <span className="font-bold text-slate-800">Hedef Kazanım:</span> {exam.targetOutcome}
+              <p className="text-xs text-slate-600 font-medium flex items-center gap-1.5">
+                <Target className="w-4 h-4 text-blue-600 shrink-0" />
+                <span><strong className="text-slate-800">Hedef Kazanım:</strong> {exam.targetOutcome}</span>
               </p>
             </div>
 
@@ -504,8 +564,21 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
             <div className="flex flex-wrap items-center gap-2 shrink-0">
               <button
                 type="button"
+                id="btn-exam-send-to-students"
+                onClick={() => {
+                  setShowSendModal(true);
+                  setSendSuccessState(false);
+                }}
+                className="min-h-[42px] py-2 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white font-black text-xs flex items-center gap-1.5 transition-all shadow-md shadow-blue-500/20 cursor-pointer"
+              >
+                <Send className="w-4 h-4 text-amber-300" />
+                <span>Öğrencilere Soruları Gönder</span>
+              </button>
+
+              <button
+                type="button"
                 onClick={handlePrint}
-                className="min-h-[42px] py-2 px-3.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold text-xs flex items-center gap-1.5 transition-colors shadow-xs"
+                className="min-h-[42px] py-2 px-3.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold text-xs flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer"
               >
                 <Printer className="w-4 h-4 text-slate-600" />
                 Yazdır / PDF
@@ -514,9 +587,9 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
               <button
                 type="button"
                 onClick={handleAssign}
-                className="min-h-[42px] py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs flex items-center gap-1.5 transition-colors shadow-sm shadow-emerald-500/25"
+                className="min-h-[42px] py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs flex items-center gap-1.5 transition-colors shadow-sm shadow-emerald-500/25 cursor-pointer"
               >
-                <Send className="w-4 h-4" />
+                <CheckCheck className="w-4 h-4" />
                 Sınıfa Ata
               </button>
 
@@ -675,7 +748,7 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                             <XCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
                             <div>
                               <p className="text-xs font-black text-rose-700">
-                                ❌ Yanlış Cevap!
+                                Yanlış Cevap
                               </p>
                               <p className="text-xs text-rose-800 font-medium mt-0.5">
                                 Sizin Seçiminiz: <span className="font-bold underline">{userAns}</span> | Doğru Cevap:{' '}
@@ -692,7 +765,7 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                             <CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                             <div className="flex-1">
                               <p className="text-xs font-black">
-                                📝 Öğrenci Yanıtı Kaydedildi
+                                Öğrenci Yanıtı Kaydedildi
                               </p>
                               <p className="text-xs text-blue-800 font-medium mt-0.5">
                                 Öğrenci Açıklaması: <span className="italic font-semibold">"{userAns}"</span>
@@ -712,7 +785,8 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                         <span>Resmi Çözüm & Model Cevap: {q.correctAnswer}</span>
                       </div>
                       <p className="text-xs text-slate-700 font-medium leading-relaxed">
-                        💡 <span className="font-bold text-slate-900">Açıklama:</span> {q.explanation}
+                        <Lightbulb className="w-3.5 h-3.5 text-amber-500 inline mr-1" />
+                        <span className="font-bold text-slate-900">Açıklama:</span> {q.explanation}
                       </p>
                       {q.pedagogicalTip && (
                         <div className="p-2.5 rounded-xl bg-amber-50/80 border border-amber-200 text-[11px] text-amber-900 font-medium flex items-center gap-2">
@@ -763,6 +837,132 @@ export const AiExamGenerator: React.FC<AiExamGeneratorProps> = ({ onAssignToClas
                 Tüm Çözümleri Değerlendir →
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Send to Students Modal */}
+      {showSendModal && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-lg w-full border border-slate-200 shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+            {/* Modal Header */}
+            <div className="p-5 sm:p-6 bg-gradient-to-r from-blue-700 via-indigo-700 to-indigo-800 text-white flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                  <Send className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-base font-black">Öğrencilere Soruları Gönder</h3>
+                  <p className="text-xs text-blue-100 font-medium">4-A Sınıfı • 18 Öğrenci Tableti</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowSendModal(false)}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-5 sm:p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+              {sendSuccessState ? (
+                <div className="py-8 text-center space-y-3 animate-in zoom-in-95 duration-300">
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+                    <CheckCheck className="w-8 h-8" />
+                  </div>
+                  <h4 className="text-base font-black text-slate-800">Sorular Başarıyla Gönderildi!</h4>
+                  <p className="text-xs text-slate-600 max-w-xs mx-auto">
+                    4-A sınıfındaki 18 öğrencinin tabletine alıştırma anında aktarıldı ve velilere bilgilendirme iletildi.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  {/* Exam preview capsule */}
+                  <div className="p-4 rounded-2xl bg-blue-50/70 border border-blue-200 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-black text-blue-800">
+                        {exam?.subject || subject} • {exam?.gradeLevel || gradeLevel}
+                      </span>
+                      <span className="text-[11px] font-bold text-slate-600 bg-white px-2 py-0.5 rounded-md border border-blue-100">
+                        {exam?.questions.length || questionCount} Soru • {exam?.durationMinutes || 25} dk
+                      </span>
+                    </div>
+                    <div className="text-xs font-extrabold text-slate-800">
+                      {exam?.title || topic}
+                    </div>
+                    <div className="text-[11px] text-slate-600 flex items-center gap-1">
+                      <Target className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                      <span>{exam?.targetOutcome || 'Kazanım kavrama ve uygulama alıştırması'}</span>
+                    </div>
+                  </div>
+
+                  {/* Distribution targets */}
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-slate-700">Gönderim Kanalları</label>
+                    <div className="space-y-2">
+                      <label className="flex items-center justify-between p-3 rounded-xl border border-slate-200 bg-slate-50/60 cursor-pointer hover:bg-slate-50">
+                        <div className="flex items-center gap-2.5">
+                          <Tablet className="w-4 h-4 text-blue-600" />
+                          <span className="text-xs font-bold text-slate-800">4-A Sınıfı Öğrenci Tabletleri</span>
+                        </div>
+                        <span className="text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+                          18 Aktif Cihaz
+                        </span>
+                      </label>
+
+                      <label className="flex items-center justify-between p-3 rounded-xl border border-slate-200 bg-slate-50/60 cursor-pointer hover:bg-slate-50">
+                        <div className="flex items-center gap-2.5">
+                          <Users className="w-4 h-4 text-indigo-600" />
+                          <span className="text-xs font-bold text-slate-800">Veli Bilgilendirme Portalı & SMS</span>
+                        </div>
+                        <span className="text-[11px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">
+                          Otomatik
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Mode Selector */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-slate-700">Sınav Modu</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="p-3 rounded-xl border-2 border-blue-600 bg-blue-50/50 text-left">
+                        <div className="text-xs font-extrabold text-blue-900">Canlı Tablet Oturumu</div>
+                        <div className="text-[10px] text-blue-700 mt-0.5">Öğretmen kontrollü eşzamanlı</div>
+                      </div>
+                      <div className="p-3 rounded-xl border border-slate-200 text-left hover:bg-slate-50 opacity-80">
+                        <div className="text-xs font-bold text-slate-700">Ev Ödevi Modu</div>
+                        <div className="text-[10px] text-slate-500 mt-0.5">Öğrenci kendi hızında</div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            {!sendSuccessState && (
+              <div className="p-4 sm:p-5 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setShowSendModal(false)}
+                  className="min-h-[40px] px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-white text-xs font-bold transition-all cursor-pointer"
+                >
+                  Vazgeç
+                </button>
+                <button
+                  type="button"
+                  id="btn-confirm-send-questions"
+                  onClick={handleConfirmSendToStudents}
+                  className="min-h-[40px] px-5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-black flex items-center gap-2 shadow-sm shadow-blue-500/25 active:scale-95 transition-all cursor-pointer"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Soruları Şimdi Gönder</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

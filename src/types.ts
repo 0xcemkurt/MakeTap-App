@@ -140,6 +140,7 @@ export interface AuthUser {
   schoolName: string;
   className: string;
   email: string;
+  avatar?: string;
 }
 
 export interface CharacterAnalysisResult {

@@ -106,6 +106,9 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
   // Search & Filter state for classes and teachers
   const [searchQuery, setSearchQuery] = useState('');
   const [gradeFilter, setGradeFilter] = useState<'all' | '1' | '2' | '3' | '4'>('all');
+  const [classStatusFilter, setClassStatusFilter] = useState<'all' | 'excellent' | 'normal' | 'attention'>('all');
+  const [classSortBy, setClassSortBy] = useState<'default' | 'efficiency' | 'attendance' | 'points'>('default');
+  const [teacherFilter, setTeacherFilter] = useState<'all' | 'high_rating' | 'with_notes' | 'with_comments'>('all');
 
   // AI report sets switcher state (3 distinct demo reports)
   const [currentReportIndex, setCurrentReportIndex] = useState(0);
@@ -125,21 +128,35 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
   const insideVisitorsCount = visitorLogs.filter((v) => v.status === 'inside').length;
   const onDutyStaffCount = staffMembers.filter((s) => s.status === 'on_duty').length;
 
-  // Filtered classes
-  const filteredClasses = classesSummary.filter((c) => {
-    const matchesSearch =
-      c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.teacherName.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesGrade = gradeFilter === 'all' || c.grade.toString() === gradeFilter;
-    return matchesSearch && matchesGrade;
-  });
+  // Filtered and sorted classes
+  const filteredClasses = classesSummary
+    .filter((c) => {
+      const matchesSearch =
+        c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        c.teacherName.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesGrade = gradeFilter === 'all' || c.grade.toString() === gradeFilter;
+      const matchesStatus = classStatusFilter === 'all' || c.status === classStatusFilter;
+      return matchesSearch && matchesGrade && matchesStatus;
+    })
+    .sort((a, b) => {
+      if (classSortBy === 'efficiency') return b.averageEfficiency - a.averageEfficiency;
+      if (classSortBy === 'attendance') return b.attendanceRate - a.attendanceRate;
+      if (classSortBy === 'points') return b.totalPoints - a.totalPoints;
+      return 0;
+    });
 
   // Filtered teachers
-  const filteredTeachers = teacherEvaluations.filter((t) =>
-    t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    t.className.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    t.branch.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredTeachers = teacherEvaluations.filter((t) => {
+    const matchesSearch =
+      t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.className.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.branch.toLowerCase().includes(searchQuery.toLowerCase());
+    if (!matchesSearch) return false;
+    if (teacherFilter === 'high_rating') return t.overallRating >= 4.9;
+    if (teacherFilter === 'with_notes') return Boolean(t.principalNote);
+    if (teacherFilter === 'with_comments') return t.parentComments.length > 0;
+    return true;
+  });
 
   // Handle saving principal note for a teacher
   const handleSaveTeacherNote = (e: React.FormEvent) => {
@@ -205,13 +222,13 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
 
   // Handle AI insights re-analysis & cycle through the 3 distinct demo reports
   const handleReanalyzeAi = (targetIndex?: number) => {
+    setActiveTab('ai-insights');
     setIsRefreshingAi(true);
     const nextIdx =
       targetIndex !== undefined
         ? targetIndex
         : (currentReportIndex + 1) % PRINCIPAL_AI_REPORT_SETS.length;
     setCurrentReportIndex(nextIdx);
-    const nextReport = PRINCIPAL_AI_REPORT_SETS[nextIdx];
 
     setTimeout(() => {
       setIsRefreshingAi(false);
@@ -222,7 +239,7 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
         spread: 70,
         origin: { y: 0.4 },
       });
-    }, 600);
+    }, 400);
   };
 
   return (
@@ -618,32 +635,87 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
       {/* 4. TAB CONTENT: CLASSES SUMMARY & COMPARISONS */}
       {activeTab === 'classes' && (
         <div className="space-y-4">
-          {/* Search & Filters */}
-          <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="relative w-full sm:w-72">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-              <input
-                type="text"
-                placeholder="Sınıf veya öğretmen ara..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs font-semibold rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-slate-900/20"
-              />
+          {/* Search & Buttonic Filters (No Hidden Horizontal Scroll) */}
+          <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-3.5">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="relative w-full sm:w-80">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Sınıf veya öğretmen adı ile ara..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2.5 text-xs font-semibold rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-slate-900/20 shadow-2xs"
+                />
+              </div>
+
+              <div className="text-xs font-bold text-slate-500 self-end sm:self-center">
+                Toplam <strong className="text-slate-900">{filteredClasses.length}</strong> şube listeleniyor
+              </div>
             </div>
 
-            <div className="flex items-center gap-1.5 w-full sm:w-auto">
-              <span className="text-xs font-bold text-slate-500 mr-1">Kademeler:</span>
+            {/* Buttonic Filter Deck 1: Kademeler & Başarı Durumu */}
+            <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100">
+              <span className="text-xs font-black text-slate-700 mr-1 shrink-0">Kademe:</span>
               {(['all', '1', '2', '3', '4'] as const).map((grade) => (
                 <button
                   key={grade}
+                  type="button"
                   onClick={() => setGradeFilter(grade)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
                     gradeFilter === grade
-                      ? 'bg-slate-900 text-white'
+                      ? 'bg-slate-900 text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
+                  }`}
+                >
+                  {grade === 'all' ? 'Tüm Kademeler' : `${grade}. Sınıflar`}
+                </button>
+              ))}
+
+              <div className="h-4 w-px bg-slate-200 mx-1 hidden sm:block" />
+
+              <span className="text-xs font-black text-slate-700 mr-1 shrink-0">Durum:</span>
+              {[
+                { id: 'all', label: 'Tüm Durumlar' },
+                { id: 'excellent', label: 'Örnek Sınıf' },
+                { id: 'normal', label: 'Dengeli' },
+                { id: 'attention', label: 'Rehberlik Gerekli' },
+              ].map((st) => (
+                <button
+                  key={st.id}
+                  type="button"
+                  onClick={() => setClassStatusFilter(st.id as any)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
+                    classStatusFilter === st.id
+                      ? 'bg-blue-600 text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
+                  }`}
+                >
+                  {st.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Buttonic Filter Deck 2: Sıralama Butonları */}
+            <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100">
+              <span className="text-xs font-black text-slate-700 mr-1 shrink-0">Sıralama:</span>
+              {[
+                { id: 'default', label: 'Standart Şube Sırası' },
+                { id: 'efficiency', label: 'Akademik Verim (En Yüksek)' },
+                { id: 'attendance', label: 'Devam Oranı (En Yüksek)' },
+                { id: 'points', label: 'Erdem Puanı (En Çok)' },
+              ].map((sort) => (
+                <button
+                  key={sort.id}
+                  type="button"
+                  onClick={() => setClassSortBy(sort.id as any)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
+                    classSortBy === sort.id
+                      ? 'bg-amber-500 text-slate-950 font-black shadow-xs'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                   }`}
                 >
-                  {grade === 'all' ? 'Tümü' : `${grade}. Sınıflar`}
+                  {sort.label}
                 </button>
               ))}
             </div>
@@ -743,6 +815,49 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
             <div className="bg-white/10 rounded-2xl p-3 border border-white/20 text-center shrink-0">
               <span className="text-[10px] uppercase font-bold text-amber-300 block">Genel Öğretmen Puanı</span>
               <span className="text-2xl font-black text-white">{averageTeacherRating} / 5.0</span>
+            </div>
+          </div>
+
+          {/* Buttonic Filter Deck for Teachers (No Horizontal Scroll) */}
+          <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-3">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="relative w-full sm:w-80">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Öğretmen, sınıf veya branş ara..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2.5 text-xs font-semibold rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-slate-900/20 shadow-2xs"
+                />
+              </div>
+
+              <div className="text-xs font-bold text-slate-500 self-end sm:self-center">
+                Toplam <strong className="text-slate-900">{filteredTeachers.length}</strong> öğretmen listeleniyor
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100">
+              <span className="text-xs font-black text-slate-700 mr-1 shrink-0">Filtrele:</span>
+              {[
+                { id: 'all', label: `Tüm Kadro (${teacherEvaluations.length})` },
+                { id: 'high_rating', label: 'En Yüksek Puan (4.9+)' },
+                { id: 'with_notes', label: 'Müdür Notu Eklenenler' },
+                { id: 'with_comments', label: 'Veli Yorumu Olanlar' },
+              ].map((tf) => (
+                <button
+                  key={tf.id}
+                  type="button"
+                  onClick={() => setTeacherFilter(tf.id as any)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
+                    teacherFilter === tf.id
+                      ? 'bg-blue-600 text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
+                  }`}
+                >
+                  {tf.label}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -889,8 +1004,9 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
           <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-orange-600 rounded-3xl p-5 sm:p-6 text-slate-950 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div className="space-y-1 max-w-2xl">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="px-2.5 py-0.5 rounded-full bg-slate-950 text-amber-300 text-[10px] font-black uppercase">
-                  🤖 Gemini Destekli MEB AI Okul Raporu
+                <span className="px-2.5 py-0.5 rounded-full bg-slate-950 text-amber-300 text-[10px] font-black uppercase flex items-center gap-1">
+                  <Sparkles className="w-3 h-3 text-amber-300" />
+                  Gemini Destekli MEB AI Okul Raporu
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[10px] font-black border border-amber-500/40">
                   {activeAiReport.badge}
@@ -1008,10 +1124,10 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                       }`}
                     >
                       {insight.status === 'urgent'
-                        ? '⚠️ Acil Eylem Uyarısı'
+                        ? 'Acil Eylem Uyarısı'
                         : insight.status === 'positive'
-                        ? '🌟 Güçlü Performans'
-                        : '💡 Stratejik Fırsat'}
+                        ? 'Güçlü Performans'
+                        : 'Stratejik Fırsat'}
                     </span>
 
                     {insight.metric && (
@@ -1188,12 +1304,12 @@ export const PrincipalDashboard: React.FC<PrincipalDashboardProps> = ({
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <span className="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900 text-[10px] font-black uppercase">
                       {staff.role === 'security'
-                        ? '🛡️ Güvenlik'
+                        ? 'Güvenlik'
                         : staff.role === 'janitor'
-                        ? '🧹 Temizlik / Hademe'
+                        ? 'Temizlik / Hademe'
                         : staff.role === 'technician'
-                        ? '🔧 Teknik Bakım'
-                        : '📄 İdari Memur'}
+                        ? 'Teknik Bakım'
+                        : 'İdari Memur'}
                     </span>
                     <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black">
                       Nöbette / Görevde

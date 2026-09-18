@@ -16,6 +16,7 @@ import {
   ArrowRight,
   Building2,
   ChevronLeft,
+  Award,
 } from 'lucide-react';
 
 interface LoginViewProps {
@@ -32,6 +33,7 @@ export const DEMO_TEACHER: AuthUser = {
   schoolName: 'Atatürk İlkokulu',
   className: '4-A Bilim ve Keşif Sınıfı',
   email: 'hakan.kavuzkoz@maketab.edu.tr',
+  avatar: '/hakan_kavuzkoz.jpg',
 };
 
 // Takım Elbise İkonu (Suit and Tie Icon)
@@ -378,18 +380,18 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                   Sınıfınıza veya veli portalınıza erişin
                 </p>
               </div>
-              <div className="flex -space-x-2">
+              <div className="flex -space-x-1.5">
                 <span
-                  className="w-9 h-9 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-black border-2 border-white shadow-xs"
-                  title="MakeTab Canavarları"
+                  className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs font-black shadow-xs border border-white"
+                  title="MakeTab Akıllı Sınıf"
                 >
-                  👾
+                  <Sparkles className="w-4 h-4 text-amber-300" />
                 </span>
                 <span
-                  className="w-9 h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm font-black border-2 border-white shadow-xs"
-                  title="Pozitif Puanlar"
+                  className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow-xs border border-white"
+                  title="Erdem Puanları"
                 >
-                  ⭐
+                  <Award className="w-4 h-4 text-white" />
                 </span>
               </div>
             </div>
@@ -436,26 +438,32 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                 </span>
               </div>
 
-              <div className="bg-white/90 rounded-xl p-2.5 border border-blue-200/60 mb-3 space-y-1 text-slate-700">
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500 font-semibold">Kullanıcı Adı:</span>
-                  <button
-                    type="button"
-                    onClick={() => setUsername('Hakan KAVUZKOZ')}
-                    className="font-black text-slate-900 hover:text-blue-600 font-mono tracking-wide"
-                  >
-                    Hakan KAVUZKOZ
-                  </button>
+              <div className="bg-white/95 rounded-2xl p-3 border border-blue-200/60 mb-3 space-y-2 text-slate-700">
+                <div className="flex items-center gap-3">
+                  <img
+                    src="/hakan_kavuzkoz.jpg"
+                    alt="Hakan KAVUZKOZ"
+                    referrerPolicy="no-referrer"
+                    className="w-12 h-12 rounded-xl object-cover border-2 border-blue-500 shadow-sm shrink-0"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <span className="font-black text-slate-900 text-sm truncate">Hakan KAVUZKOZ</span>
+                      <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md">4-A Sınıfı</span>
+                    </div>
+                    <p className="text-[11px] text-slate-500 font-semibold truncate">Uzman Sınıf Öğretmeni & STEM Koordinatörü</p>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500 font-semibold">Şifre:</span>
-                  <span className="font-mono font-black text-blue-700">123456789</span>
-                </div>
-                <div className="flex items-center justify-between pt-0.5 border-t border-slate-100">
-                  <span className="text-slate-500 font-semibold">Rol / Sınıf:</span>
-                  <span className="font-bold text-slate-800 text-[11px]">
-                    4-A Sınıf Öğretmeni
-                  </span>
+
+                <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-100 text-[11px]">
+                  <div>
+                    <span className="text-slate-400 font-medium block">Kullanıcı Adı:</span>
+                    <strong className="text-slate-800 font-mono">Hakan KAVUZKOZ</strong>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 font-medium block">Şifre:</span>
+                    <strong className="text-blue-700 font-mono">123456789</strong>
+                  </div>
                 </div>
               </div>
 
@@ -469,7 +477,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                 className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.98] text-white text-xs font-black transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <LogIn className="w-3.5 h-3.5" />
-                <span>Hakan KAVUZKOZ Hesabıyla Tek Tıkla Giriş Yap</span>
+                <span>Hakan KAVUZKOZ Hesabıyla Giriş Yap</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>

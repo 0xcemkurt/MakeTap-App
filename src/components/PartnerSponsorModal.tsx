@@ -179,11 +179,11 @@ export const PartnerSponsorModal: React.FC<PartnerSponsorModalProps> = ({
                 <label className="text-[11px] font-bold text-slate-700">Etkinlik / Ürün Kategorisi</label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {[
-                    { id: 'robotics', label: '🤖 Robotik & Kodlama Kiti' },
-                    { id: 'science', label: '🔬 Fen & Deney Seti' },
-                    { id: 'book', label: '📚 Kitap & Yayıncılık' },
-                    { id: 'museum', label: '🏛️ Müze & Gezi Bileti' },
-                    { id: 'workshop', label: '🎭 Drama & Sanat Atölyesi' },
+                    { id: 'robotics', label: 'Robotik & Kodlama Kiti' },
+                    { id: 'science', label: 'Fen & Deney Seti' },
+                    { id: 'book', label: 'Kitap & Yayıncılık' },
+                    { id: 'museum', label: 'Müze & Bilim Gezisi' },
+                    { id: 'workshop', label: 'Drama & Sanat Atölyesi' },
                   ].map((cat) => (
                     <button
                       key={cat.id}

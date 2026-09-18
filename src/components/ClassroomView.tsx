@@ -91,7 +91,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         cardBorder: 'border-2 border-amber-400 bg-gradient-to-b from-amber-50/60 via-white to-white shadow-md shadow-amber-200/40 hover:border-amber-500 hover:shadow-xl ring-2 ring-amber-300/40',
         badgeBg: 'bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-xs',
         badgeIcon: <Trophy className="w-3 h-3 shrink-0 text-amber-100" />,
-        defaultLabel: '🏆 Sınıf Lideri',
+        defaultLabel: 'Sınıf Lideri',
       };
     }
     if (student.archetype === 'energetic') {
@@ -99,7 +99,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         cardBorder: 'border-2 border-orange-400 bg-gradient-to-b from-orange-50/60 via-white to-white shadow-md shadow-orange-200/40 hover:border-orange-500 hover:shadow-xl ring-2 ring-orange-300/40',
         badgeBg: 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-xs',
         badgeIcon: <Zap className="w-3 h-3 shrink-0 text-orange-100 fill-current" />,
-        defaultLabel: '⚡ Yüksek Enerji',
+        defaultLabel: 'Yüksek Enerji',
       };
     }
     if (student.archetype === 'curious') {
@@ -107,7 +107,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         cardBorder: 'border-2 border-blue-400 bg-gradient-to-b from-blue-50/50 via-white to-white shadow-sm hover:border-blue-500 hover:shadow-xl ring-2 ring-blue-200/40',
         badgeBg: 'bg-blue-600 text-white shadow-xs',
         badgeIcon: <Sparkles className="w-3 h-3 shrink-0 text-blue-100" />,
-        defaultLabel: '🔬 STEM Kaşifi',
+        defaultLabel: 'STEM Kaşifi',
       };
     }
     if (student.archetype === 'creative') {
@@ -115,7 +115,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         cardBorder: 'border-2 border-purple-400 bg-gradient-to-b from-purple-50/50 via-white to-white shadow-sm hover:border-purple-500 hover:shadow-xl ring-2 ring-purple-200/40',
         badgeBg: 'bg-purple-600 text-white shadow-xs',
         badgeIcon: <Sparkles className="w-3 h-3 shrink-0 text-purple-100" />,
-        defaultLabel: '🎨 Yaratıcı Zihin',
+        defaultLabel: 'Yaratıcı Zihin',
       };
     }
     if (student.archetype === 'social') {
@@ -123,14 +123,14 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         cardBorder: 'border-2 border-emerald-400 bg-gradient-to-b from-emerald-50/50 via-white to-white shadow-sm hover:border-emerald-500 hover:shadow-xl ring-2 ring-emerald-200/40',
         badgeBg: 'bg-emerald-600 text-white shadow-xs',
         badgeIcon: <Award className="w-3 h-3 shrink-0 text-emerald-100" />,
-        defaultLabel: '🤝 Nezaket Elçisi',
+        defaultLabel: 'Nezaket Elçisi',
       };
     }
     return {
       cardBorder: 'border border-slate-200/90 bg-white hover:border-blue-400 hover:shadow-xl shadow-2xs',
       badgeBg: 'bg-slate-100 text-slate-700',
       badgeIcon: <Sparkles className="w-3 h-3 shrink-0 text-slate-500" />,
-      defaultLabel: '🌱 Öğrenci',
+      defaultLabel: 'Öğrenci',
     };
   };
 
@@ -147,7 +147,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       studentNumber: newStudentNumber.trim() || `${140 + students.length}`,
       avatarColor: randomColor,
       avatarShape: 'round',
-      avatarMood: '🌟 Yeni Kaşif',
+      avatarMood: 'Yeni Kaşif',
       totalPoints: 0,
       positivePoints: 0,
       needsWorkPoints: 0,
@@ -253,7 +253,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
           </div>
         </div>
 
-        {/* Card 4: STEM-X Robotik & Canlı Atölye (Clickable - Sponsorlu Ayın Etkinliği) */}
+        {/* Card 4: Ayın Sponsorlu Etkinliği (Bağımsız Tedarikçi Vitrini) */}
         <div
           onClick={onOpenStemStore}
           className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-4 sm:p-5 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between cursor-pointer group relative overflow-hidden border-2 border-amber-400/50"
@@ -268,10 +268,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             </div>
           </div>
           <div className="mt-3">
-            <div className="text-sm font-extrabold text-slate-300">
-              STEM-X Robotics A.Ş.
+            <div className="text-[11px] font-bold text-amber-300/90 uppercase tracking-wider">
+              Bağımsız Firma • STEM-X Robotics
             </div>
-            <div className="text-xl font-black text-white tracking-tight flex items-center gap-2 mt-0.5">
+            <div className="text-lg sm:text-xl font-black text-white tracking-tight flex items-center gap-2 mt-0.5">
               <span>16 / {students.length} Sipariş</span>
               <span className="text-[10px] bg-emerald-500 text-slate-950 font-black px-1.5 py-0.5 rounded-md">
                 ₺450
@@ -283,7 +283,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             </div>
           </div>
           <div className="mt-3 pt-2.5 border-t border-white/10 text-[11px] text-amber-300 font-black flex items-center justify-between">
-            <span>Atölye Takvimi & Kit Detayı</span>
+            <span>Atölye Takvimi & Firma Detayı</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </div>
         </div>
@@ -291,22 +291,24 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
       {/* 2. PROMOTIONAL STEM-X MONTHLY EVENT BOX (DISTINCT 3RD PARTY SHOWCASE) */}
       {stemProduct && (
-        <div className="bg-gradient-to-b from-amber-50/80 via-white to-amber-50/50 rounded-3xl p-4 sm:p-5 border-2 border-dashed border-amber-300/90 shadow-2xs space-y-3">
+        <div className="bg-gradient-to-b from-amber-50/90 via-white to-amber-50/60 rounded-3xl p-4 sm:p-6 border-2 border-dashed border-amber-400/90 shadow-sm space-y-4">
           {/* Top Frame Bar for the Showcase Box */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-amber-200/70 pb-3">
-            <div className="flex items-center gap-2.5">
-              <span className="text-lg">🎪</span>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-amber-200 pb-3.5">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-black shadow-sm shrink-0">
+                <Sparkles className="w-5 h-5" />
+              </div>
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
                   <h4 className="text-xs sm:text-sm font-black text-amber-950 uppercase tracking-wide">
                     Ayın Etkinliği & Sponsorlu Eğitim Vitrini
                   </h4>
-                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-amber-200/70 text-amber-900 border border-amber-300">
-                    Bağımsız Tedarikçi Alanı
+                  <span className="text-[10px] font-black px-2 py-0.5 rounded-md bg-amber-200 text-amber-950 border border-amber-300">
+                    3. Taraf Bağımsız Firma İlanı
                   </span>
                 </div>
-                <p className="text-[11px] text-amber-800/80 font-medium">
-                  Bu alan bağımsız eğitim firmaları ve bilim atölyelerinin okullara özel tekliflerine ayrılmıştır.
+                <p className="text-[11px] text-amber-900/90 font-medium mt-0.5 leading-snug">
+                  MakeTab sisteminin bir ürünü değildir. MEB standartlarına uygun bağımsız eğitim şirketleri, bilim atölyeleri ve yayınevlerinin okullara özel teklif alanıdır.
                 </p>
               </div>
             </div>
@@ -314,34 +316,34 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             <button
               type="button"
               onClick={() => setShowPartnerModal(true)}
-              className="shrink-0 px-3 py-1.5 rounded-xl bg-white hover:bg-amber-100 border border-amber-300 text-amber-900 font-extrabold text-xs flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer"
+              className="shrink-0 px-3.5 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 text-amber-300 font-extrabold text-xs flex items-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer border border-amber-400/40"
             >
-              <Megaphone className="w-3.5 h-3.5 text-amber-600" />
+              <Megaphone className="w-3.5 h-3.5 text-amber-400" />
               <span>Siz de Satış Yapın / Reklam Verin</span>
             </button>
           </div>
 
           {/* Partner Product Showcase Banner inside the Box */}
-          <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-950 rounded-2xl p-4 sm:p-5 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-4 sm:p-5 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-amber-400/30">
             <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-2xl bg-white/20 text-white flex items-center justify-center shrink-0 shadow-inner">
+              <div className="w-12 h-12 rounded-2xl bg-white/10 text-amber-300 flex items-center justify-center shrink-0 shadow-inner border border-white/10">
                 <Bot className="w-6 h-6" />
               </div>
-              <div className="space-y-0.5">
+              <div className="space-y-1">
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[10px]">
                   <Zap className="w-3.5 h-3.5 fill-current" />
-                  ÖZEL ETKİNLİK • SPONSOR: STEM-X ROBOTICS & BİLİM A.Ş.
+                  BU AYIN PARTNERİ: STEM-X ROBOTICS & BİLİM A.Ş.
                 </div>
-                <h3 className="text-sm sm:text-base font-black tracking-tight">
+                <h3 className="text-sm sm:text-base font-black tracking-tight text-white">
                   {stemProduct.name} & Canlı Kodlama Atölyesi
                 </h3>
-                <p className="text-xs text-blue-100 font-medium">
-                  İlk Atölye: <span className="font-bold text-white">21 Mart Cumartesi 10:00</span> — Robot Kol Montajı & Algoritmalar. Sınıf indirimli fiyatı ₺450.
+                <p className="text-xs text-slate-300 font-medium">
+                  Canlı Montaj: <span className="font-bold text-amber-300">21 Mart Cumartesi 10:00</span> — Robot Kol ve Algoritmalar. Sınıf özel indirimli fiyatı ₺450.
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 shrink-0 self-stretch md:self-auto">
+            <div className="flex items-center gap-2.5 shrink-0 self-stretch md:self-auto flex-wrap">
               <button
                 type="button"
                 onClick={onOpenStemStore}
@@ -349,6 +351,14 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               >
                 <Bot className="w-4 h-4" />
                 <span>STEM-X İncele & Sipariş Ver</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowPartnerModal(true)}
+                className="flex-1 md:flex-initial min-h-[42px] px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 text-xs font-bold transition-all border border-white/20 flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <Megaphone className="w-3.5 h-3.5 text-amber-400" />
+                <span>Firma Başvurusu</span>
               </button>
             </div>
           </div>
@@ -532,7 +542,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                     En Yakın Arkadaş
                   </span>
                   <span className="text-[11px] font-bold text-slate-800 truncate mt-0.5">
-                    👥 {student.bestFriendName || 'Sınıf Grubu'}
+                    {student.bestFriendName || 'Sınıf Grubu'}
                   </span>
                 </div>
 

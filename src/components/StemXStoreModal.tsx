@@ -61,7 +61,7 @@ export const StemXStoreModal: React.FC<StemXStoreModalProps> = ({
   const handleShareStory = () => {
     if (onAnnounceInStory) {
       onAnnounceInStory(
-        '🚀 4-A Sınıfı STEM-X Robotik Atölyesi Başlıyor!',
+        '4-A Sınıfı STEM-X Robotik Atölyesi Başlıyor!',
         'Değerli Velilerimiz, MEB onaylı STEM-X Robotik Kodlama Kiti sınıfa özel ₺450 indirimli fiyatıyla temin edilmiştir. 21 Mart Cumartesi günü saat 10:00’da ilk canlı robot montaj atölyemiz gerçekleştirilecektir.'
       );
     }
